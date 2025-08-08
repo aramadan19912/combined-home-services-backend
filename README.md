@@ -1,10 +1,10 @@
-# Combined Home Services Backend
+# Combined Home Services Application
 
-This repository contains the complete backend solution for the Home Services application, combining components from the original `handy-home-hatch` and `HomeServicesApp` repositories.
+This repository contains the complete full-stack solution for the Home Services application, combining both the React frontend from `handy-home-hatch` and the .NET backend from `HomeServicesApp` repositories.
 
 ## Overview
 
-This is a comprehensive .NET backend solution built on the ABP Framework that provides APIs for a home services platform. The system supports:
+This is a comprehensive full-stack home services platform with a React frontend and .NET backend. The system supports:
 
 - **Customer Management** - User registration, profiles, and service bookings
 - **Service Provider Management** - Provider registration, approval workflows, and service delivery
@@ -14,9 +14,55 @@ This is a comprehensive .NET backend solution built on the ABP Framework that pr
 - **Authentication & Authorization** - OAuth 2.0 with OpenIddict and role-based access control
 - **Notifications** - Push notifications via Firebase Cloud Messaging
 
-## Architecture
+## Repository Structure
 
-The solution follows Domain Driven Design (DDD) principles with a layered architecture:
+```
+combined-home-services-backend/
+├── frontend/                     # React frontend from handy-home-hatch
+│   ├── src/                     # React source code
+│   ├── public/                  # Static assets
+│   ├── package.json             # Frontend dependencies
+│   ├── vite.config.ts           # Vite configuration
+│   ├── tailwind.config.ts       # Tailwind CSS configuration
+│   └── README.md                # Frontend setup instructions
+├── backend/                     # .NET backend from HomeServicesApp
+│   ├── src/                     # Backend source code
+│   ├── test/                    # Unit and integration tests
+│   ├── HomeServicesApp.sln      # Solution file
+│   └── README.md                # Backend setup instructions
+├── README.md                    # Main repository documentation
+├── .gitignore                   # Git ignore rules
+└── HOMESERVICE_API_INTEGRATION.md # API integration documentation
+```
+
+## Frontend (React Application)
+
+The frontend is a modern React application built with:
+
+- **React 18** with TypeScript
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **Radix UI** components for accessible UI elements
+- **React Router** for navigation
+- **Axios** for API communication
+- **React Query** for data fetching and caching
+- **Capacitor** for mobile app capabilities
+
+### Frontend Features
+- Customer portal for booking services
+- Provider portal for managing orders
+- Admin dashboard for system management
+- Mobile-responsive design with PWA capabilities
+- Real-time notifications
+- Multi-language support (i18n)
+- Advanced search and filtering
+- Payment integration with Stripe
+- Photo gallery and file upload
+- Offline support
+
+## Backend (.NET Application)
+
+The backend follows Domain Driven Design (DDD) principles with a layered architecture:
 
 ### Core Projects
 
@@ -88,9 +134,16 @@ The backend implements comprehensive REST APIs that correspond to the frontend e
 
 ## Prerequisites
 
+### For Frontend Development
+- [Node.js v20.11+](https://nodejs.org/en)
+- npm, yarn, or bun package manager
+
+### For Backend Development
 - [.NET 9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-- [Node v20.11+](https://nodejs.org/en) (for frontend integration)
 - [Redis](https://redis.io/) (for caching and session management)
+
+### For Full-Stack Development
+- All of the above requirements
 
 ## Configuration
 
@@ -110,42 +163,88 @@ Key configuration areas:
 
 ## Getting Started
 
-### 1. Generate Signing Certificate
+### Frontend Setup
 
-For production environments, generate an OpenIddict certificate:
+1. **Navigate to frontend directory**
+   ```bash
+   cd frontend
+   ```
 
-```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p 67e97d7e-be6e-42b5-bcb6-2d7fa2e621f8
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   bun install
+   ```
 
-### 2. Install Client-Side Libraries
+3. **Configure environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API endpoints and configuration
+   ```
 
-```bash
-abp install-libs
-```
+4. **Start development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   bun dev
+   ```
 
-### 3. Create the Database
+   The frontend will be available at `http://localhost:5173`
 
-Run the database migrator to create the initial database:
+### Backend Setup
 
-```bash
-cd src/HomeServicesApp.DbMigrator
-dotnet run
-```
+1. **Navigate to backend directory**
+   ```bash
+   cd backend
+   ```
 
-### 4. Run the Applications
+2. **Generate signing certificate** (for production)
+   ```bash
+   dotnet dev-certs https -v -ep openiddict.pfx -p 67e97d7e-be6e-42b5-bcb6-2d7fa2e621f8
+   ```
 
-Start the authentication server:
-```bash
-cd src/HomeServicesApp.AuthServer
-dotnet run
-```
+3. **Install client-side libraries**
+   ```bash
+   abp install-libs
+   ```
 
-Start the API host:
-```bash
-cd src/HomeServicesApp.HttpApi.Host
-dotnet run
-```
+4. **Create the database**
+   ```bash
+   cd src/HomeServicesApp.DbMigrator
+   dotnet run
+   cd ../..
+   ```
+
+5. **Start the applications**
+   
+   Start the authentication server:
+   ```bash
+   cd src/HomeServicesApp.AuthServer
+   dotnet run
+   ```
+   
+   In a new terminal, start the API host:
+   ```bash
+   cd backend/src/HomeServicesApp.HttpApi.Host
+   dotnet run
+   ```
+
+   The backend API will be available at `https://localhost:44375`
+
+### Full-Stack Development
+
+For full-stack development, run both frontend and backend simultaneously:
+
+1. Start the backend services (authentication server and API host)
+2. Start the frontend development server
+3. The frontend will automatically connect to the backend APIs
+
+The frontend is configured to communicate with the backend through the API endpoints documented in `HOMESERVICE_API_INTEGRATION.md`.
 
 ## Solution Structure
 

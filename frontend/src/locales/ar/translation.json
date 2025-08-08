@@ -1,0 +1,168 @@
+{
+  "brand": "خدماتي",
+  "nav": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "how": "كيف تعمل",
+    "about": "من نحن",
+    "browse": "تصفح الخدمات",
+    "bookings": "حجوزاتي",
+    "complaints": "الشكاوى",
+    "reviews": "التقييمات",
+    "dashboard": "لوحة التحكم",
+    "orders": "الطلبات",
+    "earnings": "الأرباح",
+    "myServices": "خدماتي",
+    "users": "المستخدمون",
+    "providers": "مقدمو الخدمات",
+    "analytics": "التحليلات",
+    "contact": "اتصل بنا",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب"
+  },
+  "actions": {
+    "search": "بحث",
+    "book": "احجز الآن",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "signIn": "تسجيل الدخول",
+    "becomeProvider": "انضم كمقدم خدمة",
+    "clearAll": "مسح الكل",
+    "retry": "إعادة المحاولة",
+    "browseFiles": "استعراض الملفات"
+  },
+  "status": {
+    "pending": "في الانتظار",
+    "confirmed": "مؤكد",
+    "inProgress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "uploaded": "تم الرفع",
+    "failed": "فشل"
+  },
+  "forms": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "phone": "رقم الجوال",
+    "address": "العنوان",
+    "description": "الوصف",
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "البريد الإلكتروني غير صالح"
+  },
+  "customer": {
+    "categories": {
+      "cleaning": "التنظيف",
+      "plumbing": "السباكة",
+      "electrical": "الكهرباء",
+      "gardening": "البستنة",
+      "painting": "الدهان",
+      "maintenance": "الصيانة العامة"
+    },
+    "booking": {
+      "selectDateTime": "اختر التاريخ والوقت",
+      "serviceDetails": "تفاصيل الخدمة",
+      "paymentInfo": "معلومات الدفع",
+      "confirmBooking": "تأكيد الحجز"
+    },
+    "order": {
+      "tracking": "تتبع الطلب",
+      "status": "حالة الطلب"
+    },
+    "reviews": {
+      "leaveReview": "اكتب تقييمك",
+      "rating": "التقييم"
+    },
+    "profile": {
+      "title": "الملف الشخصي"
+    }
+  },
+  "provider": {
+    "dashboard": {
+      "pendingOrders": "الطلبات المعلقة",
+      "activeJobs": "الأعمال الجارية",
+      "earnings": "الأرباح"
+    },
+    "jobs": {
+      "accept": "قبول",
+      "reject": "رفض",
+      "start": "بدء",
+      "complete": "إكمال"
+    },
+    "services": {
+      "manage": "إدارة الخدمات"
+    },
+    "calendar": {
+      "schedule": "الجدول الزمني"
+    },
+    "chat": {
+      "withCustomer": "التواصل مع العميل"
+    }
+  },
+  "admin": {
+    "analytics": {
+      "reports": "التقارير"
+    },
+    "users": {
+      "manage": "إدارة المستخدمين"
+    },
+    "monitoring": {
+      "system": "مراقبة النظام"
+    },
+    "content": {
+      "management": "إدارة المحتوى"
+    },
+    "disputes": {
+      "resolution": "حل النزاعات"
+    }
+  },
+  "upload": {
+    "title": "رفع الملفات",
+    "desc": "اسحب وأفلت أو اختر ملفات للرفع.",
+    "dragOr": "اسحب وأفلت الملفات هنا أو",
+    "uploaded": "تم الرفع",
+    "failed": "فشل الرفع",
+    "successTitle": "تم الرفع بنجاح",
+    "successMsg": "تم رفع {{count}} ملف بنجاح",
+    "errorTitle": "خطأ في الرفع",
+    "failedTitle": "فشل الرفع"
+  },
+  "lang": {
+    "ar": "العربية",
+    "en": "English"
+  },
+  "auth": {
+    "welcomeBack": "مرحباً بعودتك",
+    "signInMessage": "قم بتسجيل الدخول لحسابك للمتابعة",
+    "signingIn": "جاري تسجيل الدخول...",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
+    "invalidCredentials": "بيانات دخول غير صحيحة",
+    "fillAllFields": "يرجى ملء جميع الحقول"
+  },
+  "common": {
+    "error": "خطأ",
+    "success": "نجح",
+    "loginFailed": "فشل تسجيل الدخول"
+  },
+  "dashboard": {
+    "welcomeBack": "مرحباً بعودتك",
+    "manageBookings": "إدارة حجوزاتك واكتشاف خدمات جديدة.",
+    "totalBookings": "إجمالي الحجوزات",
+    "favorites": "المفضلة",
+    "pendingReviews": "التقييمات المعلقة",
+    "upcoming": "القادمة",
+    "bookService": "احجز خدمة",
+    "viewHistory": "عرض التاريخ",
+    "recentBookings": "الحجوزات الأخيرة",
+    "viewAll": "عرض الكل",
+    "upcomingAppointments": "المواعيد القادمة",
+    "recommendedForYou": "موصى لك",
+    "with": "مع"
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "brand": "ServiceHub",
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "how": "How It Works",
+    "about": "About",
+    "browse": "Browse Services",
+    "bookings": "My Bookings",
+    "complaints": "Complaints",
+    "reviews": "Reviews",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "earnings": "Earnings",
+    "myServices": "My Services",
+    "users": "Users",
+    "providers": "Providers",
+    "analytics": "Analytics",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register"
+  },
+  "actions": {
+    "search": "Search",
+    "book": "Book Now",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "signIn": "Sign In",
+    "becomeProvider": "Become a Provider",
+    "clearAll": "Clear all",
+    "retry": "Retry",
+    "browseFiles": "Browse files"
+  },
+  "status": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "uploaded": "Uploaded",
+    "failed": "Failed"
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "address": "Address",
+    "description": "Description",
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address"
+  },
+  "customer": {
+    "categories": {
+      "cleaning": "Cleaning",
+      "plumbing": "Plumbing",
+      "electrical": "Electrical",
+      "gardening": "Gardening",
+      "painting": "Painting",
+      "maintenance": "General Maintenance"
+    },
+    "booking": {
+      "selectDateTime": "Select Date & Time",
+      "serviceDetails": "Service Details",
+      "paymentInfo": "Payment Information",
+      "confirmBooking": "Confirm Booking"
+    },
+    "order": {
+      "tracking": "Order Tracking",
+      "status": "Order Status"
+    },
+    "reviews": {
+      "leaveReview": "Leave a Review",
+      "rating": "Rating"
+    },
+    "profile": {
+      "title": "Profile"
+    }
+  },
+  "provider": {
+    "dashboard": {
+      "pendingOrders": "Pending Orders",
+      "activeJobs": "Active Jobs",
+      "earnings": "Earnings"
+    },
+    "jobs": {
+      "accept": "Accept",
+      "reject": "Reject",
+      "start": "Start",
+      "complete": "Complete"
+    },
+    "services": {
+      "manage": "Manage Services"
+    },
+    "calendar": {
+      "schedule": "Schedule"
+    },
+    "chat": {
+      "withCustomer": "Chat with Customer"
+    }
+  },
+  "admin": {
+    "analytics": {
+      "reports": "Reports"
+    },
+    "users": {
+      "manage": "User Management"
+    },
+    "monitoring": {
+      "system": "System Monitoring"
+    },
+    "content": {
+      "management": "Content Management"
+    },
+    "disputes": {
+      "resolution": "Dispute Resolution"
+    }
+  },
+  "upload": {
+    "title": "Upload files",
+    "desc": "Drag and drop or select files to upload.",
+    "dragOr": "Drag and drop files here or",
+    "uploaded": "Uploaded",
+    "failed": "Upload failed",
+    "successTitle": "Upload Successful",
+    "successMsg": "{{count}} file(s) uploaded successfully",
+    "errorTitle": "Upload Error",
+    "failedTitle": "Upload Failed"
+  },
+  "lang": {
+    "ar": "العربية",
+    "en": "English"
+  },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "signInMessage": "Sign in to your account to continue",
+    "signingIn": "Signing in...",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "loginSuccess": "Login successful!",
+    "invalidCredentials": "Invalid credentials",
+    "fillAllFields": "Please fill in all fields"
+  },
+  "common": {
+    "error": "Error",
+    "success": "Success",
+    "loginFailed": "Login Failed"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back",
+    "manageBookings": "Manage your bookings and discover new services.",
+    "totalBookings": "Total Bookings",
+    "favorites": "Favorites",
+    "pendingReviews": "Pending Reviews",
+    "upcoming": "Upcoming",
+    "bookService": "Book Service",
+    "viewHistory": "View History",
+    "recentBookings": "Recent Bookings",
+    "viewAll": "View All",
+    "upcomingAppointments": "Upcoming Appointments",
+    "recommendedForYou": "Recommended for You",
+    "with": "with"
+  }
+}

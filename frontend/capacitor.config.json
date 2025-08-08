@@ -1,0 +1,18 @@
+{
+  "appId": "app.lovable.fa0f1e7050414c43ba00ff703045bc40",
+  "appName": "handy-home-hatch",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://fa0f1e70-5041-4c43-ba00-ff703045bc40.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "Camera": {
+      "permissions": ["camera", "photos"]
+    }
+  }
+}
