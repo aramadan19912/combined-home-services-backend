@@ -323,3 +323,109 @@ export const notificationsApi = {
   sendToMe: (contentData: NotificationContentDto) =>
     apiRequest(() => apiClient.post('/api/notification/me', contentData)),
 };
+
+// File Upload API
+export const fileUploadApi = {
+  // General file upload endpoint
+  uploadFile: (file: File, category?: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (category) {
+      formData.append('category', category);
+    }
+    return apiRequest(() => apiClient.post<FileUploadResponse>('/api/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }));
+  },
+
+  // Secure authenticated upload
+  uploadSecure: (file: File, onProgress?: (progress: number) => void) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiRequest(() => apiClient.post<FileUploadResponse>('/uploads', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: (progressEvent) => {
+        if (onProgress && progressEvent.total) {
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          onProgress(progress);
+        }
+      }
+    }));
+  },
+
+  // Delete uploaded file
+  deleteFile: (fileId: string) =>
+    apiRequest(() => apiClient.delete(`/api/upload/${fileId}`)),
+};
+
+// Calendar/Scheduling API
+export const calendarApi = {
+  // Get calendar events
+  getEvents: (startDate?: string, endDate?: string, providerId?: string, customerId?: string) =>
+    apiRequest(() => apiClient.get('/api/calendar/events', {
+      params: { startDate, endDate, providerId, customerId }
+    })),
+
+  // Create new calendar event
+  createEvent: (eventData: any) =>
+    apiRequest(() => apiClient.post('/api/calendar/events', eventData)),
+
+  // Update existing event
+  updateEvent: (eventId: string, eventData: any) =>
+    apiRequest(() => apiClient.put(`/api/calendar/events/${eventId}`, eventData)),
+
+  // Delete event
+  deleteEvent: (eventId: string) =>
+    apiRequest(() => apiClient.delete(`/api/calendar/events/${eventId}`)),
+
+  // Get provider availability
+  getAvailability: (providerId: string, startDate: string, endDate: string) =>
+    apiRequest(() => apiClient.get(`/api/calendar/availability/${providerId}`, {
+      params: { startDate, endDate }
+    })),
+
+  // Set provider availability
+  setAvailability: (availabilityData: any) =>
+    apiRequest(() => apiClient.post('/api/calendar/availability', availabilityData)),
+
+  // Get bookings for a provider
+  getProviderBookings: (providerId: string, startDate?: string, endDate?: string) =>
+    apiRequest(() => apiClient.get(`/api/calendar/bookings/provider/${providerId}`, {
+      params: { startDate, endDate }
+    })),
+
+  // Get bookings for a customer
+  getCustomerBookings: (customerId: string, startDate?: string, endDate?: string) =>
+    apiRequest(() => apiClient.get(`/api/calendar/bookings/customer/${customerId}`, {
+      params: { startDate, endDate }
+    })),
+};
+
+// Testing API for development/QA purposes
+export const testingApi = {
+  // Run test suites
+  runTests: (suiteId?: string) =>
+    apiRequest(() => apiClient.post('/api/testing/run', { suiteId })),
+
+  // Get test results
+  getTestResults: (runId?: string) =>
+    apiRequest(() => apiClient.get('/api/testing/results', {
+      params: { runId }
+    })),
+
+  // Get test suites
+  getTestSuites: () =>
+    apiRequest(() => apiClient.get('/api/testing/suites')),
+
+  // Create or update test case
+  saveTestCase: (testData: any) =>
+    apiRequest(() => apiClient.post('/api/testing/cases', testData)),
+
+  // Get code quality metrics
+  getCodeQuality: () =>
+    apiRequest(() => apiClient.get('/api/testing/code-quality')),
+
+  // Get performance metrics
+  getPerformanceMetrics: () =>
+    apiRequest(() => apiClient.get('/api/testing/performance')),
+};
