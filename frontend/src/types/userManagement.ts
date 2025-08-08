@@ -35,6 +35,11 @@ export interface RefreshTokenDto {
   refreshToken: string;
 }
 
+export interface OtpLoginDto {
+  email: string;
+  otpCode: string;
+}
+
 export interface RegisterUserDto {
   username: string;
   email: string;

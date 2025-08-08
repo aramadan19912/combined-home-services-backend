@@ -20,26 +20,38 @@ namespace HomeServicesApp.UserManagement
         private readonly IRoleRepository _roleRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly IUserActivityRepository _userActivityRepository;
+        private readonly IPasswordResetTokenRepository _passwordResetTokenRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IPasswordService _passwordService;
+        private readonly IOtpService _otpService;
+        private readonly IEmailService _emailService;
         private readonly ILogger<UserManagementAppService> _logger;
+        private readonly IConfiguration _configuration;
 
         public UserManagementAppService(
             IUserRepository userRepository,
             IRoleRepository roleRepository,
             IGroupRepository groupRepository,
             IUserActivityRepository userActivityRepository,
+            IPasswordResetTokenRepository passwordResetTokenRepository,
             IJwtTokenService jwtTokenService,
             IPasswordService passwordService,
-            ILogger<UserManagementAppService> logger)
+            IOtpService otpService,
+            IEmailService emailService,
+            ILogger<UserManagementAppService> logger,
+            IConfiguration configuration)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _groupRepository = groupRepository;
             _userActivityRepository = userActivityRepository;
+            _passwordResetTokenRepository = passwordResetTokenRepository;
             _jwtTokenService = jwtTokenService;
             _passwordService = passwordService;
+            _otpService = otpService;
+            _emailService = emailService;
             _logger = logger;
+            _configuration = configuration;
         }
 
         // Authentication
@@ -123,6 +135,100 @@ namespace HomeServicesApp.UserManagement
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during logout");
+                throw;
+            }
+        }
+
+        // OTP Authentication
+        [AllowAnonymous]
+        public async Task<string> RequestOtpLoginAsync(string email)
+        {
+            try
+            {
+                var user = await _userRepository.GetByEmailOrUsernameAsync(email);
+                
+                if (user == null)
+                {
+                    // Don't reveal if email exists or not for security
+                    return "If the email exists in our system, you will receive a verification code shortly.";
+                }
+
+                if (!user.IsActive)
+                {
+                    throw new UserFriendlyException("Account is inactive. Please contact support.");
+                }
+
+                if (user.IsLockedOut())
+                {
+                    throw new UserFriendlyException($"Account is locked until {user.LockoutEndDate}");
+                }
+
+                // Generate OTP for login
+                await _otpService.GenerateOtpAsync(
+                    user.Id, 
+                    user.Email, 
+                    OtpPurpose.Login,
+                    user.PhoneNumber,
+                    GetClientIpAddress(),
+                    GetUserAgent()
+                );
+
+                await LogUserActivity(user.Id, ActivityTypes.Login, "OTP login requested");
+
+                return "If the email exists in our system, you will receive a verification code shortly.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error requesting OTP login for email {Email}", email);
+                throw;
+            }
+        }
+
+        [AllowAnonymous]
+        public async Task<LoginResultDto> LoginWithOtpAsync(string email, string otpCode)
+        {
+            try
+            {
+                // Validate OTP
+                var otpValidation = await _otpService.ValidateOtpWithDetailsAsync(email, otpCode, OtpPurpose.Login);
+                
+                if (!otpValidation.IsValid)
+                {
+                    await LogUserActivity(otpValidation.UserId, ActivityTypes.FailedLogin, $"Invalid OTP: {otpValidation.ErrorMessage}");
+                    throw new UserFriendlyException(otpValidation.ErrorMessage);
+                }
+
+                // Get user
+                var user = await _userRepository.GetAsync(otpValidation.UserId.Value);
+
+                if (!user.IsActive)
+                {
+                    throw new UserFriendlyException("Account is inactive");
+                }
+
+                if (user.IsLockedOut())
+                {
+                    throw new UserFriendlyException($"Account is locked until {user.LockoutEndDate}");
+                }
+
+                // Successful login
+                user.UpdateLoginInfo(DateTime.UtcNow);
+                await _userRepository.UpdateAsync(user);
+
+                // Get user roles, groups, and permissions
+                var roles = await GetUserRolesAsync(user.Id);
+                var groups = await GetUserGroupsAsync(user.Id);
+                var permissions = await GetUserPermissionsAsync(user.Id);
+
+                var result = await _jwtTokenService.GenerateTokenAsync(user, roles, groups, permissions);
+                
+                await LogUserActivity(user.Id, ActivityTypes.Login, "Successful OTP login");
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during OTP login for email {Email}", email);
                 throw;
             }
         }
@@ -376,17 +482,94 @@ namespace HomeServicesApp.UserManagement
         [AllowAnonymous]
         public async Task ResetPasswordAsync(ResetPasswordDto input)
         {
-            // Implementation for password reset with token validation
-            // This would typically involve validating the reset token and updating the password
-            throw new NotImplementedException("Password reset implementation pending");
+            try
+            {
+                // Find the password reset token
+                var resetToken = await _passwordResetTokenRepository.GetValidTokenAsync(input.Email, input.ResetToken);
+                
+                if (resetToken == null || !resetToken.IsValid())
+                {
+                    throw new UserFriendlyException("Invalid or expired reset token");
+                }
+
+                var user = await _userRepository.GetAsync(resetToken.UserId);
+
+                // Validate new password strength
+                if (!_passwordService.IsPasswordStrong(input.NewPassword))
+                {
+                    throw new UserFriendlyException("New password does not meet strength requirements");
+                }
+
+                // Update password
+                user.PasswordHash = _passwordService.HashPassword(input.NewPassword);
+                await _userRepository.UpdateAsync(user);
+
+                // Mark reset token as used
+                resetToken.MarkAsUsed();
+                await _passwordResetTokenRepository.UpdateAsync(resetToken);
+
+                // Send notification email
+                await _emailService.SendPasswordChangeNotificationAsync(user.Email, user.Username);
+
+                await LogUserActivity(user.Id, ActivityTypes.PasswordReset, "Password reset successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error resetting password for email {Email}", input.Email);
+                throw;
+            }
         }
 
         [AllowAnonymous]
         public async Task<string> ForgotPasswordAsync(string email)
         {
-            // Implementation for forgot password functionality
-            // This would generate a reset token and send an email
-            throw new NotImplementedException("Forgot password implementation pending");
+            try
+            {
+                var user = await _userRepository.GetByEmailOrUsernameAsync(email);
+                
+                if (user == null)
+                {
+                    // Don't reveal if email exists or not for security
+                    return "If the email exists in our system, you will receive a password reset link shortly.";
+                }
+
+                if (!user.IsActive)
+                {
+                    throw new UserFriendlyException("Account is inactive. Please contact support.");
+                }
+
+                // Generate reset token
+                var resetToken = _passwordService.GenerateResetToken();
+                var expiryDate = DateTime.UtcNow.AddMinutes(15); // 15 minutes expiry
+
+                // Create password reset token record
+                var passwordResetToken = new PasswordResetToken(
+                    GuidGenerator.Create(),
+                    user.Id,
+                    resetToken,
+                    user.Email,
+                    expiryDate,
+                    GetClientIpAddress(),
+                    GetUserAgent()
+                );
+
+                await _passwordResetTokenRepository.InsertAsync(passwordResetToken);
+
+                // Generate reset link
+                var resetLink = $"{_configuration["App:ClientUrl"]}/reset-password?token={Uri.EscapeDataString(resetToken)}&email={Uri.EscapeDataString(email)}";
+
+                // Send reset email
+                await _emailService.SendPasswordResetEmailAsync(user.Email, user.Username, resetToken, resetLink);
+
+                await LogUserActivity(user.Id, ActivityTypes.PasswordReset, "Password reset requested");
+
+                return "If the email exists in our system, you will receive a password reset link shortly.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing forgot password for email {Email}", email);
+                throw;
+            }
         }
 
         // User Status Management
@@ -557,5 +740,12 @@ namespace HomeServicesApp.UserManagement
     public interface IUserActivityRepository : IRepository<UserActivity, Guid>
     {
         // Additional user activity-specific methods
+    }
+
+    public interface IPasswordResetTokenRepository : IRepository<PasswordResetToken, Guid>
+    {
+        Task<PasswordResetToken> GetValidTokenAsync(string email, string token);
+        Task<List<PasswordResetToken>> GetExpiredTokensAsync();
+        Task DeleteExpiredTokensAsync();
     }
 }

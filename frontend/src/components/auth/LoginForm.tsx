@@ -13,12 +13,14 @@ interface LoginFormProps {
   onLoginSuccess?: (result: any) => void;
   onRegisterClick?: () => void;
   onForgotPasswordClick?: () => void;
+  onOtpLoginClick?: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   onLoginSuccess,
   onRegisterClick,
-  onForgotPasswordClick
+  onForgotPasswordClick,
+  onOtpLoginClick
 }) => {
   const [formData, setFormData] = useState<LoginDto>({
     emailOrUsername: '',
@@ -207,6 +209,18 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                 'Sign in'
               )}
             </Button>
+
+            {onOtpLoginClick && (
+              <Button
+                type="button"
+                onClick={onOtpLoginClick}
+                variant="outline"
+                className="w-full"
+                disabled={isLoading}
+              >
+                Login with OTP (No Password)
+              </Button>
+            )}
 
             {onRegisterClick && (
               <div className="text-center text-sm">

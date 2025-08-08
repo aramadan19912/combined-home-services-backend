@@ -268,8 +268,51 @@ namespace HomeServicesApp.Controllers
         {
             try
             {
-                var resetToken = await _userManagementService.ForgotPasswordAsync(email);
-                return Ok(new { message = "Password reset email sent", resetToken }); // In production, don't return the token
+                var message = await _userManagementService.ForgotPasswordAsync(email);
+                return Ok(new { message });
+            }
+            catch (UserFriendlyException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Request OTP for passwordless login
+        /// </summary>
+        /// <param name="email">User email</param>
+        [HttpPost("request-otp-login")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> RequestOtpLoginAsync([FromBody] string email)
+        {
+            try
+            {
+                var message = await _userManagementService.RequestOtpLoginAsync(email);
+                return Ok(new { message });
+            }
+            catch (UserFriendlyException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Login using OTP code
+        /// </summary>
+        /// <param name="input">OTP login credentials</param>
+        [HttpPost("login-with-otp")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(LoginResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<LoginResultDto>> LoginWithOtpAsync([FromBody] OtpLoginDto input)
+        {
+            try
+            {
+                var result = await _userManagementService.LoginWithOtpAsync(input.Email, input.OtpCode);
+                return Ok(result);
             }
             catch (UserFriendlyException ex)
             {

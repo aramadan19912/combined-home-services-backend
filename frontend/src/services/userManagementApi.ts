@@ -56,8 +56,18 @@ export const authApi = {
     return response.data;
   },
 
-  forgotPassword: async (email: string): Promise<{ message: string; resetToken: string }> => {
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
     const response = await apiClient.post('/api/v1/usermanagement/forgot-password', email);
+    return response.data;
+  },
+
+  requestOtpLogin: async (email: string): Promise<{ message: string }> => {
+    const response = await apiClient.post('/api/v1/usermanagement/request-otp-login', email);
+    return response.data;
+  },
+
+  loginWithOtp: async (email: string, otpCode: string): Promise<LoginResultDto> => {
+    const response = await apiClient.post('/api/v1/usermanagement/login-with-otp', { email, otpCode });
     return response.data;
   },
 

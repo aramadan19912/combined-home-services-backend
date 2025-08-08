@@ -13,6 +13,10 @@ namespace HomeServicesApp.UserManagement
         Task<LoginResultDto> RefreshTokenAsync(RefreshTokenDto input);
         Task LogoutAsync();
         
+        // OTP Authentication
+        Task<string> RequestOtpLoginAsync(string email);
+        Task<LoginResultDto> LoginWithOtpAsync(string email, string otpCode);
+        
         // User Registration
         Task<UserDto> RegisterAsync(RegisterUserDto input);
         
