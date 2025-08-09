@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -16,8 +16,17 @@ public class HomeServicesAppDbContextFactory : IDesignTimeDbContextFactory<HomeS
 
         var configuration = BuildConfiguration();
 
-        var builder = new DbContextOptionsBuilder<HomeServicesAppDbContext>()
-            .UseSqlite(configuration.GetConnectionString("Default"));
+        var provider = configuration["Database:Provider"] ?? "Sqlite";
+
+        var builder = new DbContextOptionsBuilder<HomeServicesAppDbContext>();
+        if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
+        {
+            builder.UseNpgsql(configuration.GetConnectionString("Default"));
+        }
+        else
+        {
+            builder.UseSqlite(configuration.GetConnectionString("Default"));
+        }
 
         return new HomeServicesAppDbContext(builder.Options);
     }

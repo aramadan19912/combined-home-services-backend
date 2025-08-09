@@ -20,27 +20,46 @@ jobs:
       - name: Setup Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
+      - name: Determine environment
+        id: env
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+            echo "name=environment::production" >> $GITHUB_OUTPUT
+          else
+            echo "name=environment::staging" >> $GITHUB_OUTPUT
+          fi
+
       - name: Ensure app and volume exist
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          APP_NAME="${{ vars.FLY_APP_NAME_AUTH }}"
-          REGION="${{ vars.FLY_REGION }}"
+          ENV_NAME="${{ steps.env.outputs.environment }}"
+          if [ "$ENV_NAME" = "production" ]; then
+            APP_NAME="${{ vars.FLY_APP_NAME_AUTH_PROD }}"; REGION="${{ vars.FLY_REGION_PROD }}";
+          else
+            APP_NAME="${{ vars.FLY_APP_NAME_AUTH_STAGING }}"; REGION="${{ vars.FLY_REGION_STAGING }}";
+          fi
           if [ -z "$APP_NAME" ]; then APP_NAME="homeservicesapp-auth"; fi
           if [ -z "$REGION" ]; then REGION="ord"; fi
-          echo "Using app=$APP_NAME region=$REGION"
+          echo "Using env=$ENV_NAME app=$APP_NAME region=$REGION"
           flyctl apps list | grep -q "^${APP_NAME}\b" || flyctl apps create "${APP_NAME}"
           flyctl volumes list --app "${APP_NAME}" | grep -q "\bdata\b" || flyctl volumes create data --app "${APP_NAME}" --region "${REGION}" --size 1
 
-      - name: Set environment secrets (URLs and CORS)
+      - name: Set environment secrets (DB + URLs + CORS)
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          APP_NAME="${{ vars.FLY_APP_NAME_AUTH }}"
-          SELF_URL="${{ vars.AUTH_SELF_URL }}"
-          CLIENT_URL="${{ vars.AUTH_CLIENT_URL }}"
-          CORS="${{ vars.AUTH_CORS_ORIGINS }}"
+          ENV_NAME="${{ steps.env.outputs.environment }}"
+          if [ "$ENV_NAME" = "production" ]; then
+            APP_NAME="${{ vars.FLY_APP_NAME_AUTH_PROD }}"; CSTRING="${{ secrets.PG_CONN_STR_PROD }}"; SELF_URL="${{ vars.AUTH_SELF_URL_PROD }}"; CLIENT_URL="${{ vars.AUTH_CLIENT_URL_PROD }}"; CORS="${{ vars.AUTH_CORS_ORIGINS_PROD }}";
+          else
+            APP_NAME="${{ vars.FLY_APP_NAME_AUTH_STAGING }}"; CSTRING="${{ secrets.PG_CONN_STR_STAGING }}"; SELF_URL="${{ vars.AUTH_SELF_URL_STAGING }}"; CLIENT_URL="${{ vars.AUTH_CLIENT_URL_STAGING }}"; CORS="${{ vars.AUTH_CORS_ORIGINS_STAGING }}";
+          fi
           if [ -z "$APP_NAME" ]; then APP_NAME="homeservicesapp-auth"; fi
+          if [ -n "$CSTRING" ]; then
+            flyctl secrets set Database__Provider=PostgreSql ConnectionStrings__Default="$CSTRING" --app "$APP_NAME" --stage
+          fi
           if [ -n "$SELF_URL" ]; then flyctl secrets set App__SelfUrl="$SELF_URL" --app "$APP_NAME" --stage; fi
           if [ -n "$CLIENT_URL" ]; then flyctl secrets set App__ClientUrl="$CLIENT_URL" --app "$APP_NAME" --stage; fi
           if [ -n "$CORS" ]; then flyctl secrets set App__CorsOrigins="$CORS" --app "$APP_NAME" --stage; fi
@@ -49,6 +68,11 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          APP_NAME="${{ vars.FLY_APP_NAME_AUTH }}"
+          ENV_NAME="${{ steps.env.outputs.environment }}"
+          if [ "$ENV_NAME" = "production" ]; then
+            APP_NAME="${{ vars.FLY_APP_NAME_AUTH_PROD }}";
+          else
+            APP_NAME="${{ vars.FLY_APP_NAME_AUTH_STAGING }}";
+          fi
           if [ -z "$APP_NAME" ]; then APP_NAME="homeservicesapp-auth"; fi
           flyctl deploy --config fly-auth.toml --app "$APP_NAME" --remote-only --auto-confirm
