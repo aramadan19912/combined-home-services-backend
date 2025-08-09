@@ -1,215 +1,183 @@
-# Home Services Platform 🏠
+# Supabase CLI
 
-A comprehensive home services marketplace built with React TypeScript frontend and ASP.NET Core backend, featuring **complete API integration** and production-ready deployment.
+[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
+](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
 
-## ✅ Integration Status
+[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
 
-**🎉 FULLY INTEGRATED** - All mock data has been replaced with real API calls!
+This repository contains all the functionality for Supabase CLI.
 
-- ✅ **Authentication & Authorization** - JWT-based security
-- ✅ **Service Management** - Browse, search, and book services
-- ✅ **Provider Management** - Complete provider lifecycle
-- ✅ **Order Management** - Real-time order tracking
-- ✅ **Payment Processing** - Secure payment integration
-- ✅ **File Uploads** - Secure file handling with progress tracking
-- ✅ **Calendar System** - Event management and scheduling
-- ✅ **Testing Dashboard** - Live test execution and monitoring
-- ✅ **Analytics & Reporting** - Real-time metrics and insights
-- ✅ **Notifications** - Push notification system
-- ✅ **Error Handling** - Comprehensive error management
-- ✅ **Loading States** - User-friendly loading indicators
+- [x] Running Supabase locally
+- [x] Managing database migrations
+- [x] Creating and deploying Supabase Functions
+- [x] Generating types directly from your database schema
+- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
 
-## 🚀 Quick Start
+## Getting started
 
-### Prerequisites
-- Node.js 18+ 
-- .NET 8.0 SDK
-- SQL Server (LocalDB or full instance)
+### Install the CLI
 
-### Development Setup
+Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd homeservices-platform
-   ```
-
-2. **Setup Backend**
-   ```bash
-   cd backend
-   dotnet restore
-   dotnet ef database update
-   dotnet run --project src/HomeServicesApp.HttpApi.Host
-   ```
-
-3. **Setup Frontend**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-4. **Configure Environment**
-   ```bash
-   # Copy and edit environment variables
-   cp frontend/.env.example frontend/.env
-   # Update API URLs to match your backend
-   ```
-
-### 🧪 Test the Integration
-
-Open browser console and run:
-```javascript
-// Test API connectivity
-await runAPITests();
-
-// Full integration test
-await runFullIntegrationTest();
-```
-
-## 📁 Project Structure
-
-```
-├── backend/                 # ASP.NET Core API
-│   ├── src/
-│   │   ├── HomeServicesApp.HttpApi.Host/    # Main API host
-│   │   ├── HomeServicesApp.HttpApi/         # API controllers
-│   │   ├── HomeServicesApp.Application/     # Business logic
-│   │   └── HomeServicesApp.Domain/          # Domain models
-│   └── test/               # Backend tests
-├── frontend/               # React TypeScript SPA
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── hooks/          # Custom hooks with API integration
-│   │   ├── services/       # API service layer
-│   │   ├── types/          # TypeScript definitions
-│   │   └── utils/          # Utility functions
-│   ├── .env               # Environment configuration
-│   └── dist/              # Build output
-└── docs/                  # Documentation
-```
-
-## 🔧 Key Features
-
-### Frontend Features
-- **Modern React 18** with TypeScript and Vite
-- **Responsive Design** with Tailwind CSS and shadcn/ui
-- **Real-time Data** from integrated APIs
-- **Optimized Performance** with caching and request deduplication
-- **Progressive Web App** capabilities
-- **Comprehensive Testing** utilities
-
-### Backend Features
-- **ASP.NET Core 8** with clean architecture
-- **Entity Framework Core** with SQL Server
-- **JWT Authentication** with role-based authorization
-- **RESTful APIs** with OpenAPI/Swagger documentation
-- **File Upload** with secure storage
-- **Real-time Notifications** with Firebase integration
-
-### Integration Features
-- **Type-safe API calls** with automatic error handling
-- **Request caching** and performance monitoring
-- **Fallback mechanisms** for offline scenarios
-- **Environment-based configuration** for different deployments
-- **Comprehensive testing** tools and utilities
-
-## 🛠 Development Tools
-
-### Frontend Development
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run test         # Run tests
+npm i supabase --save-dev
 ```
 
-### Backend Development
+To install the beta release channel:
+
 ```bash
-dotnet run           # Start API server
-dotnet test          # Run tests
-dotnet ef migrations add <name>  # Add migration
-dotnet ef database update       # Update database
+npm i supabase@beta --save-dev
 ```
 
-### Integration Testing
+When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
+
+```
+NODE_OPTIONS=--no-experimental-fetch yarn add supabase
+```
+
+> **Note**
+For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
+
+<details>
+  <summary><b>macOS</b></summary>
+
+  Available via [Homebrew](https://brew.sh). To install:
+
+  ```sh
+  brew install supabase/tap/supabase
+  ```
+
+  To install the beta release channel:
+  
+  ```sh
+  brew install supabase/tap/supabase-beta
+  brew link --overwrite supabase-beta
+  ```
+  
+  To upgrade:
+
+  ```sh
+  brew upgrade supabase
+  ```
+</details>
+
+<details>
+  <summary><b>Windows</b></summary>
+
+  Available via [Scoop](https://scoop.sh). To install:
+
+  ```powershell
+  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+  scoop install supabase
+  ```
+
+  To upgrade:
+
+  ```powershell
+  scoop update supabase
+  ```
+</details>
+
+<details>
+  <summary><b>Linux</b></summary>
+
+  Available via [Homebrew](https://brew.sh) and Linux packages.
+
+  #### via Homebrew
+
+  To install:
+
+  ```sh
+  brew install supabase/tap/supabase
+  ```
+
+  To upgrade:
+
+  ```sh
+  brew upgrade supabase
+  ```
+
+  #### via Linux packages
+
+  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
+
+  ```sh
+  sudo apk add --allow-untrusted <...>.apk
+  ```
+
+  ```sh
+  sudo dpkg -i <...>.deb
+  ```
+
+  ```sh
+  sudo rpm -i <...>.rpm
+  ```
+
+  ```sh
+  sudo pacman -U <...>.pkg.tar.zst
+  ```
+</details>
+
+<details>
+  <summary><b>Other Platforms</b></summary>
+
+  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
+
+  ```sh
+  go install github.com/supabase/cli@latest
+  ```
+
+  Add a symlink to the binary in `$PATH` for easier access:
+
+  ```sh
+  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
+  ```
+
+  This works on other non-standard Linux distros.
+</details>
+
+<details>
+  <summary><b>Community Maintained Packages</b></summary>
+
+  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
+  To install in your working directory:
+
+  ```bash
+  pkgx install supabase
+  ```
+
+  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
+</details>
+
+### Run the CLI
+
 ```bash
-# Browser console commands available:
-runAPITests()                    # Test API connectivity
-runFullIntegrationTest()         # Comprehensive integration test
-performanceMonitor.getAllMetrics()  # Check API performance
-apiCache.getStats()              # Check cache efficiency
+supabase bootstrap
 ```
 
-## 📚 Documentation
+Or using npx:
 
-- **[API Integration Complete](frontend/API_INTEGRATION_COMPLETE.md)** - Detailed integration documentation
-- **[Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** - Production deployment instructions
-- **[Integration Testing](frontend/src/utils/integration-test.ts)** - Testing utilities and examples
+```bash
+npx supabase bootstrap
+```
 
-## 🌐 API Endpoints
+The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
 
-### Core Services
-- `GET /api/service` - Browse services
-- `GET /api/category` - Service categories
-- `POST /api/order` - Create orders
-- `GET /api/provider` - Provider management
+## Docs
 
-### User Management
-- `POST /api/auth/login` - User authentication
-- `GET /api/userprofile` - User profile management
-- `GET /api/notification` - Notifications
+Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
 
-### Advanced Features
-- `POST /api/upload` - File uploads
-- `GET /api/calendar/events` - Calendar management
-- `GET /api/testing/suites` - Testing dashboard
-- `GET /api/analytics/dashboard` - Analytics
+## Breaking changes
 
-## 🔒 Security Features
+We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
 
-- **JWT Authentication** with automatic token refresh
-- **Role-based Authorization** (Customer, Provider, Admin)
-- **CORS Configuration** for cross-origin requests
-- **Input Validation** on all endpoints
-- **Secure File Upload** with type validation
-- **Rate Limiting** and request throttling
+However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
 
-## 🚀 Production Deployment
+## Developing
 
-The application is production-ready with:
+To run from source:
 
-- **Docker support** with multi-stage builds
-- **Cloud deployment** templates for Azure/AWS
-- **Environment configuration** for different stages
-- **Performance optimization** with caching and CDN support
-- **Monitoring and logging** integration
-- **SSL/HTTPS** configuration
-- **Database backup** strategies
-
-See **[Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** for detailed instructions.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎉 Success Metrics
-
-- ✅ **100% API Integration** - All mock data replaced
-- ✅ **Type Safety** - Full TypeScript coverage
-- ✅ **Error Handling** - Comprehensive error management
-- ✅ **Performance** - Optimized API calls with caching
-- ✅ **User Experience** - Loading states and feedback
-- ✅ **Production Ready** - Deployment and monitoring configured
-
----
-
-**Ready for production deployment!** 🚀 The platform now features complete API integration with real-time data, comprehensive error handling, and production-ready deployment configurations.
+```sh
+# Go >= 1.22
+go run . help
+```
