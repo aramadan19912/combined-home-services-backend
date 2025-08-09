@@ -24,11 +24,32 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl apps list | grep -q "^homeservicesapp-api\b" || flyctl apps create homeservicesapp-api
-          flyctl volumes list --app homeservicesapp-api | grep -q "\bdata\b" || flyctl volumes create data --app homeservicesapp-api --region ord --size 1
-      
+          APP_NAME="${{ vars.FLY_APP_NAME_API }}"
+          REGION="${{ vars.FLY_REGION }}"
+          if [ -z "$APP_NAME" ]; then APP_NAME="homeservicesapp-api"; fi
+          if [ -z "$REGION" ]; then REGION="ord"; fi
+          echo "Using app=$APP_NAME region=$REGION"
+          flyctl apps list | grep -q "^${APP_NAME}\b" || flyctl apps create "${APP_NAME}"
+          flyctl volumes list --app "${APP_NAME}" | grep -q "\bdata\b" || flyctl volumes create data --app "${APP_NAME}" --region "${REGION}" --size 1
+
+      - name: Set environment secrets (CORS)
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          APP_NAME="${{ vars.FLY_APP_NAME_API }}"
+          ORIGINS="${{ vars.APP_CORS_ORIGINS }}"
+          if [ -z "$APP_NAME" ]; then APP_NAME="homeservicesapp-api"; fi
+          if [ -n "$ORIGINS" ]; then
+            echo "Setting App__CorsOrigins for $APP_NAME"
+            flyctl secrets set App__CorsOrigins="$ORIGINS" --app "$APP_NAME" --stage
+          else
+            echo "APP_CORS_ORIGINS not set, skipping"
+          fi
+
       - name: Deploy to Fly
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl deploy --remote-only --auto-confirm
+          APP_NAME="${{ vars.FLY_APP_NAME_API }}"
+          if [ -z "$APP_NAME" ]; then APP_NAME="homeservicesapp-api"; fi
+          flyctl deploy --app "$APP_NAME" --remote-only --auto-confirm
