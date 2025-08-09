@@ -50,6 +50,15 @@ namespace HomeServicesApp.UserManagement.Dtos
         public bool RememberMe { get; set; } = false;
     }
 
+    public class OtpLoginDto
+    {
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        public string OtpCode { get; set; }
+    }
+
     public class LoginResultDto
     {
         public string AccessToken { get; set; }

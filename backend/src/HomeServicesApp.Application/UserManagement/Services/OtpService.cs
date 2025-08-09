@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -56,7 +57,7 @@ namespace HomeServicesApp.UserManagement.Services
 
                 // Create OTP token
                 var otpToken = new OtpToken(
-                    GuidGenerator.Create(),
+                    Guid.NewGuid(),
                     userId,
                     otpCode,
                     email,
@@ -262,7 +263,7 @@ namespace HomeServicesApp.UserManagement.Services
         {
             // This would be implemented to get user from repository
             // Placeholder implementation
-            return new User { Username = "User" };
+            return new User(userId, "User", "user@example.com", "hashedpassword");
         }
     }
 
