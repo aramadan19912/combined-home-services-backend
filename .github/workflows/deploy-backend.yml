@@ -1,0 +1,63 @@
+name: Deploy Backend to Azure App Service
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'backend/**'
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - 'backend/**'
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: homeservices-api
+  AZURE_WEBAPP_PACKAGE_PATH: './backend'
+  DOTNET_VERSION: '9.0.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Publish
+      run: dotnet publish src/HomeServicesApp.HttpApi.Host/HomeServicesApp.HttpApi.Host.csproj -c Release -o ./publish
+      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Deploy to Azure Web App
+      if: github.ref == 'refs/heads/main'
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/publish
+
+    - name: Run Entity Framework migrations
+      if: github.ref == 'refs/heads/main'
+      run: |
+        dotnet tool install --global dotnet-ef
+        dotnet ef database update --project src/HomeServicesApp.EntityFrameworkCore --startup-project src/HomeServicesApp.HttpApi.Host
+      working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      env:
+        ConnectionStrings__Default: ${{ secrets.DATABASE_CONNECTION_STRING }}

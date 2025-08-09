@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # SQL Server database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: homeservices-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrongPassword123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - homeservices-network
+
+  # Redis cache (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: homeservices-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - homeservices-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: homeservices-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__Default=Server=sqlserver,1433;Database=HomeServicesDb;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=true
+      - Jwt__Key=YourSuperSecretJWTKeyForDevelopment123!
+      - Jwt__Issuer=http://localhost:5000
+      - Jwt__Audience=http://localhost:3000
+      - CORS__AllowedOrigins=http://localhost:3000,http://localhost:5173
+    ports:
+      - "5000:80"
+    depends_on:
+      - sqlserver
+      - redis
+    networks:
+      - homeservices-network
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+  # Frontend (for development)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: homeservices-frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000
+      - VITE_ENVIRONMENT=development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - homeservices-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  homeservices-network:
+    driver: bridge
