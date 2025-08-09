@@ -1,0 +1,36 @@
+name: Deploy Backend to Fly.io
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-fly-deploy.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Ensure app and volume exist
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl apps list | grep -q "^homeservicesapp-api\b" || flyctl apps create homeservicesapp-api
+          flyctl volumes list --app homeservicesapp-api | grep -q "\bdata\b" || flyctl volumes create data --app homeservicesapp-api --region ord --size 1
+      
+      - name: Deploy to Fly
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy --remote-only --auto-confirm
