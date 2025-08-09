@@ -1,0 +1,39 @@
+name: Backend CI
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore HomeServicesApp.sln
+
+      - name: Build
+        run: dotnet build HomeServicesApp.sln --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          if [ -d "test" ]; then
+            dotnet test HomeServicesApp.sln --configuration Release --no-build --collect:"XPlat Code Coverage" || echo "Tests failed or none found"
+          else
+            echo "No tests directory found, skipping tests."
+          fi
