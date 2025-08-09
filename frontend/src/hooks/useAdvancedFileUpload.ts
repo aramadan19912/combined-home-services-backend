@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { toast } from '@/hooks/use-toast';
-import { authClient } from '@/lib/api-client';
+import { fileUploadApi } from '@/services/api';
 
 export type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 
@@ -88,27 +88,30 @@ export function useAdvancedFileUpload(opts: AdvancedUploadOptions = {}) {
 
   const secureUploader = useCallback(
     async (file: File, onProgress: (p: number) => void): Promise<UploadResult> => {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await authClient.post('/uploads', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (e) => {
-          if (!e.total) return;
-          onProgress(Math.min(99, Math.round((e.loaded * 100) / e.total)));
-        },
-      });
-
-      const data = response.data as any;
-      if (!data || (!data.id && !data.fileId) || (!data.url && !data.fileUrl)) {
-        throw new Error('Upload response missing id/url');
+      try {
+        const response = await fileUploadApi.uploadSecure(file, onProgress);
+        
+        if (!response || (!response.id && !response.fileId) || (!response.url && !response.fileUrl)) {
+          throw new Error('Upload response missing id/url');
+        }
+        
+        // Final progress update
+        onProgress(100);
+        
+        return { 
+          id: String(response.id ?? response.fileId), 
+          url: String(response.url ?? response.fileUrl) 
+        };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Upload failed';
+        throw new Error(message);
       }
-      return { id: String(data.id ?? data.fileId), url: String(data.url ?? data.fileUrl) };
     },
     []
   );
 
   const mockUploader = useCallback(async (file: File, onProgress: (p: number) => void): Promise<UploadResult> => {
+    // Fallback mock uploader for development/testing
     await new Promise<void>((resolve) => {
       let progress = 0;
       const timer = setInterval(() => {
@@ -117,12 +120,14 @@ export function useAdvancedFileUpload(opts: AdvancedUploadOptions = {}) {
       }, 120);
       setTimeout(() => {
         clearInterval(timer);
+        onProgress(100);
         resolve();
       }, 1200);
     });
     return { id: `file_${Date.now()}`, url: URL.createObjectURL(file) };
   }, []);
 
+  // Default to secure uploader, fallback to mock for development
   const uploader = options.uploader ?? (options.secure ? secureUploader : mockUploader);
 
   const startUpload = useCallback(

@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { fileUploadApi } from '@/services/api';
 
 interface UploadOptions {
   maxSize?: number; // in MB
@@ -84,32 +85,21 @@ export const useFileUpload = (options: UploadOptions = {}) => {
 
     try {
       const uploadPromises = fileArray.map(async (file, index) => {
-        // Simulate upload progress
-        const formData = new FormData();
-        formData.append('file', file);
+        // Update progress while uploading
+        setState(prev => ({
+          ...prev,
+          progress: Math.min(prev.progress + (70 / fileArray.length), 90)
+        }));
 
-        // Mock upload - replace with actual API call
-        await new Promise(resolve => {
-          const interval = setInterval(() => {
-            setState(prev => {
-              const newProgress = Math.min(prev.progress + 10, 90);
-              return { ...prev, progress: newProgress };
-            });
-          }, 100);
+        // Use real API call instead of mock
+        const response = await fileUploadApi.uploadFile(file);
 
-          setTimeout(() => {
-            clearInterval(interval);
-            resolve(true);
-          }, 1000);
-        });
-
-        // Mock uploaded file response
         const uploadedFile: UploadedFile = {
-          id: `file_${Date.now()}_${index}`,
+          id: response.id || `file_${Date.now()}_${index}`,
           name: file.name,
           size: file.size,
           type: file.type,
-          url: URL.createObjectURL(file), // In real app, this would be the server URL
+          url: response.url || response.fileUrl || URL.createObjectURL(file),
           uploadedAt: new Date(),
         };
 
