@@ -56,5 +56,10 @@ namespace HomeServicesApp.UserManagement
         {
             ExpiryDate = newExpiryDate;
         }
+
+        public override object[] GetKeys()
+        {
+            return new object[] { UserId, RoleId };
+        }
     }
 }

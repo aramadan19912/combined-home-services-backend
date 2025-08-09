@@ -61,6 +61,11 @@ namespace HomeServicesApp.UserManagement
             PermissionId = permissionId;
             IsGranted = isGranted;
         }
+
+        public override object[] GetKeys()
+        {
+            return new object[] { RoleId, PermissionId };
+        }
     }
 
     public class GroupPermission : CreationAuditedEntity
@@ -87,6 +92,11 @@ namespace HomeServicesApp.UserManagement
             GroupId = groupId;
             PermissionId = permissionId;
             IsGranted = isGranted;
+        }
+
+        public override object[] GetKeys()
+        {
+            return new object[] { GroupId, PermissionId };
         }
     }
 
