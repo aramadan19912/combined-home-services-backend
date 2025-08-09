@@ -59,6 +59,7 @@ public class HomeServicesAppHttpApiHostModule : AbpModule
         ConfigureDistributedLocking(context, configuration);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        ConfigureSupabase(context, configuration);
     }
 
     private void ConfigureCache(IConfiguration configuration)
@@ -180,6 +181,26 @@ public class HomeServicesAppHttpApiHostModule : AbpModule
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
+            });
+        });
+    }
+
+    private void ConfigureSupabase(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        context.Services.AddScoped<Supabase.Client>(provider =>
+        {
+            var supabaseUrl = configuration["Supabase:Url"];
+            var supabaseKey = configuration["Supabase:Key"];
+            
+            if (string.IsNullOrEmpty(supabaseUrl) || string.IsNullOrEmpty(supabaseKey))
+            {
+                throw new InvalidOperationException("Supabase configuration is missing. Please configure Supabase:Url and Supabase:Key in appsettings.json");
+            }
+
+            return new Supabase.Client(supabaseUrl, supabaseKey, new Supabase.SupabaseOptions
+            {
+                AutoConnectRealtime = true,
+                AutoRefreshToken = true
             });
         });
     }
