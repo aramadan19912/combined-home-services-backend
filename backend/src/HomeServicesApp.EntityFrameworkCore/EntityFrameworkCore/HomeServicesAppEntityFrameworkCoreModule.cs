@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Uow;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
+using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.Modularity;
@@ -22,6 +23,7 @@ namespace HomeServicesApp.EntityFrameworkCore;
     typeof(AbpPermissionManagementEntityFrameworkCoreModule),
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
     typeof(AbpEntityFrameworkCoreSqliteModule),
+    typeof(AbpEntityFrameworkCorePostgreSqlModule),
     typeof(AbpBackgroundJobsEntityFrameworkCoreModule),
     typeof(AbpAuditLoggingEntityFrameworkCoreModule),
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
@@ -47,7 +49,17 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
         {
                 /* The main point to change your DBMS.
                  * See also HomeServicesAppMigrationsDbContextFactory for EF Core tooling. */
-            options.UseSqlite();
+            var configuration = context.Services.GetConfiguration();
+            var connectionString = configuration.GetConnectionString("Default");
+            
+            if (connectionString?.Contains("postgres") == true || connectionString?.StartsWith("postgres://") == true)
+            {
+                options.UseNpgsql();
+            }
+            else
+            {
+                options.UseSqlite();
+            }
         });
 
     }
