@@ -11,7 +11,7 @@ kill_timeout = "5s"
   ConnectionStrings__Default = "Data Source=/data/HomeServicesApp.db"
   App__SelfUrl = "https://<your-auth-domain>"
   App__ClientUrl = "https://<your-gh-username>.github.io/<repo>"
-  App__CorsOrigins = "https://<your-gh-username>.github.io,https://<your-gh-username>.github.io/<repo>"
+  App__CorsOrigins = "https://<your-gh-username>.github.io,https://<your-gh-username>.github.io/<repo>,https://homeservicesapp-frontend.fly.dev"
 
 [[services]]
   internal_port = 8081
