@@ -9,7 +9,8 @@ This is the .NET backend for the Home Services application, built with ABP Frame
 - **Entity Framework Core** for data access
 - **OpenIddict** for authentication and authorization
 - **SQLite** database (configurable)
-- **Redis** for caching and session management
+- **In-Memory Caching** for application caching
+- **File-based distributed locking** for synchronization
 - **AutoMapper** for object mapping
 - **Swagger/OpenAPI** for API documentation
 
@@ -65,7 +66,6 @@ The solution follows Domain Driven Design (DDD) principles with a layered archit
 ## Prerequisites
 
 - [.NET 9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-- [Redis](https://redis.io/) (for caching and session management)
 - SQL Server, PostgreSQL, or SQLite (SQLite is default)
 
 ## Getting Started
@@ -155,9 +155,6 @@ Key configuration files:
       }
     }
   },
-  "Redis": {
-    "Configuration": "localhost:6379"
-  },
   "Settings": {
     "Abp.Mailing.Smtp.Host": "smtp.gmail.com",
     "Abp.Mailing.Smtp.Port": "587",
@@ -244,10 +241,9 @@ abp generate-proxy -t csharp -u https://localhost:44375
 ### Production Configuration
 
 1. **Update connection strings** for production database
-2. **Configure Redis** for production caching
-3. **Set up HTTPS certificates** for secure communication
-4. **Configure email settings** for notifications
-5. **Set up external authentication** providers (Google, Facebook, etc.)
+2. **Set up HTTPS certificates** for secure communication
+3. **Configure email settings** for notifications
+4. **Set up external authentication** providers (Google, Facebook, etc.)
 
 ### Docker Deployment
 
@@ -322,8 +318,7 @@ Logging is configured with Serilog for structured logging:
 ## Performance
 
 ### Caching
-- Redis distributed caching
-- In-memory caching for frequently accessed data
+- In-memory distributed caching for application data
 - HTTP response caching
 - Database query result caching
 
@@ -347,10 +342,10 @@ Logging is configured with Serilog for structured logging:
    - Verify client credentials
    - Ensure HTTPS is properly configured
 
-3. **Redis connection errors**
-   - Verify Redis server is running
-   - Check Redis connection string
-   - Ensure Redis is accessible from application
+3. **Cache or locking issues**
+   - Check that App_Data directory is writable
+   - Verify file-based locking directory permissions
+   - Clear cache files if needed
 
 ### Debugging
 
