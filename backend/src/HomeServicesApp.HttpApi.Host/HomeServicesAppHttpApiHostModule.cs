@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Medallion.Threading;
-using Medallion.Threading.Redis;
+using Medallion.Threading.FileSystem;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HomeServicesApp.EntityFrameworkCore;
 using HomeServicesApp.MultiTenancy;
-using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Authentication.JwtBearer;
@@ -23,7 +22,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching;
-using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
 using Volo.Abp.Identity;
 using Volo.Abp.Localization;
@@ -37,7 +35,7 @@ namespace HomeServicesApp;
 [DependsOn(
     typeof(HomeServicesAppHttpApiModule),
     typeof(AbpAutofacModule),
-    typeof(AbpCachingStackExchangeRedisModule),
+    typeof(AbpCachingModule),
     typeof(AbpDistributedLockingModule),
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
     typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
@@ -146,8 +144,10 @@ public class HomeServicesAppHttpApiHostModule : AbpModule
         var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("HomeServicesApp");
         if (!hostingEnvironment.IsDevelopment())
         {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
-            dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "HomeServicesApp-Protection-Keys");
+            // Use file-based data protection keys instead of Redis
+            var keysPath = Path.Combine(hostingEnvironment.ContentRootPath, "App_Data", "DataProtectionKeys");
+            Directory.CreateDirectory(keysPath);
+            dataProtectionBuilder.PersistKeysToFileSystem(new DirectoryInfo(keysPath));
         }
     }
 
@@ -157,8 +157,10 @@ public class HomeServicesAppHttpApiHostModule : AbpModule
     {
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
-            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
-            return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
+            // Use file-based distributed locking instead of Redis
+            var lockPath = Path.Combine(Directory.GetCurrentDirectory(), "App_Data", "DistributedLocks");
+            Directory.CreateDirectory(lockPath);
+            return new FileDistributedSynchronizationProvider(new DirectoryInfo(lockPath));
         });
     }
 

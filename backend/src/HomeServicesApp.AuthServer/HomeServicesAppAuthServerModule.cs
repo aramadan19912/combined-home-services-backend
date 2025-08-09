@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Localization.Resources.AbpUi;
 using Medallion.Threading;
-using Medallion.Threading.Redis;
+using Medallion.Threading.FileSystem;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
@@ -12,7 +12,6 @@ using Microsoft.Extensions.Hosting;
 using HomeServicesApp.EntityFrameworkCore;
 using HomeServicesApp.Localization;
 using HomeServicesApp.MultiTenancy;
-using StackExchange.Redis;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
@@ -27,7 +26,6 @@ using Volo.Abp.Auditing;
 using Volo.Abp.Autofac;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Caching;
-using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DistributedLocking;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -42,7 +40,7 @@ namespace HomeServicesApp;
 
 [DependsOn(
     typeof(AbpAutofacModule),
-    typeof(AbpCachingStackExchangeRedisModule),
+    typeof(AbpCachingModule),
     typeof(AbpDistributedLockingModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAccountApplicationModule),
@@ -145,14 +143,18 @@ public class HomeServicesAppAuthServerModule : AbpModule
         var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("HomeServicesApp");
         if (!hostingEnvironment.IsDevelopment())
         {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
-            dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "HomeServicesApp-Protection-Keys");
+            // Use file-based data protection keys instead of Redis
+            var keysPath = Path.Combine(hostingEnvironment.ContentRootPath, "App_Data", "DataProtectionKeys");
+            Directory.CreateDirectory(keysPath);
+            dataProtectionBuilder.PersistKeysToFileSystem(new DirectoryInfo(keysPath));
         }
 
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
-            var connection = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]!);
-            return new RedisDistributedSynchronizationProvider(connection.GetDatabase());
+            // Use file-based distributed locking instead of Redis
+            var lockPath = Path.Combine(Directory.GetCurrentDirectory(), "App_Data", "DistributedLocks");
+            Directory.CreateDirectory(lockPath);
+            return new FileDistributedSynchronizationProvider(new DirectoryInfo(lockPath));
         });
 
         context.Services.AddCors(options =>
