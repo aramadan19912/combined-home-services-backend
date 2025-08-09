@@ -62,7 +62,7 @@ namespace HomeServicesApp.UserManagement
             IsGranted = isGranted;
         }
 
-        protected override object[] GetKeys()
+        public override object[] GetKeys()
         {
             return new object[] { RoleId, PermissionId };
         }
@@ -94,7 +94,7 @@ namespace HomeServicesApp.UserManagement
             IsGranted = isGranted;
         }
 
-        protected override object[] GetKeys()
+        public override object[] GetKeys()
         {
             return new object[] { GroupId, PermissionId };
         }
