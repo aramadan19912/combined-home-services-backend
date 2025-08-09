@@ -8,8 +8,9 @@ kill_timeout = "5s"
 
 [env]
   ASPNETCORE_URLS = "http://0.0.0.0:8080"
-  # Default to sqlite at /data; override in secrets if needed
-  ConnectionStrings__Default = "Data Source=/data/HomeServicesApp.db"
+  # PostgreSQL connection string for Supabase - set in secrets
+  ConnectionStrings__Default = "Host=your-supabase-host.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=your-supabase-password;SSL Mode=Require;"
+  Database__Provider = "PostgreSql"
   # Set this from your frontend deploy URL(s) to enable CORS
   App__CorsOrigins = "https://<your-gh-username>.github.io,https://<your-gh-username>.github.io/<repo>,https://homeservicesapp-frontend.fly.dev"
 
@@ -41,7 +42,3 @@ kill_timeout = "5s"
 [metrics]
   port = 8080
   path = "/metrics"
-
-[[mounts]]
-  source = "data"
-  destination = "/data"

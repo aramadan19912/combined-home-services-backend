@@ -8,7 +8,7 @@ This is the .NET backend for the Home Services application, built with ABP Frame
 - **ABP Framework** for modular architecture
 - **Entity Framework Core** for data access
 - **OpenIddict** for authentication and authorization
-- **SQLite** database (configurable)
+- **PostgreSQL** database (Supabase) with SQLite fallback
 - **In-Memory Caching** for application caching
 - **File-based distributed locking** for synchronization
 - **AutoMapper** for object mapping
@@ -58,7 +58,7 @@ The solution follows Domain Driven Design (DDD) principles with a layered archit
 - CORS configuration for frontend integration
 
 ### Data Management
-- Entity Framework Core with SQLite database
+- Entity Framework Core with PostgreSQL (Supabase) database
 - Repository pattern implementation
 - Database migrations and seeding
 - Multi-tenancy support via ABP Framework
@@ -66,7 +66,7 @@ The solution follows Domain Driven Design (DDD) principles with a layered archit
 ## Prerequisites
 
 - [.NET 9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-- SQL Server, PostgreSQL, or SQLite (SQLite is default)
+- [Supabase Account](https://supabase.com) for PostgreSQL database
 
 ## Getting Started
 
@@ -85,14 +85,40 @@ abp install-libs
 
 ### 2. Configure Database
 
-The application uses SQLite by default. To use a different database, update the connection string in `appsettings.json`:
+The application uses PostgreSQL via Supabase. Follow these steps to set up your database:
+
+#### Quick Setup
+
+1. **Create a Supabase project** at [app.supabase.com](https://app.supabase.com)
+2. **Copy `.env.example` to `.env.local`** and update with your Supabase credentials
+3. **Update connection string** in your configuration files
+
+#### Detailed Setup
+
+For detailed instructions, see [supabase-setup.md](./supabase-setup.md)
+
+#### Connection String Format
+
+Update the connection string in `appsettings.json`:
 
 ```json
 {
+  "Database": {
+    "Provider": "PostgreSql"
+  },
   "ConnectionStrings": {
-    "Default": "Data Source=HomeServicesApp.db"
+    "Default": "Host=db.your-project-ref.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=your-password;SSL Mode=Require;"
   }
 }
+```
+
+#### Environment Variables
+
+For local development, you can use environment variables:
+
+```bash
+export ConnectionStrings__Default="Host=db.your-project-ref.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=your-password;SSL Mode=Require;"
+export Database__Provider="PostgreSql"
 ```
 
 ### 3. Generate Signing Certificate
