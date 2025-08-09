@@ -1,11 +1,9 @@
-name: Deploy Frontend to Fly.io
+name: Deprecated (Fly removed)
 
 on:
-  push:
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-fly-deploy.yml'
   workflow_dispatch:
+
+jobs: {}
 
 jobs:
   deploy:

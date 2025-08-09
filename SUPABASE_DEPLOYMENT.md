@@ -1,6 +1,6 @@
 # Supabase Deployment (Postgres)
 
-This project runs the backend on Fly.io. Supabase can be used for the managed Postgres database. Below are the steps to migrate from SQLite/local Postgres to Supabase Postgres and redeploy.
+This project uses a React frontend and a .NET backend. Supabase can be used for the managed Postgres database. Below are the steps to migrate from SQLite/local Postgres to Supabase Postgres and redeploy on your chosen host (e.g., Render, Railway, Azure, AWS).
 
 ## What this covers
 - Use Supabase Postgres as the database for both API and Auth services
@@ -62,16 +62,12 @@ fly secrets set \
   -a homeservicesapp-auth
 ```
 
-Tip: You may also want to set `App__CorsOrigins` to include your frontend URL if not already set in `backend/fly.toml`.
+Tip: Ensure your backend CORS settings include your frontend URL (configure via environment variables or appsettings).
 
-## 4) Redeploy services on Fly
-```bash
-# API
-(cd backend && fly deploy)
-
-# Auth
-(cd backend && fly deploy --config fly-auth.toml)
-```
+## 4) Redeploy your services
+Use your preferred platform (Render, Railway, Azure App Service, AWS Elastic Beanstalk, etc.). Ensure the following environment variables are set in your host:
+- Database__Provider=PostgreSql
+- ConnectionStrings__Default=<your Supabase connection string>
 
 Both apps will boot with Npgsql and connect to Supabase.
 
@@ -89,7 +85,7 @@ The file `frontend/src/lib/config.ts` already reads these at runtime.
 - Connection refused: ensure your Supabase project is running and the password is correct
 - SSL errors: make sure `SslMode=Require;Trust Server Certificate=True` are present
 - Migrations missing: rerun the DbMigrator with Supabase connection string (step 2)
-- CORS issues: update `App__CorsOrigins` in Fly secrets or `fly.toml`
+- CORS issues: update backend CORS settings via environment variables or `appsettings.json`
 
 ## Optional: Using Supabase Auth/Storage
 This project already uses OpenIddict-based auth. Migrating to Supabase Auth/Storage is possible but non-trivial and out of scope here. If you want that, open an issue and we can plan the refactor.
