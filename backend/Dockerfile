@@ -1,5 +1,5 @@
 # Stage 1: build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # copy sln and restore
@@ -15,7 +15,7 @@ RUN dotnet publish src/HomeServicesApp.HttpApi.Host/HomeServicesApp.HttpApi.Host
 RUN dotnet publish src/HomeServicesApp.DbMigrator/HomeServicesApp.DbMigrator.csproj -c Release -o /app/migrator /p:UseAppHost=false
 
 # Stage 2: runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 
 # optional: set non-root user later if needed
