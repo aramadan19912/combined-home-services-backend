@@ -46,7 +46,7 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
             options.AddDefaultRepositories(includeAllEntities: true);
         });
 
-        var configuration = context.Services.GetRequiredService<IConfiguration>();
+        var configuration = context.Services.GetConfiguration();
         var provider = configuration["Database:Provider"] ?? "Sqlite";
 
         Configure<AbpDbContextOptions>(options =>
