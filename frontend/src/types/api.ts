@@ -972,6 +972,38 @@ export type CreateReviewDto = CreateUpdateReviewDto;
 export type PaymentTransaction = PaymentTransactionDto;
 export type Category = ServiceCategoryDto;
 export type PaymentMethod = UserPaymentMethodDto;
-export type FileUploadResponse = { url: string; fileName: string };
+export type FileUploadResponse = { 
+  id?: string; 
+  fileId?: string; 
+  url?: string; 
+  fileUrl?: string; 
+  fileName?: string; 
+  path?: string; 
+};
 export type HealthMetrics = { status: string; uptime: number };
 export type PerformanceMetrics = { cpuUsage: number; memoryUsage: number };
+
+// Calendar and Testing API Types
+export interface CalendarEventDto {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  type: 'booking' | 'availability' | 'blocked';
+  status?: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  customerId?: string;
+  providerId?: string;
+  serviceId?: string;
+  notes?: string;
+}
+
+export interface TestNotificationDto {
+  fcmToken: string;
+  title: string;
+  body: string;
+}
+
+export interface NotificationContentDto {
+  title: string;
+  body: string;
+}

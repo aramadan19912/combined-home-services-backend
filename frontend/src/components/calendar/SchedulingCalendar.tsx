@@ -9,38 +9,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CalendarIcon, Clock, Plus, Edit } from 'lucide-react';
+import { CalendarIcon, Clock, Plus, Edit, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCalendar, CalendarEvent } from '@/hooks/useCalendar';
 
 const localizer = momentLocalizer(moment);
 
-interface CalendarEvent extends Event {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-  type: 'booking' | 'availability' | 'blocked';
-  status?: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  customerId?: string;
-  providerId?: string;
-  serviceId?: string;
-  notes?: string;
-}
-
 interface SchedulingCalendarProps {
-  events?: CalendarEvent[];
-  onEventCreate?: (event: Omit<CalendarEvent, 'id'>) => void;
-  onEventUpdate?: (event: CalendarEvent) => void;
-  onEventDelete?: (eventId: string) => void;
+  providerId?: string;
+  customerId?: string;
   readonly?: boolean;
   userRole?: 'customer' | 'provider' | 'admin';
 }
 
 const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
-  events = [],
-  onEventCreate,
-  onEventUpdate,
-  onEventDelete,
+  providerId,
+  customerId,
   readonly = false,
   userRole = 'customer',
 }) => {
@@ -51,40 +35,20 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Mock events for demonstration
-  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([
-    {
-      id: '1',
-      title: 'Plumbing Service - Kitchen Sink',
-      start: new Date(2024, 11, 15, 10, 0),
-      end: new Date(2024, 11, 15, 12, 0),
-      type: 'booking',
-      status: 'confirmed',
-      customerId: 'customer1',
-      providerId: 'provider1',
-      serviceId: 'service1',
-      notes: 'Fix leaky kitchen sink'
-    },
-    {
-      id: '2',
-      title: 'Available for Bookings',
-      start: new Date(2024, 11, 16, 9, 0),
-      end: new Date(2024, 11, 16, 17, 0),
-      type: 'availability',
-      providerId: 'provider1'
-    },
-    {
-      id: '3',
-      title: 'Electrical Inspection',
-      start: new Date(2024, 11, 18, 14, 0),
-      end: new Date(2024, 11, 18, 16, 0),
-      type: 'booking',
-      status: 'pending',
-      customerId: 'customer2',
-      providerId: 'provider2',
-      serviceId: 'service2'
-    }
-  ]);
+  // Use real API through the useCalendar hook
+  const {
+    events: calendarEvents,
+    loading,
+    error,
+    createEvent,
+    updateEvent,
+    deleteEvent,
+    refreshEvents,
+  } = useCalendar({
+    providerId,
+    customerId,
+    autoLoad: true,
+  });
 
   const [eventForm, setEventForm] = useState({
     title: '',
@@ -103,7 +67,7 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
         title: '',
         start: moment(start).format('YYYY-MM-DDTHH:mm'),
         end: moment(end).format('YYYY-MM-DDTHH:mm'),
-        type: userRole === 'provider' ? 'availability' : 'booking',
+        type: 'booking',
         status: 'pending',
         notes: ''
       });
@@ -111,7 +75,7 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
       setIsEditing(false);
       setShowEventDialog(true);
     },
-    [readonly, userRole]
+    [readonly]
   );
 
   const handleSelectEvent = useCallback((event: CalendarEvent) => {
@@ -128,53 +92,54 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
     setShowEventDialog(true);
   }, []);
 
-  const handleSaveEvent = () => {
-    const eventData = {
-      ...eventForm,
-      start: new Date(eventForm.start),
-      end: new Date(eventForm.end),
-    };
-
-    if (isEditing && selectedEvent) {
-      const updatedEvent = { ...selectedEvent, ...eventData };
-      setCalendarEvents(prev => 
-        prev.map(event => event.id === selectedEvent.id ? updatedEvent : event)
-      );
-      onEventUpdate?.(updatedEvent);
-      
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!eventForm.title || !eventForm.start || !eventForm.end) {
       toast({
-        title: 'Event Updated',
-        description: 'The calendar event has been updated successfully.',
+        title: 'Validation Error',
+        description: 'Please fill in all required fields.',
+        variant: 'destructive',
       });
-    } else {
-      const newEvent: CalendarEvent = {
-        id: `event_${Date.now()}`,
-        ...eventData,
-      };
-      setCalendarEvents(prev => [...prev, newEvent]);
-      onEventCreate?.(eventData);
-      
-      toast({
-        title: 'Event Created',
-        description: 'A new calendar event has been created.',
-      });
+      return;
     }
 
-    setShowEventDialog(false);
-    resetForm();
-  };
+    const eventData: Omit<CalendarEvent, 'id'> = {
+      title: eventForm.title,
+      start: new Date(eventForm.start),
+      end: new Date(eventForm.end),
+      type: eventForm.type,
+      status: eventForm.status,
+      notes: eventForm.notes,
+      customerId,
+      providerId,
+    };
 
-  const handleDeleteEvent = () => {
-    if (selectedEvent) {
-      setCalendarEvents(prev => prev.filter(event => event.id !== selectedEvent.id));
-      onEventDelete?.(selectedEvent.id);
+    try {
+      if (isEditing && selectedEvent) {
+        await updateEvent(selectedEvent.id, eventData);
+      } else {
+        await createEvent(eventData);
+      }
+
       setShowEventDialog(false);
       resetForm();
-      
-      toast({
-        title: 'Event Deleted',
-        description: 'The calendar event has been deleted.',
-      });
+    } catch (error) {
+      // Error handling is already done in the useCalendar hook
+      console.error('Failed to save event:', error);
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    if (selectedEvent) {
+      try {
+        await deleteEvent(selectedEvent.id);
+        setShowEventDialog(false);
+        resetForm();
+      } catch (error) {
+        // Error handling is already done in the useCalendar hook
+        console.error('Failed to delete event:', error);
+      }
     }
   };
 
@@ -238,38 +203,61 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
           <CardTitle className="flex items-center gap-2">
             <CalendarIcon className="h-5 w-5" />
             {userRole === 'provider' ? 'Availability Calendar' : 'Booking Calendar'}
+            {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           </CardTitle>
           
           <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => refreshEvents()}
+              disabled={loading}
+            >
+              Refresh
+            </Button>
             <Badge variant="outline" className="bg-blue-500 text-white">Booking</Badge>
             <Badge variant="outline" className="bg-purple-500 text-white">Available</Badge>
             <Badge variant="outline" className="bg-gray-500 text-white">Blocked</Badge>
           </div>
         </div>
+        {error && (
+          <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-600">Error loading calendar: {error}</p>
+          </div>
+        )}
       </CardHeader>
       
       <CardContent>
         <div style={{ height: '600px' }}>
-          <Calendar
-            localizer={localizer}
-            events={calendarEvents}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: '100%' }}
-            view={view}
-            onView={setView}
-            date={date}
-            onNavigate={setDate}
-            selectable={!readonly}
-            onSelectSlot={handleSelectSlot}
-            onSelectEvent={handleSelectEvent}
-            eventPropGetter={eventStyleGetter}
-            popup
-            views={['month', 'week', 'day', 'agenda']}
-            step={30}
-            showMultiDayTimes
-            defaultDate={new Date()}
-          />
+          {loading && calendarEvents.length === 0 ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
+                <p className="text-sm text-gray-600">Loading calendar events...</p>
+              </div>
+            </div>
+          ) : (
+            <Calendar
+              localizer={localizer}
+              events={calendarEvents}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: '100%' }}
+              view={view}
+              onView={setView}
+              date={date}
+              onNavigate={setDate}
+              selectable={!readonly}
+              onSelectSlot={handleSelectSlot}
+              onSelectEvent={handleSelectEvent}
+              eventPropGetter={eventStyleGetter}
+              popup
+              views={['month', 'week', 'day', 'agenda']}
+              step={30}
+              showMultiDayTimes
+              defaultDate={new Date()}
+            />
+          )}
         </div>
 
         {/* Event Dialog */}
@@ -281,13 +269,14 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
               </DialogTitle>
             </DialogHeader>
             
-            <div className="space-y-4">
+            <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
                 <label className="text-sm font-medium">Title</label>
                 <Input
                   value={eventForm.title}
                   onChange={(e) => setEventForm(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Event title"
+                  required
                 />
               </div>
 
@@ -298,6 +287,7 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
                     type="datetime-local"
                     value={eventForm.start}
                     onChange={(e) => setEventForm(prev => ({ ...prev, start: e.target.value }))}
+                    required
                   />
                 </div>
                 <div>
@@ -306,6 +296,7 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
                     type="datetime-local"
                     value={eventForm.end}
                     onChange={(e) => setEventForm(prev => ({ ...prev, end: e.target.value }))}
+                    required
                   />
                 </div>
               </div>
@@ -360,21 +351,30 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
               <div className="flex justify-between pt-4">
                 <div>
                   {isEditing && (
-                    <Button variant="destructive" onClick={handleDeleteEvent}>
-                      Delete Event
+                    <Button 
+                      type="button"
+                      variant="destructive" 
+                      onClick={handleDeleteEvent}
+                      disabled={loading}
+                    >
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Delete Event'}
                     </Button>
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setShowEventDialog(false)}>
+                  <Button type="button" variant="outline" onClick={() => setShowEventDialog(false)}>
                     Cancel
                   </Button>
-                  <Button onClick={handleSaveEvent}>
-                    {isEditing ? 'Update' : 'Create'} Event
+                  <Button type="submit" disabled={loading}>
+                    {loading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      isEditing ? 'Update' : 'Create'
+                    )} Event
                   </Button>
                 </div>
               </div>
-            </div>
+            </form>
           </DialogContent>
         </Dialog>
       </CardContent>

@@ -15,24 +15,11 @@ import {
   CheckCircle, 
   AlertTriangle,
   FileText,
-  Search
+  Search,
+  Loader2,
+  RefreshCw
 } from 'lucide-react';
-
-interface QualityMetric {
-  name: string;
-  score: number;
-  maxScore: number;
-  status: 'excellent' | 'good' | 'warning' | 'error';
-  description: string;
-  suggestions?: string[];
-}
-
-interface CodeQualityReport {
-  overall: number;
-  metrics: QualityMetric[];
-  issues: QualityIssue[];
-  coverage: CoverageReport;
-}
+import { useTesting } from '@/hooks/useTesting';
 
 interface QualityIssue {
   id: string;
@@ -45,233 +32,203 @@ interface QualityIssue {
   fixable: boolean;
 }
 
-interface CoverageReport {
-  statements: number;
-  branches: number;
-  functions: number;
-  lines: number;
-}
-
 const CodeQualityDashboard = () => {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string>('all');
   const [selectedSeverity, setSelectedSeverity] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock data
-  const [qualityReport] = useState<CodeQualityReport>({
-    overall: 85,
-    metrics: [
-      {
-        name: 'Code Complexity',
-        score: 8.2,
-        maxScore: 10,
-        status: 'good',
-        description: 'Cyclomatic complexity average',
-        suggestions: ['Consider breaking down complex functions', 'Use early returns to reduce nesting']
-      },
-      {
-        name: 'Maintainability',
-        score: 7.8,
-        maxScore: 10,
-        status: 'good',
-        description: 'Code maintainability index',
-        suggestions: ['Add more comments for complex logic', 'Extract reusable utilities']
-      },
-      {
-        name: 'Test Coverage',
-        score: 6.5,
-        maxScore: 10,
-        status: 'warning',
-        description: 'Unit test coverage percentage',
-        suggestions: ['Add tests for error handlers', 'Increase integration test coverage']
-      },
-      {
-        name: 'Security',
-        score: 9.1,
-        maxScore: 10,
-        status: 'excellent',
-        description: 'Security vulnerability score',
-        suggestions: ['Continue following security best practices']
-      },
-      {
-        name: 'Performance',
-        score: 7.2,
-        maxScore: 10,
-        status: 'good',
-        description: 'Performance optimization score',
-        suggestions: ['Optimize large bundle sizes', 'Add lazy loading for heavy components']
-      },
-      {
-        name: 'Code Style',
-        score: 9.5,
-        maxScore: 10,
-        status: 'excellent',
-        description: 'ESLint and Prettier compliance',
-        suggestions: ['Maintain consistent coding standards']
-      }
-    ],
-    issues: [
-      {
-        id: '1',
-        type: 'warning',
-        severity: 'medium',
-        file: 'src/components/auth/AuthForm.tsx',
-        line: 42,
-        message: 'Missing error boundary for async operation',
-        rule: 'react-hooks/exhaustive-deps',
-        fixable: false
-      },
-      {
-        id: '2',
-        type: 'error',
-        severity: 'high',
-        file: 'src/hooks/useApi.ts',
-        line: 156,
-        message: 'Potential memory leak in useEffect',
-        rule: 'react-hooks/exhaustive-deps',
-        fixable: true
-      },
-      {
-        id: '3',
-        type: 'warning',
-        severity: 'low',
-        file: 'src/utils/helpers.ts',
-        line: 23,
-        message: 'Function complexity too high (complexity: 12)',
-        rule: 'complexity',
-        fixable: false
-      },
-      {
-        id: '4',
-        type: 'info',
-        severity: 'low',
-        file: 'src/components/ui/Button.tsx',
-        line: 8,
-        message: 'Consider using React.memo for performance',
-        rule: 'react/display-name',
-        fixable: false
-      },
-      {
-        id: '5',
-        type: 'warning',
-        severity: 'medium',
-        file: 'src/pages/Dashboard.tsx',
-        line: 67,
-        message: 'Large component should be split into smaller components',
-        rule: 'max-lines',
-        fixable: false
-      }
-    ],
-    coverage: {
-      statements: 78.5,
-      branches: 65.2,
-      functions: 82.1,
-      lines: 77.8
-    }
-  });
+  const {
+    codeQuality,
+    performance,
+    loading,
+    error,
+    loadCodeQuality,
+    loadPerformanceMetrics,
+  } = useTesting();
 
-  const runAnalysis = useCallback(async () => {
-    setIsAnalyzing(true);
-    // Simulate analysis
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    setIsAnalyzing(false);
-  }, []);
+  // Mock issues for display (would come from API in real implementation)
+  const mockIssues: QualityIssue[] = [
+    {
+      id: '1',
+      type: 'error',
+      severity: 'high',
+      file: 'src/components/auth/LoginForm.tsx',
+      line: 45,
+      message: 'Potential null pointer dereference',
+      rule: 'null-safety',
+      fixable: true,
+    },
+    {
+      id: '2',
+      type: 'warning',
+      severity: 'medium',
+      file: 'src/hooks/useApi.ts',
+      line: 23,
+      message: 'Missing error handling for async operation',
+      rule: 'error-handling',
+      fixable: false,
+    },
+    {
+      id: '3',
+      type: 'info',
+      severity: 'low',
+      file: 'src/utils/helpers.ts',
+      line: 12,
+      message: 'Consider using const assertion',
+      rule: 'typescript-best-practices',
+      fixable: true,
+    },
+  ];
 
-  const getStatusColor = (status: QualityMetric['status']) => {
-    switch (status) {
-      case 'excellent': return 'text-green-600';
-      case 'good': return 'text-blue-600';
-      case 'warning': return 'text-yellow-600';
-      case 'error': return 'text-red-600';
-      default: return 'text-gray-600';
-    }
+  const handleAnalyze = useCallback(async () => {
+    await loadCodeQuality();
+    await loadPerformanceMetrics();
+  }, [loadCodeQuality, loadPerformanceMetrics]);
+
+  const getStatusColor = (score: number) => {
+    if (score >= 90) return 'text-green-600';
+    if (score >= 70) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
-  const getStatusBadge = (status: QualityMetric['status']) => {
-    switch (status) {
-      case 'excellent': return 'default';
-      case 'good': return 'secondary';
-      case 'warning': return 'outline';
-      case 'error': return 'destructive';
-      default: return 'outline';
-    }
+  const getStatusBadge = (score: number) => {
+    if (score >= 90) return 'excellent';
+    if (score >= 70) return 'good';
+    if (score >= 50) return 'warning';
+    return 'error';
   };
 
   const getIssueIcon = (type: QualityIssue['type']) => {
     switch (type) {
-      case 'error': return <Bug className="h-4 w-4 text-red-500" />;
-      case 'warning': return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case 'info': return <FileText className="h-4 w-4 text-blue-500" />;
-      default: return <FileText className="h-4 w-4" />;
+      case 'error':
+        return <Bug className="h-4 w-4 text-red-500" />;
+      case 'warning':
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case 'info':
+        return <CheckCircle className="h-4 w-4 text-blue-500" />;
     }
   };
 
   const getSeverityBadge = (severity: QualityIssue['severity']) => {
-    switch (severity) {
-      case 'high': return <Badge variant="destructive">High</Badge>;
-      case 'medium': return <Badge variant="secondary">Medium</Badge>;
-      case 'low': return <Badge variant="outline">Low</Badge>;
-      default: return <Badge variant="outline">Unknown</Badge>;
-    }
+    const variants = {
+      high: 'bg-red-100 text-red-800',
+      medium: 'bg-yellow-100 text-yellow-800',
+      low: 'bg-blue-100 text-blue-800',
+    };
+    
+    return (
+      <Badge className={variants[severity]}>
+        {severity.charAt(0).toUpperCase() + severity.slice(1)}
+      </Badge>
+    );
   };
 
-  const filteredIssues = qualityReport.issues.filter(issue => {
+  const filteredIssues = mockIssues.filter(issue => {
     const matchesFile = selectedFile === 'all' || issue.file.includes(selectedFile);
     const matchesSeverity = selectedSeverity === 'all' || issue.severity === selectedSeverity;
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch = !searchTerm || 
       issue.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
       issue.file.toLowerCase().includes(searchTerm.toLowerCase());
     
     return matchesFile && matchesSeverity && matchesSearch;
   });
 
-  const getOverallGrade = (score: number) => {
-    if (score >= 90) return { grade: 'A', color: 'text-green-600' };
-    if (score >= 80) return { grade: 'B', color: 'text-blue-600' };
-    if (score >= 70) return { grade: 'C', color: 'text-yellow-600' };
-    if (score >= 60) return { grade: 'D', color: 'text-orange-600' };
-    return { grade: 'F', color: 'text-red-600' };
-  };
-
-  const { grade, color } = getOverallGrade(qualityReport.overall);
-
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Code Quality Dashboard</h1>
-        <Button 
-          onClick={runAnalysis} 
-          disabled={isAnalyzing}
-          className="gap-2"
-        >
-          <Code className="h-4 w-4" />
-          {isAnalyzing ? 'Analyzing...' : 'Run Analysis'}
-        </Button>
+        <div>
+          <h1 className="text-3xl font-bold">Code Quality Dashboard</h1>
+          <p className="text-gray-600">Monitor code quality metrics and issues</p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleAnalyze}
+            disabled={loading}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button onClick={handleAnalyze} disabled={loading}>
+            {loading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Code className="h-4 w-4 mr-2" />
+            )}
+            {loading ? 'Analyzing...' : 'Run Analysis'}
+          </Button>
+        </div>
       </div>
 
-      {/* Overall Score */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5" />
-            Overall Code Quality Score
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold">{qualityReport.overall}</span>
-              <span className="text-2xl text-muted-foreground">/100</span>
-              <span className={`text-3xl font-bold ml-4 ${color}`}>
-                Grade: {grade}
-              </span>
-            </div>
-            {isAnalyzing && <Badge variant="secondary">Analyzing...</Badge>}
-          </div>
-          <Progress value={qualityReport.overall} className="w-full" />
-        </CardContent>
-      </Card>
+      {/* Error Alert */}
+      {error && (
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            {error}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Quality Metrics Cards */}
+      {codeQuality && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <FileText className="h-8 w-8 text-blue-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Coverage</p>
+                  <p className={`text-2xl font-bold ${getStatusColor(codeQuality.coverage)}`}>
+                    {codeQuality.coverage.toFixed(1)}%
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <ShieldCheck className="h-8 w-8 text-green-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Maintainability</p>
+                  <p className={`text-2xl font-bold ${getStatusColor(codeQuality.maintainabilityIndex)}`}>
+                    {codeQuality.maintainabilityIndex}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Bug className="h-8 w-8 text-red-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Issues</p>
+                  <p className="text-2xl font-bold">
+                    {codeQuality.issues.reduce((sum, issue) => sum + issue.count, 0)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Zap className="h-8 w-8 text-yellow-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Technical Debt</p>
+                  <p className="text-2xl font-bold">{codeQuality.technicalDebt}h</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <Tabs defaultValue="metrics" className="space-y-4">
         <TabsList>
@@ -282,42 +239,64 @@ const CodeQualityDashboard = () => {
 
         <TabsContent value="metrics" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {qualityReport.metrics.map((metric, index) => (
-              <Card key={index}>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-medium">{metric.name}</CardTitle>
-                    <Badge variant={getStatusBadge(metric.status) as any}>
-                      {metric.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-baseline gap-1">
-                    <span className={`text-2xl font-bold ${getStatusColor(metric.status)}`}>
-                      {metric.score}
-                    </span>
-                    <span className="text-muted-foreground">/{metric.maxScore}</span>
-                  </div>
-                  <Progress value={(metric.score / metric.maxScore) * 100} />
-                  <p className="text-xs text-muted-foreground">{metric.description}</p>
-                  
-                  {metric.suggestions && metric.suggestions.length > 0 && (
-                    <div className="mt-3">
-                      <p className="text-xs font-medium mb-1">Suggestions:</p>
-                      <ul className="text-xs text-muted-foreground space-y-1">
-                        {metric.suggestions.map((suggestion, idx) => (
-                          <li key={idx} className="flex items-start gap-1">
-                            <span>•</span>
-                            <span>{suggestion}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+            {/* Quality metrics would be fetched from codeQuality.metrics */}
+            {/* For now, we'll show a placeholder or remove if not available */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Code Complexity</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-gray-600">N/A</span>
+                  <span className="text-muted-foreground">/{codeQuality?.codeComplexityMaxScore || 'N/A'}</span>
+                </div>
+                <Progress value={0} /> {/* Placeholder */}
+                <p className="text-xs text-muted-foreground">Description: N/A</p>
+                <p className="text-xs text-muted-foreground">Suggestions: N/A</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Test Coverage</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-gray-600">N/A</span>
+                  <span className="text-muted-foreground">/{codeQuality?.testCoverageMaxScore || 'N/A'}</span>
+                </div>
+                <Progress value={0} /> {/* Placeholder */}
+                <p className="text-xs text-muted-foreground">Description: N/A</p>
+                <p className="text-xs text-muted-foreground">Suggestions: N/A</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Security</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-gray-600">N/A</span>
+                  <span className="text-muted-foreground">/{codeQuality?.securityMaxScore || 'N/A'}</span>
+                </div>
+                <Progress value={0} /> {/* Placeholder */}
+                <p className="text-xs text-muted-foreground">Description: N/A</p>
+                <p className="text-xs text-muted-foreground">Suggestions: N/A</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium">Performance</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-gray-600">N/A</span>
+                  <span className="text-muted-foreground">/{codeQuality?.performanceMaxScore || 'N/A'}</span>
+                </div>
+                <Progress value={0} /> {/* Placeholder */}
+                <p className="text-xs text-muted-foreground">Description: N/A</p>
+                <p className="text-xs text-muted-foreground">Suggestions: N/A</p>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 
@@ -404,9 +383,9 @@ const CodeQualityDashboard = () => {
               <CardContent>
                 <div className="space-y-2">
                   <div className="text-2xl font-bold">
-                    {qualityReport.coverage.statements}%
+                    {codeQuality?.coverage?.statements || 'N/A'}%
                   </div>
-                  <Progress value={qualityReport.coverage.statements} />
+                  <Progress value={codeQuality?.coverage?.statements || 0} />
                 </div>
               </CardContent>
             </Card>
@@ -418,9 +397,9 @@ const CodeQualityDashboard = () => {
               <CardContent>
                 <div className="space-y-2">
                   <div className="text-2xl font-bold">
-                    {qualityReport.coverage.branches}%
+                    {codeQuality?.coverage?.branches || 'N/A'}%
                   </div>
-                  <Progress value={qualityReport.coverage.branches} />
+                  <Progress value={codeQuality?.coverage?.branches || 0} />
                 </div>
               </CardContent>
             </Card>
@@ -432,9 +411,9 @@ const CodeQualityDashboard = () => {
               <CardContent>
                 <div className="space-y-2">
                   <div className="text-2xl font-bold">
-                    {qualityReport.coverage.functions}%
+                    {codeQuality?.coverage?.functions || 'N/A'}%
                   </div>
-                  <Progress value={qualityReport.coverage.functions} />
+                  <Progress value={codeQuality?.coverage?.functions || 0} />
                 </div>
               </CardContent>
             </Card>
@@ -446,9 +425,9 @@ const CodeQualityDashboard = () => {
               <CardContent>
                 <div className="space-y-2">
                   <div className="text-2xl font-bold">
-                    {qualityReport.coverage.lines}%
+                    {codeQuality?.coverage?.lines || 'N/A'}%
                   </div>
-                  <Progress value={qualityReport.coverage.lines} />
+                  <Progress value={codeQuality?.coverage?.lines || 0} />
                 </div>
               </CardContent>
             </Card>
@@ -458,7 +437,7 @@ const CodeQualityDashboard = () => {
             <Zap className="h-4 w-4" />
             <AlertDescription>
               Target coverage: 80%+ for statements, branches, functions, and lines.
-              Current average: {Object.values(qualityReport.coverage).reduce((a, b) => a + b, 0) / 4}%
+              Current average: {codeQuality?.coverage ? Object.values(codeQuality.coverage).reduce((a, b) => a + b, 0) / 4 : 'N/A'}%
             </AlertDescription>
           </Alert>
         </TabsContent>
