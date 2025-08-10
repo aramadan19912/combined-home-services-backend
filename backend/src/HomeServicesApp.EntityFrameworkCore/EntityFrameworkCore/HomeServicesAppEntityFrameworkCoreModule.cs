@@ -62,6 +62,5 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
                 options.UseSqlite();
             }
         });
-
     }
 }
