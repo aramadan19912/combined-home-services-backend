@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Allow overriding the connection string via env var, default to Supabase PostgreSQL
-: "${ConnectionStrings__Default:=Host=db.bovmjhicpbuxqmljelnh.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=Ahmed@2020;SSL Mode=Require;}"
+# Allow overriding the connection string via env var, default to Neon PostgreSQL
+: "${ConnectionStrings__Default:=Host=ep-sweet-king-aephthql-pooler.c-2.us-east-2.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_9JPzYQVlw5Ik;SSL Mode=Require;}"
 export ConnectionStrings__Default
 
 # Set database provider to PostgreSQL
