@@ -34,6 +34,10 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
+        // Configure AppContext for PostgreSQL boolean compatibility
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+        
         HomeServicesAppEfCoreEntityExtensionMappings.Configure();
     }
 

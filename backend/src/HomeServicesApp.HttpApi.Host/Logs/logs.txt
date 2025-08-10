@@ -1,0 +1,1539 @@
+2025-08-10 10:07:10.078 +00:00 [INF] Starting HomeServicesApp.HttpApi.Host.
+2025-08-10 10:07:10.962 +00:00 [DBG] Loaded ABP modules:
+2025-08-10 10:07:10.962 +00:00 [DBG] - HomeServicesApp.HomeServicesAppHttpApiHostModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - HomeServicesApp.HomeServicesAppHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - HomeServicesApp.HomeServicesAppApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - HomeServicesApp.HomeServicesAppDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.AuditLogging.AbpAuditLoggingDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Validation.AbpValidationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Validation.AbpValidationAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Localization.AbpLocalizationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.VirtualFileSystem.AbpVirtualFileSystemModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Settings.AbpSettingsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                 - Volo.Abp.Localization.AbpLocalizationAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                 - Volo.Abp.Security.AbpSecurityModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                 - Volo.Abp.Data.AbpDataModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                   - Volo.Abp.ObjectExtending.AbpObjectExtendingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                   - Volo.Abp.Uow.AbpUnitOfWorkModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                   - Volo.Abp.EventBus.Abstractions.AbpEventBusAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Threading.AbpThreadingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.BackgroundJobs.AbpBackgroundJobsDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.FeatureManagement.AbpFeatureManagementDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Json.SystemTextJson.AbpJsonSystemTextJsonModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Json.AbpJsonAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Timing.AbpTimingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.Identity.AbpIdentityDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Users.AbpUsersDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Features.AbpFeaturesModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.MultiTenancy.AbpMultiTenancyModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.MultiTenancy.AbpMultiTenancyAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Authorization.AbpAuthorizationAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.OpenIddict.AbpOpenIddictDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.PermissionManagement.AbpPermissionManagementDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.SettingManagement.AbpSettingManagementDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.TenantManagement.AbpTenantManagementDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.Account.AbpAccountApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.Identity.AbpIdentityApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Users.AbpUsersAbstractionModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.EventBus.AbpEventBusModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Json.AbpJsonModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Guids.AbpGuidsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.BackgroundWorkers.AbpBackgroundWorkersModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.DistributedLocking.AbpDistributedLockingAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Authorization.AbpAuthorizationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.PermissionManagement.AbpPermissionManagementApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Application.AbpDddApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Auditing.AbpAuditingContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.FeatureManagement.AbpFeatureManagementApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.SettingManagement.AbpSettingManagementApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.TenantManagement.AbpTenantManagementApplicationContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.Account.AbpAccountHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.Identity.AbpIdentityHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.AspNetCore.AbpAspNetCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Auditing.AbpAuditingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Http.AbpHttpModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Http.AbpHttpAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Minify.AbpMinifyModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.ExceptionHandling.AbpExceptionHandlingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.AspNetCore.AbpAspNetCoreAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.ApiVersioning.AbpApiVersioningAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcContractsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.UI.Navigation.AbpUiNavigationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.UI.AbpUiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.GlobalFeatures.AbpGlobalFeaturesModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.Application.AbpDddApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.Domain.AbpDddDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.ObjectMapping.AbpObjectMappingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Specifications.AbpSpecificationsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Caching.AbpCachingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]                 - Volo.Abp.Serialization.AbpSerializationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]               - Volo.Abp.Domain.AbpDddDomainSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.PermissionManagement.HttpApi.AbpPermissionManagementHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.TenantManagement.AbpTenantManagementHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.FeatureManagement.AbpFeatureManagementHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.SettingManagement.AbpSettingManagementHttpApiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - Volo.Abp.Autofac.AbpAutofacModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.Castle.AbpCastleCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - Volo.Abp.DistributedLocking.AbpDistributedLockingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy.AbpAspNetCoreMvcUiMultiTenancyModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.AbpAspNetCoreMvcUiThemeSharedModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.AbpAspNetCoreMvcUiBootstrapModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.AspNetCore.Mvc.UI.AbpAspNetCoreMvcUiModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.AspNetCore.Mvc.UI.Packages.AbpAspNetCoreMvcUiPackagesModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.AspNetCore.Mvc.UI.Bundling.AbpAspNetCoreMvcUiBundlingAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.AspNetCore.Mvc.UI.Widgets.AbpAspNetCoreMvcUiWidgetsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.AspNetCore.Mvc.UI.Bundling.AbpAspNetCoreMvcUiBundlingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.AspNetCore.Bundling.AbpAspNetCoreBundlingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.AspNetCore.MultiTenancy.AbpAspNetCoreMultiTenancyModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - Volo.Abp.AspNetCore.Authentication.JwtBearer.AbpAspNetCoreAuthenticationJwtBearerModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - HomeServicesApp.HomeServicesAppApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - HomeServicesApp.HomeServicesAppDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.AuditLogging.AbpAuditLoggingDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.BackgroundJobs.AbpBackgroundJobsDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.BackgroundJobs.AbpBackgroundJobsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.BackgroundJobs.AbpBackgroundJobsAbstractionsModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.AutoMapper.AbpAutoMapperModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.FeatureManagement.AbpFeatureManagementDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.Identity.AbpIdentityDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.Users.AbpUsersDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.OpenIddict.AbpOpenIddictDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.PermissionManagement.OpenIddict.AbpPermissionManagementDomainOpenIddictModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.PermissionManagement.AbpPermissionManagementDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.PermissionManagement.Identity.AbpPermissionManagementDomainIdentityModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.SettingManagement.AbpSettingManagementDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.TenantManagement.AbpTenantManagementDomainModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.Emailing.AbpEmailingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.TextTemplating.AbpTextTemplatingModule
+2025-08-10 10:07:10.962 +00:00 [DBG]           - Volo.Abp.TextTemplating.Scriban.AbpTextTemplatingScribanModule
+2025-08-10 10:07:10.962 +00:00 [DBG]             - Volo.Abp.TextTemplating.AbpTextTemplatingCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.Account.AbpAccountApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.Identity.AbpIdentityApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.PermissionManagement.AbpPermissionManagementApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.TenantManagement.AbpTenantManagementApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.FeatureManagement.AbpFeatureManagementApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.SettingManagement.AbpSettingManagementApplicationModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - HomeServicesApp.EntityFrameworkCore.HomeServicesAppEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.Identity.EntityFrameworkCore.AbpIdentityEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]       - Volo.Abp.Users.EntityFrameworkCore.AbpUsersEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]         - Volo.Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.OpenIddict.EntityFrameworkCore.AbpOpenIddictEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.PermissionManagement.EntityFrameworkCore.AbpPermissionManagementEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.SettingManagement.EntityFrameworkCore.AbpSettingManagementEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.EntityFrameworkCore.Sqlite.AbpEntityFrameworkCoreSqliteModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.EntityFrameworkCore.PostgreSql.AbpEntityFrameworkCorePostgreSqlModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.BackgroundJobs.EntityFrameworkCore.AbpBackgroundJobsEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.AuditLogging.EntityFrameworkCore.AbpAuditLoggingEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.TenantManagement.EntityFrameworkCore.AbpTenantManagementEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]     - Volo.Abp.FeatureManagement.EntityFrameworkCore.AbpFeatureManagementEntityFrameworkCoreModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - Volo.Abp.AspNetCore.Serilog.AbpAspNetCoreSerilogModule
+2025-08-10 10:07:10.962 +00:00 [DBG]   - Volo.Abp.Swashbuckle.AbpSwashbuckleModule
+2025-08-10 10:07:11.026 +00:00 [DBG] Started background worker: Volo.Abp.BackgroundJobs.BackgroundJobWorker
+2025-08-10 10:07:11.034 +00:00 [DBG] Started background worker: Volo.Abp.OpenIddict.Tokens.TokenCleanupBackgroundWorker
+2025-08-10 10:07:11.209 +00:00 [INF] User profile is available. Using '/home/ubuntu/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-08-10 10:07:11.363 +00:00 [INF] Initialized all ABP modules.
+2025-08-10 10:07:11.400 +00:00 [INF] Creating key {217de3d6-b34e-470b-8632-0dea41a73772} with creation date 2025-08-10 10:07:11Z, activation date 2025-08-10 10:07:11Z, and expiration date 2025-11-08 10:07:11Z.
+2025-08-10 10:07:11.402 +00:00 [WRN] No XML encryptor configured. Key {217de3d6-b34e-470b-8632-0dea41a73772} may be persisted to storage in unencrypted form.
+2025-08-10 10:07:11.404 +00:00 [INF] Writing data to file '/home/ubuntu/.aspnet/DataProtection-Keys/key-217de3d6-b34e-470b-8632-0dea41a73772.xml'.
+2025-08-10 10:07:11.496 +00:00 [WRN] The ASP.NET Core developer certificate is not trusted. For information about trusting the ASP.NET Core developer certificate, see https://aka.ms/aspnet/https-trust-dev-cert
+2025-08-10 10:07:11.499 +00:00 [INF] Now listening on: http://0.0.0.0:5000
+2025-08-10 10:07:11.500 +00:00 [INF] Now listening on: https://0.0.0.0:44375
+2025-08-10 10:07:11.500 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-08-10 10:07:11.501 +00:00 [INF] Hosting environment: Development
+2025-08-10 10:07:11.501 +00:00 [INF] Content root path: /workspace/backend/src/HomeServicesApp.HttpApi.Host
+2025-08-10 10:07:12.669 +00:00 [ERR] Failed executing DbCommand (62ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?' (DbType = Guid), @p5='?', @p6='?', @p7='?', @p8='?' (DbType = Guid), @p9='?', @p10='?', @p11='?', @p12='?' (DbType = Guid), @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Guid), @p17='?', @p18='?', @p19='?', @p20='?' (DbType = Guid), @p21='?', @p22='?', @p23='?', @p24='?' (DbType = Boolean), @p25='?' (DbType = Int16), @p26='?', @p27='?', @p28='?', @p29='?', @p30='?' (DbType = Guid), @p31='?', @p32='?', @p33='?', @p34='?' (DbType = Boolean), @p35='?' (DbType = Int16), @p36='?', @p37='?', @p38='?', @p39='?', @p40='?' (DbType = Guid), @p41='?', @p42='?', @p43='?', @p44='?' (DbType = Boolean), @p45='?' (DbType = Int16), @p46='?', @p47='?', @p48='?', @p49='?', @p50='?' (DbType = Guid), @p51='?', @p52='?', @p53='?', @p54='?' (DbType = Boolean), @p55='?' (DbType = Int16), @p56='?', @p57='?', @p58='?', @p59='?', @p60='?' (DbType = Guid), @p61='?', @p62='?', @p63='?', @p64='?' (DbType = Boolean), @p65='?' (DbType = Int16), @p66='?', @p67='?', @p68='?', @p69='?', @p70='?' (DbType = Guid), @p71='?', @p72='?', @p73='?', @p74='?' (DbType = Boolean), @p75='?' (DbType = Int16), @p76='?', @p77='?', @p78='?', @p79='?', @p80='?' (DbType = Guid), @p81='?', @p82='?', @p83='?', @p84='?' (DbType = Boolean), @p85='?' (DbType = Int16), @p86='?', @p87='?', @p88='?', @p89='?', @p90='?' (DbType = Guid), @p91='?', @p92='?', @p93='?', @p94='?' (DbType = Boolean), @p95='?' (DbType = Int16), @p96='?', @p97='?', @p98='?', @p99='?', @p100='?' (DbType = Guid), @p101='?', @p102='?', @p103='?', @p104='?' (DbType = Boolean), @p105='?' (DbType = Int16), @p106='?', @p107='?', @p108='?', @p109='?', @p110='?' (DbType = Guid), @p111='?', @p112='?', @p113='?', @p114='?' (DbType = Boolean), @p115='?' (DbType = Int16), @p116='?', @p117='?', @p118='?', @p119='?', @p120='?' (DbType = Guid), @p121='?', @p122='?', @p123='?', @p124='?' (DbType = Boolean), @p125='?' (DbType = Int16), @p126='?', @p127='?', @p128='?', @p129='?', @p130='?' (DbType = Guid), @p131='?', @p132='?', @p133='?', @p134='?' (DbType = Boolean), @p135='?' (DbType = Int16), @p136='?', @p137='?', @p138='?', @p139='?', @p140='?' (DbType = Guid), @p141='?', @p142='?', @p143='?', @p144='?' (DbType = Boolean), @p145='?' (DbType = Int16), @p146='?', @p147='?', @p148='?', @p149='?', @p150='?' (DbType = Guid), @p151='?', @p152='?', @p153='?', @p154='?' (DbType = Boolean), @p155='?' (DbType = Int16), @p156='?', @p157='?', @p158='?', @p159='?', @p160='?' (DbType = Guid), @p161='?', @p162='?', @p163='?', @p164='?' (DbType = Boolean), @p165='?' (DbType = Int16), @p166='?', @p167='?', @p168='?', @p169='?', @p170='?' (DbType = Guid), @p171='?', @p172='?', @p173='?', @p174='?' (DbType = Boolean), @p175='?' (DbType = Int16), @p176='?', @p177='?', @p178='?', @p179='?', @p180='?' (DbType = Guid), @p181='?', @p182='?', @p183='?', @p184='?' (DbType = Boolean), @p185='?' (DbType = Int16), @p186='?', @p187='?', @p188='?', @p189='?', @p190='?' (DbType = Guid), @p191='?', @p192='?', @p193='?', @p194='?' (DbType = Boolean), @p195='?' (DbType = Int16), @p196='?', @p197='?', @p198='?', @p199='?', @p200='?' (DbType = Guid), @p201='?', @p202='?', @p203='?', @p204='?' (DbType = Boolean), @p205='?' (DbType = Int16), @p206='?', @p207='?', @p208='?', @p209='?', @p210='?' (DbType = Guid), @p211='?', @p212='?', @p213='?', @p214='?' (DbType = Boolean), @p215='?' (DbType = Int16), @p216='?', @p217='?', @p218='?', @p219='?', @p220='?' (DbType = Guid), @p221='?', @p222='?', @p223='?', @p224='?' (DbType = Boolean), @p225='?' (DbType = Int16), @p226='?', @p227='?', @p228='?', @p229='?', @p230='?' (DbType = Guid), @p231='?', @p232='?', @p233='?', @p234='?' (DbType = Boolean), @p235='?' (DbType = Int16), @p236='?', @p237='?', @p238='?', @p239='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p0, @p1, @p2, @p3);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p4, @p5, @p6, @p7);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p8, @p9, @p10, @p11);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p12, @p13, @p14, @p15);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p16, @p17, @p18, @p19);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p120, @p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p140, @p141, @p142, @p143, @p144, @p145, @p146, @p147, @p148, @p149);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p150, @p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p160, @p161, @p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p170, @p171, @p172, @p173, @p174, @p175, @p176, @p177, @p178, @p179);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p180, @p181, @p182, @p183, @p184, @p185, @p186, @p187, @p188, @p189);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p190, @p191, @p192, @p193, @p194, @p195, @p196, @p197, @p198, @p199);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p200, @p201, @p202, @p203, @p204, @p205, @p206, @p207, @p208, @p209);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p210, @p211, @p212, @p213, @p214, @p215, @p216, @p217, @p218, @p219);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p220, @p221, @p222, @p223, @p224, @p225, @p226, @p227, @p228, @p229);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p230, @p231, @p232, @p233, @p234, @p235, @p236, @p237, @p238, @p239);
+2025-08-10 10:07:12.669 +00:00 [ERR] Failed executing DbCommand (58ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?' (DbType = Guid), @p5='?', @p6='?', @p7='?', @p8='?', @p9='?', @p10='?', @p11='?' (DbType = Boolean), @p12='?' (DbType = Boolean), @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Guid), @p17='?', @p18='?', @p19='?', @p20='?', @p21='?', @p22='?', @p23='?' (DbType = Boolean), @p24='?' (DbType = Boolean), @p25='?', @p26='?', @p27='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AbpFeatureGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p0, @p1, @p2, @p3);
+INSERT INTO "AbpFeatures" ("Id", "AllowedProviders", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "GroupName", "IsAvailableToHost", "IsVisibleToClients", "Name", "ParentName", "ValueType")
+VALUES (@p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15);
+INSERT INTO "AbpFeatures" ("Id", "AllowedProviders", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "GroupName", "IsAvailableToHost", "IsVisibleToClients", "Name", "ParentName", "ValueType")
+VALUES (@p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27);
+2025-08-10 10:07:12.706 +00:00 [ERR] Failed executing DbCommand (103ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?', @p9='?', @p10='?' (DbType = Guid), @p11='?', @p12='?', @p13='?', @p14='?', @p15='?' (DbType = Boolean), @p16='?' (DbType = Boolean), @p17='?' (DbType = Boolean), @p18='?', @p19='?', @p20='?' (DbType = Guid), @p21='?', @p22='?', @p23='?', @p24='?', @p25='?' (DbType = Boolean), @p26='?' (DbType = Boolean), @p27='?' (DbType = Boolean), @p28='?', @p29='?', @p30='?' (DbType = Guid), @p31='?', @p32='?', @p33='?', @p34='?', @p35='?' (DbType = Boolean), @p36='?' (DbType = Boolean), @p37='?' (DbType = Boolean), @p38='?', @p39='?', @p40='?' (DbType = Guid), @p41='?', @p42='?', @p43='?', @p44='?', @p45='?' (DbType = Boolean), @p46='?' (DbType = Boolean), @p47='?' (DbType = Boolean), @p48='?', @p49='?', @p50='?' (DbType = Guid), @p51='?', @p52='?', @p53='?', @p54='?', @p55='?' (DbType = Boolean), @p56='?' (DbType = Boolean), @p57='?' (DbType = Boolean), @p58='?', @p59='?', @p60='?' (DbType = Guid), @p61='?', @p62='?', @p63='?', @p64='?', @p65='?' (DbType = Boolean), @p66='?' (DbType = Boolean), @p67='?' (DbType = Boolean), @p68='?', @p69='?', @p70='?' (DbType = Guid), @p71='?', @p72='?', @p73='?', @p74='?', @p75='?' (DbType = Boolean), @p76='?' (DbType = Boolean), @p77='?' (DbType = Boolean), @p78='?', @p79='?', @p80='?' (DbType = Guid), @p81='?', @p82='?', @p83='?', @p84='?', @p85='?' (DbType = Boolean), @p86='?' (DbType = Boolean), @p87='?' (DbType = Boolean), @p88='?', @p89='?', @p90='?' (DbType = Guid), @p91='?', @p92='?', @p93='?', @p94='?', @p95='?' (DbType = Boolean), @p96='?' (DbType = Boolean), @p97='?' (DbType = Boolean), @p98='?', @p99='?', @p100='?' (DbType = Guid), @p101='?', @p102='?', @p103='?', @p104='?', @p105='?' (DbType = Boolean), @p106='?' (DbType = Boolean), @p107='?' (DbType = Boolean), @p108='?', @p109='?', @p110='?' (DbType = Guid), @p111='?', @p112='?', @p113='?', @p114='?', @p115='?' (DbType = Boolean), @p116='?' (DbType = Boolean), @p117='?' (DbType = Boolean), @p118='?', @p119='?', @p120='?' (DbType = Guid), @p121='?', @p122='?', @p123='?', @p124='?', @p125='?' (DbType = Boolean), @p126='?' (DbType = Boolean), @p127='?' (DbType = Boolean), @p128='?', @p129='?', @p130='?' (DbType = Guid), @p131='?', @p132='?', @p133='?', @p134='?', @p135='?' (DbType = Boolean), @p136='?' (DbType = Boolean), @p137='?' (DbType = Boolean), @p138='?', @p139='?', @p140='?' (DbType = Guid), @p141='?', @p142='?', @p143='?', @p144='?', @p145='?' (DbType = Boolean), @p146='?' (DbType = Boolean), @p147='?' (DbType = Boolean), @p148='?', @p149='?', @p150='?' (DbType = Guid), @p151='?', @p152='?', @p153='?', @p154='?', @p155='?' (DbType = Boolean), @p156='?' (DbType = Boolean), @p157='?' (DbType = Boolean), @p158='?', @p159='?', @p160='?' (DbType = Guid), @p161='?', @p162='?', @p163='?', @p164='?', @p165='?' (DbType = Boolean), @p166='?' (DbType = Boolean), @p167='?' (DbType = Boolean), @p168='?', @p169='?', @p170='?' (DbType = Guid), @p171='?', @p172='?', @p173='?', @p174='?', @p175='?' (DbType = Boolean), @p176='?' (DbType = Boolean), @p177='?' (DbType = Boolean), @p178='?', @p179='?', @p180='?' (DbType = Guid), @p181='?', @p182='?', @p183='?', @p184='?', @p185='?' (DbType = Boolean), @p186='?' (DbType = Boolean), @p187='?' (DbType = Boolean), @p188='?', @p189='?', @p190='?' (DbType = Guid), @p191='?', @p192='?', @p193='?', @p194='?', @p195='?' (DbType = Boolean), @p196='?' (DbType = Boolean), @p197='?' (DbType = Boolean), @p198='?', @p199='?', @p200='?' (DbType = Guid), @p201='?', @p202='?', @p203='?', @p204='?', @p205='?' (DbType = Boolean), @p206='?' (DbType = Boolean), @p207='?' (DbType = Boolean), @p208='?', @p209='?', @p210='?' (DbType = Guid), @p211='?', @p212='?', @p213='?', @p214='?', @p215='?' (DbType = Boolean), @p216='?' (DbType = Boolean), @p217='?' (DbType = Boolean), @p218='?', @p219='?', @p220='?' (DbType = Guid), @p221='?', @p222='?', @p223='?', @p224='?', @p225='?' (DbType = Boolean), @p226='?' (DbType = Boolean), @p227='?' (DbType = Boolean), @p228='?', @p229='?', @p230='?' (DbType = Guid), @p231='?', @p232='?', @p233='?', @p234='?', @p235='?' (DbType = Boolean), @p236='?' (DbType = Boolean), @p237='?' (DbType = Boolean), @p238='?', @p239='?', @p240='?' (DbType = Guid), @p241='?', @p242='?', @p243='?', @p244='?', @p245='?' (DbType = Boolean), @p246='?' (DbType = Boolean), @p247='?' (DbType = Boolean), @p248='?', @p249='?', @p250='?' (DbType = Guid), @p251='?', @p252='?', @p253='?', @p254='?', @p255='?' (DbType = Boolean), @p256='?' (DbType = Boolean), @p257='?' (DbType = Boolean), @p258='?', @p259='?', @p260='?' (DbType = Guid), @p261='?', @p262='?', @p263='?', @p264='?', @p265='?' (DbType = Boolean), @p266='?' (DbType = Boolean), @p267='?' (DbType = Boolean), @p268='?', @p269='?', @p270='?' (DbType = Guid), @p271='?', @p272='?', @p273='?', @p274='?', @p275='?' (DbType = Boolean), @p276='?' (DbType = Boolean), @p277='?' (DbType = Boolean), @p278='?', @p279='?', @p280='?' (DbType = Guid), @p281='?', @p282='?', @p283='?', @p284='?', @p285='?' (DbType = Boolean), @p286='?' (DbType = Boolean), @p287='?' (DbType = Boolean), @p288='?', @p289='?', @p290='?' (DbType = Guid), @p291='?', @p292='?', @p293='?', @p294='?', @p295='?' (DbType = Boolean), @p296='?' (DbType = Boolean), @p297='?' (DbType = Boolean), @p298='?', @p299='?', @p300='?' (DbType = Guid), @p301='?', @p302='?', @p303='?', @p304='?', @p305='?' (DbType = Boolean), @p306='?' (DbType = Boolean), @p307='?' (DbType = Boolean), @p308='?', @p309='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p120, @p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p140, @p141, @p142, @p143, @p144, @p145, @p146, @p147, @p148, @p149);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p150, @p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p160, @p161, @p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p170, @p171, @p172, @p173, @p174, @p175, @p176, @p177, @p178, @p179);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p180, @p181, @p182, @p183, @p184, @p185, @p186, @p187, @p188, @p189);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p190, @p191, @p192, @p193, @p194, @p195, @p196, @p197, @p198, @p199);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p200, @p201, @p202, @p203, @p204, @p205, @p206, @p207, @p208, @p209);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p210, @p211, @p212, @p213, @p214, @p215, @p216, @p217, @p218, @p219);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p220, @p221, @p222, @p223, @p224, @p225, @p226, @p227, @p228, @p229);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p230, @p231, @p232, @p233, @p234, @p235, @p236, @p237, @p238, @p239);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p240, @p241, @p242, @p243, @p244, @p245, @p246, @p247, @p248, @p249);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p250, @p251, @p252, @p253, @p254, @p255, @p256, @p257, @p258, @p259);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p260, @p261, @p262, @p263, @p264, @p265, @p266, @p267, @p268, @p269);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p270, @p271, @p272, @p273, @p274, @p275, @p276, @p277, @p278, @p279);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p280, @p281, @p282, @p283, @p284, @p285, @p286, @p287, @p288, @p289);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p290, @p291, @p292, @p293, @p294, @p295, @p296, @p297, @p298, @p299);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p300, @p301, @p302, @p303, @p304, @p305, @p306, @p307, @p308, @p309);
+2025-08-10 10:07:12.780 +00:00 [ERR] An exception occurred in the database while saving changes for context type 'Volo.Abp.FeatureManagement.EntityFrameworkCore.FeatureManagementDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsAvailableToHost" is of type integer but expression is of type boolean
+
+POSITION: 246
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsAvailableToHost" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 246
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsAvailableToHost" is of type integer but expression is of type boolean
+
+POSITION: 246
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsAvailableToHost" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 246
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-08-10 10:07:12.780 +00:00 [ERR] An exception occurred in the database while saving changes for context type 'Volo.Abp.PermissionManagement.EntityFrameworkCore.PermissionManagementDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEnabled" is of type integer but expression is of type boolean
+
+POSITION: 193
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEnabled" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 193
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEnabled" is of type integer but expression is of type boolean
+
+POSITION: 193
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEnabled" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 193
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-08-10 10:07:12.805 +00:00 [ERR] An exception occurred in the database while saving changes for context type 'Volo.Abp.SettingManagement.EntityFrameworkCore.SettingManagementDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEncrypted" is of type integer but expression is of type boolean
+
+POSITION: 210
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEncrypted" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 210
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEncrypted" is of type integer but expression is of type boolean
+
+POSITION: 210
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEncrypted" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 210
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+2025-08-10 10:07:12.838 +00:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsAvailableToHost" is of type integer but expression is of type boolean
+
+POSITION: 246
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsAvailableToHost" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 246
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+   at Volo.Abp.FeatureManagement.AbpFeatureManagementDomainModule.<>c__DisplayClass8_0.<<SaveStaticFeaturesToDatabaseAsync>b__1>d.MoveNext()
+2025-08-10 10:07:12.838 +00:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEnabled" is of type integer but expression is of type boolean
+
+POSITION: 193
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEnabled" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 193
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+   at Volo.Abp.PermissionManagement.AbpPermissionManagementDomainModule.<>c__DisplayClass8_0.<<SaveStaticPermissionsToDatabaseAsync>b__1>d.MoveNext()
+2025-08-10 10:07:12.857 +00:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEncrypted" is of type integer but expression is of type boolean
+
+POSITION: 210
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEncrypted" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 210
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous(IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapter.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync(IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.SettingManagement.AbpSettingManagementDomainModule.<>c__DisplayClass8_0.<<SaveStaticSettingsToDatabaseAsync>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.AsyncPolicy.<>c__DisplayClass44_0.<<ImplementationAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.Retry.AsyncRetryEngine.ImplementationAsync[TResult](Func`3 action, Context context, ExceptionPredicates shouldRetryExceptionPredicates, ResultPredicates`1 shouldRetryResultPredicates, Func`5 onRetryAsync, CancellationToken cancellationToken, Int32 permittedRetryCount, IEnumerable`1 sleepDurationsEnumerable, Func`4 sleepDurationProvider, Boolean continueOnCapturedContext)
+2025-08-10 10:07:16.282 +00:00 [ERR] Failed executing DbCommand (50ms) [Parameters=[@__now_1='?' (DbType = DateTime), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ApplicationName", a."ConcurrencyStamp", a."CreationTime", a."ExtraProperties", a."IsAbandoned", a."JobArgs", a."JobName", a."LastTryTime", a."NextTryTime", a."Priority", a."TryCount"
+FROM "AbpBackgroundJobs" AS a
+WHERE a."ApplicationName" IS NULL AND NOT (a."IsAbandoned") AND a."NextTryTime" <= @__now_1
+ORDER BY a."Priority" DESC, a."TryCount", a."NextTryTime"
+LIMIT @__p_2
+2025-08-10 10:07:16.284 +00:00 [ERR] An exception occurred while iterating over the results of a query for context type 'Volo.Abp.BackgroundJobs.EntityFrameworkCore.BackgroundJobsDbContext'.
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:16.286 +00:00 [ERR] 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:16.286 +00:00 [ERR] ---------- Exception Data ----------
+Severity = ERROR
+InvariantSeverity = ERROR
+SqlState = 42804
+MessageText = argument of NOT must be type boolean, not type integer
+Position = 275
+File = parse_coerce.c
+Line = 1176
+Routine = coerce_to_boolean
+
+2025-08-10 10:07:21.344 +00:00 [ERR] Failed executing DbCommand (49ms) [Parameters=[@__now_1='?' (DbType = DateTime), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ApplicationName", a."ConcurrencyStamp", a."CreationTime", a."ExtraProperties", a."IsAbandoned", a."JobArgs", a."JobName", a."LastTryTime", a."NextTryTime", a."Priority", a."TryCount"
+FROM "AbpBackgroundJobs" AS a
+WHERE a."ApplicationName" IS NULL AND NOT (a."IsAbandoned") AND a."NextTryTime" <= @__now_1
+ORDER BY a."Priority" DESC, a."TryCount", a."NextTryTime"
+LIMIT @__p_2
+2025-08-10 10:07:21.345 +00:00 [ERR] An exception occurred while iterating over the results of a query for context type 'Volo.Abp.BackgroundJobs.EntityFrameworkCore.BackgroundJobsDbContext'.
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:21.346 +00:00 [ERR] 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:21.346 +00:00 [ERR] ---------- Exception Data ----------
+Severity = ERROR
+InvariantSeverity = ERROR
+SqlState = 42804
+MessageText = argument of NOT must be type boolean, not type integer
+Position = 275
+File = parse_coerce.c
+Line = 1176
+Routine = coerce_to_boolean
+
+2025-08-10 10:07:26.395 +00:00 [ERR] Failed executing DbCommand (50ms) [Parameters=[@__now_1='?' (DbType = DateTime), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ApplicationName", a."ConcurrencyStamp", a."CreationTime", a."ExtraProperties", a."IsAbandoned", a."JobArgs", a."JobName", a."LastTryTime", a."NextTryTime", a."Priority", a."TryCount"
+FROM "AbpBackgroundJobs" AS a
+WHERE a."ApplicationName" IS NULL AND NOT (a."IsAbandoned") AND a."NextTryTime" <= @__now_1
+ORDER BY a."Priority" DESC, a."TryCount", a."NextTryTime"
+LIMIT @__p_2
+2025-08-10 10:07:26.396 +00:00 [ERR] An exception occurred while iterating over the results of a query for context type 'Volo.Abp.BackgroundJobs.EntityFrameworkCore.BackgroundJobsDbContext'.
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:26.396 +00:00 [ERR] 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:26.396 +00:00 [ERR] ---------- Exception Data ----------
+Severity = ERROR
+InvariantSeverity = ERROR
+SqlState = 42804
+MessageText = argument of NOT must be type boolean, not type integer
+Position = 275
+File = parse_coerce.c
+Line = 1176
+Routine = coerce_to_boolean
+
+2025-08-10 10:07:29.060 +00:00 [ERR] Failed executing DbCommand (60ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?' (DbType = Guid), @p5='?', @p6='?', @p7='?', @p8='?' (DbType = Guid), @p9='?', @p10='?', @p11='?', @p12='?' (DbType = Guid), @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Guid), @p17='?', @p18='?', @p19='?', @p20='?' (DbType = Guid), @p21='?', @p22='?', @p23='?', @p24='?' (DbType = Boolean), @p25='?' (DbType = Int16), @p26='?', @p27='?', @p28='?', @p29='?', @p30='?' (DbType = Guid), @p31='?', @p32='?', @p33='?', @p34='?' (DbType = Boolean), @p35='?' (DbType = Int16), @p36='?', @p37='?', @p38='?', @p39='?', @p40='?' (DbType = Guid), @p41='?', @p42='?', @p43='?', @p44='?' (DbType = Boolean), @p45='?' (DbType = Int16), @p46='?', @p47='?', @p48='?', @p49='?', @p50='?' (DbType = Guid), @p51='?', @p52='?', @p53='?', @p54='?' (DbType = Boolean), @p55='?' (DbType = Int16), @p56='?', @p57='?', @p58='?', @p59='?', @p60='?' (DbType = Guid), @p61='?', @p62='?', @p63='?', @p64='?' (DbType = Boolean), @p65='?' (DbType = Int16), @p66='?', @p67='?', @p68='?', @p69='?', @p70='?' (DbType = Guid), @p71='?', @p72='?', @p73='?', @p74='?' (DbType = Boolean), @p75='?' (DbType = Int16), @p76='?', @p77='?', @p78='?', @p79='?', @p80='?' (DbType = Guid), @p81='?', @p82='?', @p83='?', @p84='?' (DbType = Boolean), @p85='?' (DbType = Int16), @p86='?', @p87='?', @p88='?', @p89='?', @p90='?' (DbType = Guid), @p91='?', @p92='?', @p93='?', @p94='?' (DbType = Boolean), @p95='?' (DbType = Int16), @p96='?', @p97='?', @p98='?', @p99='?', @p100='?' (DbType = Guid), @p101='?', @p102='?', @p103='?', @p104='?' (DbType = Boolean), @p105='?' (DbType = Int16), @p106='?', @p107='?', @p108='?', @p109='?', @p110='?' (DbType = Guid), @p111='?', @p112='?', @p113='?', @p114='?' (DbType = Boolean), @p115='?' (DbType = Int16), @p116='?', @p117='?', @p118='?', @p119='?', @p120='?' (DbType = Guid), @p121='?', @p122='?', @p123='?', @p124='?' (DbType = Boolean), @p125='?' (DbType = Int16), @p126='?', @p127='?', @p128='?', @p129='?', @p130='?' (DbType = Guid), @p131='?', @p132='?', @p133='?', @p134='?' (DbType = Boolean), @p135='?' (DbType = Int16), @p136='?', @p137='?', @p138='?', @p139='?', @p140='?' (DbType = Guid), @p141='?', @p142='?', @p143='?', @p144='?' (DbType = Boolean), @p145='?' (DbType = Int16), @p146='?', @p147='?', @p148='?', @p149='?', @p150='?' (DbType = Guid), @p151='?', @p152='?', @p153='?', @p154='?' (DbType = Boolean), @p155='?' (DbType = Int16), @p156='?', @p157='?', @p158='?', @p159='?', @p160='?' (DbType = Guid), @p161='?', @p162='?', @p163='?', @p164='?' (DbType = Boolean), @p165='?' (DbType = Int16), @p166='?', @p167='?', @p168='?', @p169='?', @p170='?' (DbType = Guid), @p171='?', @p172='?', @p173='?', @p174='?' (DbType = Boolean), @p175='?' (DbType = Int16), @p176='?', @p177='?', @p178='?', @p179='?', @p180='?' (DbType = Guid), @p181='?', @p182='?', @p183='?', @p184='?' (DbType = Boolean), @p185='?' (DbType = Int16), @p186='?', @p187='?', @p188='?', @p189='?', @p190='?' (DbType = Guid), @p191='?', @p192='?', @p193='?', @p194='?' (DbType = Boolean), @p195='?' (DbType = Int16), @p196='?', @p197='?', @p198='?', @p199='?', @p200='?' (DbType = Guid), @p201='?', @p202='?', @p203='?', @p204='?' (DbType = Boolean), @p205='?' (DbType = Int16), @p206='?', @p207='?', @p208='?', @p209='?', @p210='?' (DbType = Guid), @p211='?', @p212='?', @p213='?', @p214='?' (DbType = Boolean), @p215='?' (DbType = Int16), @p216='?', @p217='?', @p218='?', @p219='?', @p220='?' (DbType = Guid), @p221='?', @p222='?', @p223='?', @p224='?' (DbType = Boolean), @p225='?' (DbType = Int16), @p226='?', @p227='?', @p228='?', @p229='?', @p230='?' (DbType = Guid), @p231='?', @p232='?', @p233='?', @p234='?' (DbType = Boolean), @p235='?' (DbType = Int16), @p236='?', @p237='?', @p238='?', @p239='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p0, @p1, @p2, @p3);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p4, @p5, @p6, @p7);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p8, @p9, @p10, @p11);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p12, @p13, @p14, @p15);
+INSERT INTO "AbpPermissionGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p16, @p17, @p18, @p19);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p120, @p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p140, @p141, @p142, @p143, @p144, @p145, @p146, @p147, @p148, @p149);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p150, @p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p160, @p161, @p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p170, @p171, @p172, @p173, @p174, @p175, @p176, @p177, @p178, @p179);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p180, @p181, @p182, @p183, @p184, @p185, @p186, @p187, @p188, @p189);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p190, @p191, @p192, @p193, @p194, @p195, @p196, @p197, @p198, @p199);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p200, @p201, @p202, @p203, @p204, @p205, @p206, @p207, @p208, @p209);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p210, @p211, @p212, @p213, @p214, @p215, @p216, @p217, @p218, @p219);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p220, @p221, @p222, @p223, @p224, @p225, @p226, @p227, @p228, @p229);
+INSERT INTO "AbpPermissions" ("Id", "DisplayName", "ExtraProperties", "GroupName", "IsEnabled", "MultiTenancySide", "Name", "ParentName", "Providers", "StateCheckers")
+VALUES (@p230, @p231, @p232, @p233, @p234, @p235, @p236, @p237, @p238, @p239);
+2025-08-10 10:07:29.158 +00:00 [ERR] An exception occurred in the database while saving changes for context type 'Volo.Abp.PermissionManagement.EntityFrameworkCore.PermissionManagementDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEnabled" is of type integer but expression is of type boolean
+
+POSITION: 193
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEnabled" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 193
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEnabled" is of type integer but expression is of type boolean
+
+POSITION: 193
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEnabled" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 193
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+2025-08-10 10:07:29.206 +00:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEnabled" is of type integer but expression is of type boolean
+
+POSITION: 193
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEnabled" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 193
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+   at Volo.Abp.PermissionManagement.StaticPermissionSaver.SaveAsync()
+   at Volo.Abp.PermissionManagement.AbpPermissionManagementDomainModule.<>c__DisplayClass8_0.<<SaveStaticPermissionsToDatabaseAsync>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.AsyncPolicy.<>c__DisplayClass44_0.<<ImplementationAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.Retry.AsyncRetryEngine.ImplementationAsync[TResult](Func`3 action, Context context, ExceptionPredicates shouldRetryExceptionPredicates, ResultPredicates`1 shouldRetryResultPredicates, Func`5 onRetryAsync, CancellationToken cancellationToken, Int32 permittedRetryCount, IEnumerable`1 sleepDurationsEnumerable, Func`4 sleepDurationProvider, Boolean continueOnCapturedContext)
+2025-08-10 10:07:30.048 +00:00 [ERR] Failed executing DbCommand (50ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?' (DbType = Guid), @p5='?', @p6='?', @p7='?', @p8='?', @p9='?', @p10='?', @p11='?' (DbType = Boolean), @p12='?' (DbType = Boolean), @p13='?', @p14='?', @p15='?', @p16='?' (DbType = Guid), @p17='?', @p18='?', @p19='?', @p20='?', @p21='?', @p22='?', @p23='?' (DbType = Boolean), @p24='?' (DbType = Boolean), @p25='?', @p26='?', @p27='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AbpFeatureGroups" ("Id", "DisplayName", "ExtraProperties", "Name")
+VALUES (@p0, @p1, @p2, @p3);
+INSERT INTO "AbpFeatures" ("Id", "AllowedProviders", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "GroupName", "IsAvailableToHost", "IsVisibleToClients", "Name", "ParentName", "ValueType")
+VALUES (@p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15);
+INSERT INTO "AbpFeatures" ("Id", "AllowedProviders", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "GroupName", "IsAvailableToHost", "IsVisibleToClients", "Name", "ParentName", "ValueType")
+VALUES (@p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27);
+2025-08-10 10:07:30.145 +00:00 [ERR] An exception occurred in the database while saving changes for context type 'Volo.Abp.FeatureManagement.EntityFrameworkCore.FeatureManagementDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsAvailableToHost" is of type integer but expression is of type boolean
+
+POSITION: 246
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsAvailableToHost" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 246
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsAvailableToHost" is of type integer but expression is of type boolean
+
+POSITION: 246
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsAvailableToHost" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 246
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+2025-08-10 10:07:30.193 +00:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsAvailableToHost" is of type integer but expression is of type boolean
+
+POSITION: 246
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsAvailableToHost" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 246
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+   at Volo.Abp.FeatureManagement.StaticFeatureSaver.SaveAsync()
+   at Volo.Abp.FeatureManagement.AbpFeatureManagementDomainModule.<>c__DisplayClass8_0.<<SaveStaticFeaturesToDatabaseAsync>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.AsyncPolicy.<>c__DisplayClass44_0.<<ImplementationAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.Retry.AsyncRetryEngine.ImplementationAsync[TResult](Func`3 action, Context context, ExceptionPredicates shouldRetryExceptionPredicates, ResultPredicates`1 shouldRetryResultPredicates, Func`5 onRetryAsync, CancellationToken cancellationToken, Int32 permittedRetryCount, IEnumerable`1 sleepDurationsEnumerable, Func`4 sleepDurationProvider, Boolean continueOnCapturedContext)
+2025-08-10 10:07:31.479 +00:00 [ERR] Failed executing DbCommand (50ms) [Parameters=[@__now_1='?' (DbType = DateTime), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ApplicationName", a."ConcurrencyStamp", a."CreationTime", a."ExtraProperties", a."IsAbandoned", a."JobArgs", a."JobName", a."LastTryTime", a."NextTryTime", a."Priority", a."TryCount"
+FROM "AbpBackgroundJobs" AS a
+WHERE a."ApplicationName" IS NULL AND NOT (a."IsAbandoned") AND a."NextTryTime" <= @__now_1
+ORDER BY a."Priority" DESC, a."TryCount", a."NextTryTime"
+LIMIT @__p_2
+2025-08-10 10:07:31.480 +00:00 [ERR] An exception occurred while iterating over the results of a query for context type 'Volo.Abp.BackgroundJobs.EntityFrameworkCore.BackgroundJobsDbContext'.
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:31.480 +00:00 [ERR] 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+Npgsql.PostgresException (0x80004005): 42804: argument of NOT must be type boolean, not type integer
+
+POSITION: 275
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SplitQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Volo.Abp.BackgroundJobs.EntityFrameworkCore.EfCoreBackgroundJobRepository.GetWaitingListAsync(String applicationName, Int32 maxResultCount, CancellationToken cancellationToken)
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapterWithReturnValue`1.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync[TResult](IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(String applicationName, Int32 maxResultCount)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundJobs.BackgroundJobWorker.DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+   at Volo.Abp.BackgroundWorkers.AsyncPeriodicBackgroundWorkerBase.DoWorkAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: argument of NOT must be type boolean, not type integer
+    Position: 275
+    File: parse_coerce.c
+    Line: 1176
+    Routine: coerce_to_boolean
+2025-08-10 10:07:31.480 +00:00 [ERR] ---------- Exception Data ----------
+Severity = ERROR
+InvariantSeverity = ERROR
+SqlState = 42804
+MessageText = argument of NOT must be type boolean, not type integer
+Position = 275
+File = parse_coerce.c
+Line = 1176
+Routine = coerce_to_boolean
+
+2025-08-10 10:07:33.058 +00:00 [ERR] Failed executing DbCommand (96ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?', @p3='?', @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?', @p9='?', @p10='?' (DbType = Guid), @p11='?', @p12='?', @p13='?', @p14='?', @p15='?' (DbType = Boolean), @p16='?' (DbType = Boolean), @p17='?' (DbType = Boolean), @p18='?', @p19='?', @p20='?' (DbType = Guid), @p21='?', @p22='?', @p23='?', @p24='?', @p25='?' (DbType = Boolean), @p26='?' (DbType = Boolean), @p27='?' (DbType = Boolean), @p28='?', @p29='?', @p30='?' (DbType = Guid), @p31='?', @p32='?', @p33='?', @p34='?', @p35='?' (DbType = Boolean), @p36='?' (DbType = Boolean), @p37='?' (DbType = Boolean), @p38='?', @p39='?', @p40='?' (DbType = Guid), @p41='?', @p42='?', @p43='?', @p44='?', @p45='?' (DbType = Boolean), @p46='?' (DbType = Boolean), @p47='?' (DbType = Boolean), @p48='?', @p49='?', @p50='?' (DbType = Guid), @p51='?', @p52='?', @p53='?', @p54='?', @p55='?' (DbType = Boolean), @p56='?' (DbType = Boolean), @p57='?' (DbType = Boolean), @p58='?', @p59='?', @p60='?' (DbType = Guid), @p61='?', @p62='?', @p63='?', @p64='?', @p65='?' (DbType = Boolean), @p66='?' (DbType = Boolean), @p67='?' (DbType = Boolean), @p68='?', @p69='?', @p70='?' (DbType = Guid), @p71='?', @p72='?', @p73='?', @p74='?', @p75='?' (DbType = Boolean), @p76='?' (DbType = Boolean), @p77='?' (DbType = Boolean), @p78='?', @p79='?', @p80='?' (DbType = Guid), @p81='?', @p82='?', @p83='?', @p84='?', @p85='?' (DbType = Boolean), @p86='?' (DbType = Boolean), @p87='?' (DbType = Boolean), @p88='?', @p89='?', @p90='?' (DbType = Guid), @p91='?', @p92='?', @p93='?', @p94='?', @p95='?' (DbType = Boolean), @p96='?' (DbType = Boolean), @p97='?' (DbType = Boolean), @p98='?', @p99='?', @p100='?' (DbType = Guid), @p101='?', @p102='?', @p103='?', @p104='?', @p105='?' (DbType = Boolean), @p106='?' (DbType = Boolean), @p107='?' (DbType = Boolean), @p108='?', @p109='?', @p110='?' (DbType = Guid), @p111='?', @p112='?', @p113='?', @p114='?', @p115='?' (DbType = Boolean), @p116='?' (DbType = Boolean), @p117='?' (DbType = Boolean), @p118='?', @p119='?', @p120='?' (DbType = Guid), @p121='?', @p122='?', @p123='?', @p124='?', @p125='?' (DbType = Boolean), @p126='?' (DbType = Boolean), @p127='?' (DbType = Boolean), @p128='?', @p129='?', @p130='?' (DbType = Guid), @p131='?', @p132='?', @p133='?', @p134='?', @p135='?' (DbType = Boolean), @p136='?' (DbType = Boolean), @p137='?' (DbType = Boolean), @p138='?', @p139='?', @p140='?' (DbType = Guid), @p141='?', @p142='?', @p143='?', @p144='?', @p145='?' (DbType = Boolean), @p146='?' (DbType = Boolean), @p147='?' (DbType = Boolean), @p148='?', @p149='?', @p150='?' (DbType = Guid), @p151='?', @p152='?', @p153='?', @p154='?', @p155='?' (DbType = Boolean), @p156='?' (DbType = Boolean), @p157='?' (DbType = Boolean), @p158='?', @p159='?', @p160='?' (DbType = Guid), @p161='?', @p162='?', @p163='?', @p164='?', @p165='?' (DbType = Boolean), @p166='?' (DbType = Boolean), @p167='?' (DbType = Boolean), @p168='?', @p169='?', @p170='?' (DbType = Guid), @p171='?', @p172='?', @p173='?', @p174='?', @p175='?' (DbType = Boolean), @p176='?' (DbType = Boolean), @p177='?' (DbType = Boolean), @p178='?', @p179='?', @p180='?' (DbType = Guid), @p181='?', @p182='?', @p183='?', @p184='?', @p185='?' (DbType = Boolean), @p186='?' (DbType = Boolean), @p187='?' (DbType = Boolean), @p188='?', @p189='?', @p190='?' (DbType = Guid), @p191='?', @p192='?', @p193='?', @p194='?', @p195='?' (DbType = Boolean), @p196='?' (DbType = Boolean), @p197='?' (DbType = Boolean), @p198='?', @p199='?', @p200='?' (DbType = Guid), @p201='?', @p202='?', @p203='?', @p204='?', @p205='?' (DbType = Boolean), @p206='?' (DbType = Boolean), @p207='?' (DbType = Boolean), @p208='?', @p209='?', @p210='?' (DbType = Guid), @p211='?', @p212='?', @p213='?', @p214='?', @p215='?' (DbType = Boolean), @p216='?' (DbType = Boolean), @p217='?' (DbType = Boolean), @p218='?', @p219='?', @p220='?' (DbType = Guid), @p221='?', @p222='?', @p223='?', @p224='?', @p225='?' (DbType = Boolean), @p226='?' (DbType = Boolean), @p227='?' (DbType = Boolean), @p228='?', @p229='?', @p230='?' (DbType = Guid), @p231='?', @p232='?', @p233='?', @p234='?', @p235='?' (DbType = Boolean), @p236='?' (DbType = Boolean), @p237='?' (DbType = Boolean), @p238='?', @p239='?', @p240='?' (DbType = Guid), @p241='?', @p242='?', @p243='?', @p244='?', @p245='?' (DbType = Boolean), @p246='?' (DbType = Boolean), @p247='?' (DbType = Boolean), @p248='?', @p249='?', @p250='?' (DbType = Guid), @p251='?', @p252='?', @p253='?', @p254='?', @p255='?' (DbType = Boolean), @p256='?' (DbType = Boolean), @p257='?' (DbType = Boolean), @p258='?', @p259='?', @p260='?' (DbType = Guid), @p261='?', @p262='?', @p263='?', @p264='?', @p265='?' (DbType = Boolean), @p266='?' (DbType = Boolean), @p267='?' (DbType = Boolean), @p268='?', @p269='?', @p270='?' (DbType = Guid), @p271='?', @p272='?', @p273='?', @p274='?', @p275='?' (DbType = Boolean), @p276='?' (DbType = Boolean), @p277='?' (DbType = Boolean), @p278='?', @p279='?', @p280='?' (DbType = Guid), @p281='?', @p282='?', @p283='?', @p284='?', @p285='?' (DbType = Boolean), @p286='?' (DbType = Boolean), @p287='?' (DbType = Boolean), @p288='?', @p289='?', @p290='?' (DbType = Guid), @p291='?', @p292='?', @p293='?', @p294='?', @p295='?' (DbType = Boolean), @p296='?' (DbType = Boolean), @p297='?' (DbType = Boolean), @p298='?', @p299='?', @p300='?' (DbType = Guid), @p301='?', @p302='?', @p303='?', @p304='?', @p305='?' (DbType = Boolean), @p306='?' (DbType = Boolean), @p307='?' (DbType = Boolean), @p308='?', @p309='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p120, @p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p140, @p141, @p142, @p143, @p144, @p145, @p146, @p147, @p148, @p149);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p150, @p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p160, @p161, @p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p170, @p171, @p172, @p173, @p174, @p175, @p176, @p177, @p178, @p179);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p180, @p181, @p182, @p183, @p184, @p185, @p186, @p187, @p188, @p189);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p190, @p191, @p192, @p193, @p194, @p195, @p196, @p197, @p198, @p199);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p200, @p201, @p202, @p203, @p204, @p205, @p206, @p207, @p208, @p209);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p210, @p211, @p212, @p213, @p214, @p215, @p216, @p217, @p218, @p219);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p220, @p221, @p222, @p223, @p224, @p225, @p226, @p227, @p228, @p229);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p230, @p231, @p232, @p233, @p234, @p235, @p236, @p237, @p238, @p239);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p240, @p241, @p242, @p243, @p244, @p245, @p246, @p247, @p248, @p249);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p250, @p251, @p252, @p253, @p254, @p255, @p256, @p257, @p258, @p259);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p260, @p261, @p262, @p263, @p264, @p265, @p266, @p267, @p268, @p269);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p270, @p271, @p272, @p273, @p274, @p275, @p276, @p277, @p278, @p279);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p280, @p281, @p282, @p283, @p284, @p285, @p286, @p287, @p288, @p289);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p290, @p291, @p292, @p293, @p294, @p295, @p296, @p297, @p298, @p299);
+INSERT INTO "AbpSettingDefinitions" ("Id", "DefaultValue", "Description", "DisplayName", "ExtraProperties", "IsEncrypted", "IsInherited", "IsVisibleToClients", "Name", "Providers")
+VALUES (@p300, @p301, @p302, @p303, @p304, @p305, @p306, @p307, @p308, @p309);
+2025-08-10 10:07:33.156 +00:00 [ERR] An exception occurred in the database while saving changes for context type 'Volo.Abp.SettingManagement.EntityFrameworkCore.SettingManagementDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEncrypted" is of type integer but expression is of type boolean
+
+POSITION: 210
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEncrypted" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 210
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEncrypted" is of type integer but expression is of type boolean
+
+POSITION: 210
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEncrypted" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 210
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+2025-08-10 10:07:33.204 +00:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 42804: column "IsEncrypted" is of type integer but expression is of type boolean
+
+POSITION: 210
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42804
+    MessageText: column "IsEncrypted" is of type integer but expression is of type boolean
+    Hint: You will need to rewrite or cast the expression.
+    Position: 210
+    File: parse_target.c
+    Line: 585
+    Routine: transformAssignedExpr
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.EntityFrameworkCore.AbpDbContext`1.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+   at Volo.Abp.Uow.UnitOfWork.CompleteAsync(CancellationToken cancellationToken)
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+   at Volo.Abp.SettingManagement.StaticSettingSaver.SaveAsync()
+   at Castle.DynamicProxy.AsyncInterceptorBase.ProceedAsynchronous(IInvocation invocation, IInvocationProceedInfo proceedInfo)
+   at Volo.Abp.Castle.DynamicProxy.CastleAbpMethodInvocationAdapter.ProceedAsync()
+   at Volo.Abp.Uow.UnitOfWorkInterceptor.InterceptAsync(IAbpMethodInvocation invocation)
+   at Volo.Abp.Castle.DynamicProxy.CastleAsyncAbpInterceptorAdapter`1.InterceptAsync(IInvocation invocation, IInvocationProceedInfo proceedInfo, Func`3 proceed)
+   at Volo.Abp.SettingManagement.AbpSettingManagementDomainModule.<>c__DisplayClass8_0.<<SaveStaticSettingsToDatabaseAsync>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.AsyncPolicy.<>c__DisplayClass44_0.<<ImplementationAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Polly.Retry.AsyncRetryEngine.ImplementationAsync[TResult](Func`3 action, Context context, ExceptionPredicates shouldRetryExceptionPredicates, ResultPredicates`1 shouldRetryResultPredicates, Func`5 onRetryAsync, CancellationToken cancellationToken, Int32 permittedRetryCount, IEnumerable`1 sleepDurationsEnumerable, Func`4 sleepDurationProvider, Boolean continueOnCapturedContext)
+2025-08-10 10:07:33.374 +00:00 [INF] Application is shutting down...
+2025-08-10 10:07:33.380 +00:00 [DBG] Stopped background worker: Volo.Abp.BackgroundJobs.BackgroundJobWorker
+2025-08-10 10:07:33.380 +00:00 [DBG] Stopped background worker: Volo.Abp.OpenIddict.Tokens.TokenCleanupBackgroundWorker
