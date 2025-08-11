@@ -48,6 +48,7 @@ jobs:
           service-type: web
           git-branch: ${{ steps.vars.outputs.branch }}
           git-path: backend
+          builder: dockerfile
           dockerfile: Dockerfile
           service-ports: 8080:http
           service-routes: /:8080
@@ -67,6 +68,7 @@ jobs:
           service-type: web
           git-branch: ${{ steps.vars.outputs.branch }}
           git-path: backend
+          builder: dockerfile
           dockerfile: AuthServer.Dockerfile
           service-ports: 8081:http
           service-routes: /:8081
