@@ -1,0 +1,30 @@
+name: Deploy Backend to Render
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'render.yaml'
+      - '.github/workflows/render-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Trigger API deploy on Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          serviceId: ${{ vars.RENDER_SERVICE_ID_API }}
+          apiKey: ${{ secrets.RENDER_API_KEY }}
+          waitForDeployed: true
+
+      - name: Trigger Auth deploy on Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          serviceId: ${{ vars.RENDER_SERVICE_ID_AUTH }}
+          apiKey: ${{ secrets.RENDER_API_KEY }}
+          waitForDeployed: true

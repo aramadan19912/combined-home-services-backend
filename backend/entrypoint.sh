@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Allow overriding the connection string via env var, default to Neon PostgreSQL
-: "${ConnectionStrings__Default:=Host=ep-sweet-king-aephthql-pooler.c-2.us-east-2.aws.neon.tech;Port=5432;Database=neondb;Username=neondb_owner;Password=npg_9JPzYQVlw5Ik;SSL Mode=Require;}"
+# Default to SQLite for easier boot in ephemeral environments; allow override via env vars
+: "${ConnectionStrings__Default:=Data Source=/data/app.db}"
 export ConnectionStrings__Default
 
-# Set database provider to PostgreSQL
-: "${Database__Provider:=PostgreSql}"
+: "${Database__Provider:=Sqlite}"
 export Database__Provider
 
 # Optionally allow overriding CORS origins via env var
