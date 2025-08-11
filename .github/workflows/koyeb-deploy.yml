@@ -1,0 +1,92 @@
+name: Deploy Backend to Koyeb
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/koyeb-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install and authenticate Koyeb CLI
+        uses: koyeb-community/koyeb-actions@v2
+        with:
+          api_token: ${{ secrets.KOYEB_API_TOKEN }}
+
+      - name: Determine settings
+        id: vars
+        run: |
+          APP_NAME="${{ vars.KOYEB_APP_NAME }}"
+          if [ -z "$APP_NAME" ]; then APP_NAME="homeservices-app"; fi
+          API_SERVICE="${{ vars.KOYEB_SERVICE_API }}"
+          if [ -z "$API_SERVICE" ]; then API_SERVICE="homeservices-api"; fi
+          AUTH_SERVICE="${{ vars.KOYEB_SERVICE_AUTH }}"
+          if [ -z "$AUTH_SERVICE" ]; then AUTH_SERVICE="homeservices-auth"; fi
+
+          # Derive repo URL and branch for Koyeb git builder
+          REPO_URL="https://github.com/${{ github.repository }}"
+          BRANCH="${{ github.ref_name }}"
+
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "api_service=$API_SERVICE" >> $GITHUB_OUTPUT
+          echo "auth_service=$AUTH_SERVICE" >> $GITHUB_OUTPUT
+          echo "repo_url=$REPO_URL" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Ensure app exists
+        run: |
+          koyeb app list | grep -q "^${{ steps.vars.outputs.app_name }}$" || koyeb app create "${{ steps.vars.outputs.app_name }}"
+
+      - name: Create or redeploy API service
+        env:
+          APP_NAME: ${{ steps.vars.outputs.app_name }}
+          SERVICE_NAME: ${{ steps.vars.outputs.api_service }}
+          REPO_URL: ${{ steps.vars.outputs.repo_url }}
+          BRANCH: ${{ steps.vars.outputs.branch }}
+        run: |
+          if koyeb service list --app "$APP_NAME" | grep -q "\b$SERVICE_NAME\b"; then
+            echo "Service exists, redeploying: $APP_NAME/$SERVICE_NAME"
+            koyeb service redeploy "$APP_NAME/$SERVICE_NAME" || koyeb service update "$APP_NAME/$SERVICE_NAME" --git-branch "$BRANCH"
+          else
+            echo "Creating service: $APP_NAME/$SERVICE_NAME"
+            koyeb service create "$SERVICE_NAME" \
+              --app "$APP_NAME" \
+              --git "$REPO_URL" \
+              --git-branch "$BRANCH" \
+              --git-builder docker \
+              --dockerfile backend/Dockerfile \
+              --ports 8080:http \
+              --routes /:8080
+          fi
+
+      - name: Create or redeploy Auth service
+        env:
+          APP_NAME: ${{ steps.vars.outputs.app_name }}
+          SERVICE_NAME: ${{ steps.vars.outputs.auth_service }}
+          REPO_URL: ${{ steps.vars.outputs.repo_url }}
+          BRANCH: ${{ steps.vars.outputs.branch }}
+        run: |
+          if koyeb service list --app "$APP_NAME" | grep -q "\b$SERVICE_NAME\b"; then
+            echo "Service exists, redeploying: $APP_NAME/$SERVICE_NAME"
+            koyeb service redeploy "$APP_NAME/$SERVICE_NAME" || koyeb service update "$APP_NAME/$SERVICE_NAME" --git-branch "$BRANCH"
+          else
+            echo "Creating service: $APP_NAME/$SERVICE_NAME"
+            koyeb service create "$SERVICE_NAME" \
+              --app "$APP_NAME" \
+              --git "$REPO_URL" \
+              --git-branch "$BRANCH" \
+              --git-builder docker \
+              --dockerfile backend/AuthServer.Dockerfile \
+              --ports 8081:http \
+              --routes /:8081
+          fi
+
+      - name: Output URLs
+        run: |
+          echo "Koyeb App: https://app.koyeb.com/apps/${{ steps.vars.outputs.app_name }}"
