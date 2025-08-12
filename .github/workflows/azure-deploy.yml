@@ -2,16 +2,41 @@ name: Azure Deploy (API, Auth, Frontend)
 
 on:
   workflow_dispatch:
+    inputs:
+      resource_group:
+        description: Azure Resource Group
+        required: false
+        default: ""
+      acr_name:
+        description: Azure Container Registry NAME (e.g., hsappacr123)
+        required: false
+        default: ""
+      acr_login_server:
+        description: ACR login server (e.g., hsappacr123.azurecr.io)
+        required: false
+        default: ""
+      webapp_api:
+        description: API Web App name
+        required: false
+        default: ""
+      webapp_auth:
+        description: Auth Web App name
+        required: false
+        default: ""
+      webapp_frontend:
+        description: Frontend Web App name
+        required: false
+        default: ""
   push:
     branches: [ main ]
 
 env:
-  RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP }}
-  ACR_NAME: ${{ secrets.AZ_ACR_NAME }}
-  ACR_LOGIN_SERVER: ${{ secrets.AZ_ACR_LOGIN_SERVER }}
-  WEBAPP_API: ${{ secrets.AZ_WEBAPP_API }}
-  WEBAPP_AUTH: ${{ secrets.AZ_WEBAPP_AUTH }}
-  WEBAPP_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND }}
+  RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP != '' && secrets.AZ_RESOURCE_GROUP || vars.AZ_RESOURCE_GROUP || github.event.inputs.resource_group }}
+  ACR_NAME: ${{ secrets.AZ_ACR_NAME != '' && secrets.AZ_ACR_NAME || vars.AZ_ACR_NAME || github.event.inputs.acr_name }}
+  ACR_LOGIN_SERVER: ${{ secrets.AZ_ACR_LOGIN_SERVER != '' && secrets.AZ_ACR_LOGIN_SERVER || vars.AZ_ACR_LOGIN_SERVER || github.event.inputs.acr_login_server }}
+  WEBAPP_API: ${{ secrets.AZ_WEBAPP_API != '' && secrets.AZ_WEBAPP_API || vars.AZ_WEBAPP_API || github.event.inputs.webapp_api }}
+  WEBAPP_AUTH: ${{ secrets.AZ_WEBAPP_AUTH != '' && secrets.AZ_WEBAPP_AUTH || vars.AZ_WEBAPP_AUTH || github.event.inputs.webapp_auth }}
+  WEBAPP_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND != '' && secrets.AZ_WEBAPP_FRONTEND || vars.AZ_WEBAPP_FRONTEND || github.event.inputs.webapp_frontend }}
 
 jobs:
   build-and-deploy:
@@ -23,9 +48,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate required Azure resource secrets
+        run: |
+          missing=()
+          for v in RESOURCE_GROUP ACR_NAME ACR_LOGIN_SERVER WEBAPP_API WEBAPP_AUTH WEBAPP_FRONTEND; do
+            if [ -z "${!v}" ]; then missing+=("$v"); fi
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Missing required settings: ${missing[*]}"
+            echo "Provide them as Secrets, Variables, or Workflow inputs when dispatching."
+            exit 1
+          fi
+
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
+          auth-type: ID_TOKEN
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
