@@ -6,12 +6,12 @@ on:
     branches: [ main ]
 
 env:
-  RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP }}
-  ACR_NAME: ${{ secrets.AZ_ACR_NAME }}
-  ACR_LOGIN_SERVER: ${{ secrets.AZ_ACR_LOGIN_SERVER }}
-  WEBAPP_API: ${{ secrets.AZ_WEBAPP_API }}
-  WEBAPP_AUTH: ${{ secrets.AZ_WEBAPP_AUTH }}
-  WEBAPP_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND }}
+  RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP != '' && secrets.AZ_RESOURCE_GROUP || vars.AZ_RESOURCE_GROUP }}
+  ACR_NAME: ${{ secrets.AZ_ACR_NAME != '' && secrets.AZ_ACR_NAME || vars.AZ_ACR_NAME }}
+  ACR_LOGIN_SERVER: ${{ secrets.AZ_ACR_LOGIN_SERVER != '' && secrets.AZ_ACR_LOGIN_SERVER || vars.AZ_ACR_LOGIN_SERVER }}
+  WEBAPP_API: ${{ secrets.AZ_WEBAPP_API != '' && secrets.AZ_WEBAPP_API || vars.AZ_WEBAPP_API }}
+  WEBAPP_AUTH: ${{ secrets.AZ_WEBAPP_AUTH != '' && secrets.AZ_WEBAPP_AUTH || vars.AZ_WEBAPP_AUTH }}
+  WEBAPP_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND != '' && secrets.AZ_WEBAPP_FRONTEND || vars.AZ_WEBAPP_FRONTEND }}
 
 jobs:
   build-and-deploy:
