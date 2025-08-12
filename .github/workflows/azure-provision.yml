@@ -1,0 +1,61 @@
+name: Azure Provision
+
+on:
+  workflow_dispatch:
+    inputs:
+      location:
+        description: Azure region
+        required: false
+        default: eastus
+      resource_group:
+        description: Resource group name
+        required: false
+        default: hsapp-rg
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      LOCATION: ${{ github.event.inputs.location }}
+      RESOURCE_GROUP: ${{ github.event.inputs.resource_group }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Make provision script executable
+        run: chmod +x infra/azure/provision.sh
+
+      - name: Provision Azure resources
+        id: provision
+        run: ./infra/azure/provision.sh
+
+      - name: Show outputs
+        run: |
+          echo "RESOURCE_GROUP: ${{ steps.provision.outputs.RESOURCE_GROUP }}"
+          echo "ACR_NAME: ${{ steps.provision.outputs.ACR_NAME }}"
+          echo "ACR_LOGIN_SERVER: ${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
+          echo "WEBAPP_API: ${{ steps.provision.outputs.WEBAPP_API }}"
+          echo "WEBAPP_AUTH: ${{ steps.provision.outputs.WEBAPP_AUTH }}"
+          echo "WEBAPP_FRONTEND: ${{ steps.provision.outputs.WEBAPP_FRONTEND }}"
+
+      - name: Job summary
+        run: |
+          {
+            echo "### Copy these into repo secrets"
+            echo "- AZ_RESOURCE_GROUP=${{ steps.provision.outputs.RESOURCE_GROUP }}"
+            echo "- AZ_ACR_NAME=${{ steps.provision.outputs.ACR_NAME }}"
+            echo "- AZ_ACR_LOGIN_SERVER=${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
+            echo "- AZ_WEBAPP_API=${{ steps.provision.outputs.WEBAPP_API }}"
+            echo "- AZ_WEBAPP_AUTH=${{ steps.provision.outputs.WEBAPP_AUTH }}"
+            echo "- AZ_WEBAPP_FRONTEND=${{ steps.provision.outputs.WEBAPP_FRONTEND }}"
+          } >> $GITHUB_STEP_SUMMARY

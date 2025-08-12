@@ -1,0 +1,116 @@
+name: Azure Deploy (API, Auth, Frontend)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+env:
+  RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP }}
+  ACR_NAME: ${{ secrets.AZ_ACR_NAME }}
+  ACR_LOGIN_SERVER: ${{ secrets.AZ_ACR_LOGIN_SERVER }}
+  WEBAPP_API: ${{ secrets.AZ_WEBAPP_API }}
+  WEBAPP_AUTH: ${{ secrets.AZ_WEBAPP_AUTH }}
+  WEBAPP_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI - Get ACR info
+        id: acr
+        run: |
+          echo "loginServer=$ACR_LOGIN_SERVER" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to ACR via Azure CLI (OIDC)
+        run: az acr login -n $ACR_NAME
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.ACR_LOGIN_SERVER }}/homeservices/api:latest
+
+      - name: Build and push Auth image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/AuthServer.Dockerfile
+          push: true
+          tags: |
+            ${{ env.ACR_LOGIN_SERVER }}/homeservices/auth:latest
+
+      - name: Build and push Frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.ACR_LOGIN_SERVER }}/homeservices/frontend:latest
+
+      - name: Deploy API container to Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.WEBAPP_API }}
+          images: ${{ env.ACR_LOGIN_SERVER }}/homeservices/api:latest
+
+      - name: Deploy Auth container to Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.WEBAPP_AUTH }}
+          images: ${{ env.ACR_LOGIN_SERVER }}/homeservices/auth:latest
+
+      - name: Deploy Frontend container to Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.WEBAPP_FRONTEND }}
+          images: ${{ env.ACR_LOGIN_SERVER }}/homeservices/frontend:latest
+
+      - name: Configure App Settings (API)
+        run: |
+          az webapp config appsettings set -g $RESOURCE_GROUP -n $WEBAPP_API --settings \
+            WEBSITES_PORT=8080 \
+            Database__Provider=PostgreSql \
+            ConnectionStrings__Default="${{ secrets.PG_CONN_STR }}" \
+            App__CorsOrigins="${{ secrets.APP_CORS_ORIGINS }}"
+
+      - name: Configure App Settings (Auth)
+        run: |
+          az webapp config appsettings set -g $RESOURCE_GROUP -n $WEBAPP_AUTH --settings \
+            WEBSITES_PORT=8081 \
+            Database__Provider=PostgreSql \
+            ConnectionStrings__Default="${{ secrets.PG_CONN_STR }}" \
+            App__SelfUrl="${{ secrets.AUTH_SELF_URL }}" \
+            App__ClientUrl="${{ secrets.AUTH_CLIENT_URL }}" \
+            App__CorsOrigins="${{ secrets.AUTH_CORS_ORIGINS }}"
+
+      - name: Configure App Settings (Frontend)
+        run: |
+          az webapp config appsettings set -g $RESOURCE_GROUP -n $WEBAPP_FRONTEND --settings \
+            WEBSITES_PORT=8080
+
+      - name: Bind Web Apps to ACR via Managed Identity
+        run: |
+          az webapp config container set -g $RESOURCE_GROUP -n $WEBAPP_API --docker-custom-image-name $ACR_LOGIN_SERVER/homeservices/api:latest --acr-identity system
+          az webapp config container set -g $RESOURCE_GROUP -n $WEBAPP_AUTH --docker-custom-image-name $ACR_LOGIN_SERVER/homeservices/auth:latest --acr-identity system
+          az webapp config container set -g $RESOURCE_GROUP -n $WEBAPP_FRONTEND --docker-custom-image-name $ACR_LOGIN_SERVER/homeservices/frontend:latest --acr-identity system
