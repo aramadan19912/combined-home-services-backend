@@ -80,6 +80,18 @@ az webapp config appsettings set -g "$RESOURCE_GROUP" -n "$WEBAPP_API" --setting
 az webapp config appsettings set -g "$RESOURCE_GROUP" -n "$WEBAPP_AUTH" --settings WEBSITES_PORT=$AUTH_PORT 1> /dev/null
 az webapp config appsettings set -g "$RESOURCE_GROUP" -n "$WEBAPP_FRONTEND" --settings WEBSITES_PORT=$FRONTEND_PORT 1> /dev/null
 
+# Emit outputs for local and GitHub Actions usage
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+  {
+    echo "RESOURCE_GROUP=$RESOURCE_GROUP"
+    echo "ACR_NAME=$ACR_NAME"
+    echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER"
+    echo "WEBAPP_API=$WEBAPP_API"
+    echo "WEBAPP_AUTH=$WEBAPP_AUTH"
+    echo "WEBAPP_FRONTEND=$WEBAPP_FRONTEND"
+  } >> "$GITHUB_OUTPUT"
+fi
+
 echo "Provisioning complete. Record these values in your CI/CD variables:"
 echo "  RESOURCE_GROUP=$RESOURCE_GROUP"
 echo "  ACR_NAME=$ACR_NAME"
