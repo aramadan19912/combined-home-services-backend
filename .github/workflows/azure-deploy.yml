@@ -92,6 +92,13 @@ jobs:
             exit 1
           fi
 
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Normalize and validate ACR variables
         run: |
           set -euo pipefail
@@ -103,15 +110,21 @@ jobs:
               echo ""
             fi
           }
+          # If ACR_NAME missing/invalid, try to derive from ACR_LOGIN_SERVER, or discover via Azure CLI
           norm_name="${ACR_NAME,,}"
-          if [[ "$norm_name" == *.azurecr.io ]]; then
-            norm_name="${norm_name%%.*}"
-          fi
-          if [[ "$norm_name" =~ [^a-z0-9] || ${#norm_name} -lt 5 || ${#norm_name} -gt 50 ]]; then
+          if [[ -z "$norm_name" || "$norm_name" =~ [^a-z0-9] || ${#norm_name} -lt 5 || ${#norm_name} -gt 50 || "$norm_name" == *.azurecr.io ]]; then
             cand="$(derive_from_login_server "${ACR_LOGIN_SERVER:-}")"
+            if [[ -z "$cand" ]]; then
+              # Try discovery: list ACRs in RG; if exactly one found, use it
+              echo "Attempting to discover ACR in resource group $RESOURCE_GROUP ..."
+              discovered=$(az acr list -g "$RESOURCE_GROUP" --query "[0].name" -o tsv || true)
+              if [[ -n "$discovered" ]]; then
+                cand="$discovered"
+                echo "Discovered ACR: $cand"
+              fi
+            fi
             if [[ -n "$cand" ]]; then
               norm_name="$cand"
-              echo "Derived ACR_NAME from ACR_LOGIN_SERVER."
             else
               echo "ACR_NAME is invalid: '$ACR_NAME'. It must be 5-50 lowercase alphanumeric characters (no hyphens)."
               echo "Hint: If you provided the login server as ACR_NAME, set ACR_NAME to just the registry name (e.g., 'myacr123') and ACR_LOGIN_SERVER to 'myacr123.azurecr.io'."
