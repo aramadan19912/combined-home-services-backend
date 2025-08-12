@@ -1,0 +1,45 @@
+name: Azure Provision
+
+on:
+  workflow_dispatch:
+    inputs:
+      location:
+        description: Azure region
+        required: false
+        default: eastus
+      resource_group:
+        description: Resource group name
+        required: false
+        default: hsapp-rg
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      LOCATION: ${{ github.event.inputs.location }}
+      RESOURCE_GROUP: ${{ github.event.inputs.resource_group }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Make provision script executable
+        run: chmod +x infra/azure/provision.sh
+
+      - name: Provision Azure resources
+        run: ./infra/azure/provision.sh
+
+      - name: Output helper
+        run: |
+          echo "Remember to set repo secrets from the provision output:"
+          echo "AZ_RESOURCE_GROUP=${{ env.RESOURCE_GROUP }}"
+          echo "ACR: run 'az acr show -g ${{ env.RESOURCE_GROUP }} -n $ACR_NAME --query loginServer -o tsv' if needed"
