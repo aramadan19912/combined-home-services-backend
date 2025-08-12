@@ -31,12 +31,12 @@ on:
     branches: [ main ]
 
 env:
-  RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP || vars.AZ_RESOURCE_GROUP || github.event.inputs.resource_group }}
-  ACR_NAME: ${{ secrets.AZ_ACR_NAME || vars.AZ_ACR_NAME || github.event.inputs.acr_name }}
-  ACR_LOGIN_SERVER: ${{ secrets.AZ_ACR_LOGIN_SERVER || vars.AZ_ACR_LOGIN_SERVER || github.event.inputs.acr_login_server }}
-  WEBAPP_API: ${{ secrets.AZ_WEBAPP_API || vars.AZ_WEBAPP_API || github.event.inputs.webapp_api }}
-  WEBAPP_AUTH: ${{ secrets.AZ_WEBAPP_AUTH || vars.AZ_WEBAPP_AUTH || github.event.inputs.webapp_auth }}
-  WEBAPP_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND || vars.AZ_WEBAPP_FRONTEND || github.event.inputs.webapp_frontend }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP || secrets.AZ_RESOURCE_GROUP || vars.RESOURCE_GROUP || vars.AZ_RESOURCE_GROUP || github.event.inputs.resource_group }}
+  ACR_NAME: ${{ secrets.ACR_NAME || secrets.AZ_ACR_NAME || vars.ACR_NAME || vars.AZ_ACR_NAME || github.event.inputs.acr_name }}
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER || secrets.AZ_ACR_LOGIN_SERVER || vars.ACR_LOGIN_SERVER || vars.AZ_ACR_LOGIN_SERVER || github.event.inputs.acr_login_server }}
+  WEBAPP_API: ${{ secrets.WEBAPP_API || secrets.AZ_WEBAPP_API || vars.WEBAPP_API || vars.AZ_WEBAPP_API || github.event.inputs.webapp_api }}
+  WEBAPP_AUTH: ${{ secrets.WEBAPP_AUTH || secrets.AZ_WEBAPP_AUTH || vars.WEBAPP_AUTH || vars.AZ_WEBAPP_AUTH || github.event.inputs.webapp_auth }}
+  WEBAPP_FRONTEND: ${{ secrets.WEBAPP_FRONTEND || secrets.AZ_WEBAPP_FRONTEND || vars.WEBAPP_FRONTEND || vars.AZ_WEBAPP_FRONTEND || github.event.inputs.webapp_frontend }}
 
 jobs:
   build-and-deploy:
@@ -50,23 +50,23 @@ jobs:
 
       - name: Debug variable resolution
         env:
-          HAS_SECRET_RG: ${{ secrets.AZ_RESOURCE_GROUP != '' }}
-          HAS_VAR_RG: ${{ vars.AZ_RESOURCE_GROUP != '' }}
+          HAS_SECRET_RG: ${{ secrets.RESOURCE_GROUP != '' || secrets.AZ_RESOURCE_GROUP != '' }}
+          HAS_VAR_RG: ${{ vars.RESOURCE_GROUP != '' || vars.AZ_RESOURCE_GROUP != '' }}
           HAS_INPUT_RG: ${{ github.event.inputs.resource_group != '' }}
-          HAS_SECRET_ACR_NAME: ${{ secrets.AZ_ACR_NAME != '' }}
-          HAS_VAR_ACR_NAME: ${{ vars.AZ_ACR_NAME != '' }}
+          HAS_SECRET_ACR_NAME: ${{ secrets.ACR_NAME != '' || secrets.AZ_ACR_NAME != '' }}
+          HAS_VAR_ACR_NAME: ${{ vars.ACR_NAME != '' || vars.AZ_ACR_NAME != '' }}
           HAS_INPUT_ACR_NAME: ${{ github.event.inputs.acr_name != '' }}
-          HAS_SECRET_ACR_LOGIN: ${{ secrets.AZ_ACR_LOGIN_SERVER != '' }}
-          HAS_VAR_ACR_LOGIN: ${{ vars.AZ_ACR_LOGIN_SERVER != '' }}
+          HAS_SECRET_ACR_LOGIN: ${{ secrets.ACR_LOGIN_SERVER != '' || secrets.AZ_ACR_LOGIN_SERVER != '' }}
+          HAS_VAR_ACR_LOGIN: ${{ vars.ACR_LOGIN_SERVER != '' || vars.AZ_ACR_LOGIN_SERVER != '' }}
           HAS_INPUT_ACR_LOGIN: ${{ github.event.inputs.acr_login_server != '' }}
-          HAS_SECRET_API: ${{ secrets.AZ_WEBAPP_API != '' }}
-          HAS_VAR_API: ${{ vars.AZ_WEBAPP_API != '' }}
+          HAS_SECRET_API: ${{ secrets.WEBAPP_API != '' || secrets.AZ_WEBAPP_API != '' }}
+          HAS_VAR_API: ${{ vars.WEBAPP_API != '' || vars.AZ_WEBAPP_API != '' }}
           HAS_INPUT_API: ${{ github.event.inputs.webapp_api != '' }}
-          HAS_SECRET_AUTH: ${{ secrets.AZ_WEBAPP_AUTH != '' }}
-          HAS_VAR_AUTH: ${{ vars.AZ_WEBAPP_AUTH != '' }}
+          HAS_SECRET_AUTH: ${{ secrets.WEBAPP_AUTH != '' || secrets.AZ_WEBAPP_AUTH != '' }}
+          HAS_VAR_AUTH: ${{ vars.WEBAPP_AUTH != '' || vars.AZ_WEBAPP_AUTH != '' }}
           HAS_INPUT_AUTH: ${{ github.event.inputs.webapp_auth != '' }}
-          HAS_SECRET_FRONTEND: ${{ secrets.AZ_WEBAPP_FRONTEND != '' }}
-          HAS_VAR_FRONTEND: ${{ vars.AZ_WEBAPP_FRONTEND != '' }}
+          HAS_SECRET_FRONTEND: ${{ secrets.WEBAPP_FRONTEND != '' || secrets.AZ_WEBAPP_FRONTEND != '' }}
+          HAS_VAR_FRONTEND: ${{ vars.WEBAPP_FRONTEND != '' || vars.AZ_WEBAPP_FRONTEND != '' }}
           HAS_INPUT_FRONTEND: ${{ github.event.inputs.webapp_frontend != '' }}
         run: |
           echo "Resolution sources (true means provided):"

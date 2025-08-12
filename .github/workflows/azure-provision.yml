@@ -53,10 +53,10 @@ jobs:
         run: |
           {
             echo "### Copy these into repo secrets"
-            echo "- AZ_RESOURCE_GROUP=${{ steps.provision.outputs.RESOURCE_GROUP }}"
-            echo "- AZ_ACR_NAME=${{ steps.provision.outputs.ACR_NAME }}"
-            echo "- AZ_ACR_LOGIN_SERVER=${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
-            echo "- AZ_WEBAPP_API=${{ steps.provision.outputs.WEBAPP_API }}"
-            echo "- AZ_WEBAPP_AUTH=${{ steps.provision.outputs.WEBAPP_AUTH }}"
-            echo "- AZ_WEBAPP_FRONTEND=${{ steps.provision.outputs.WEBAPP_FRONTEND }}"
+            echo "- RESOURCE_GROUP=${{ steps.provision.outputs.RESOURCE_GROUP }}"
+            echo "- ACR_NAME=${{ steps.provision.outputs.ACR_NAME }}"
+            echo "- ACR_LOGIN_SERVER=${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
+            echo "- WEBAPP_API=${{ steps.provision.outputs.WEBAPP_API }}"
+            echo "- WEBAPP_AUTH=${{ steps.provision.outputs.WEBAPP_AUTH }}"
+            echo "- WEBAPP_FRONTEND=${{ steps.provision.outputs.WEBAPP_FRONTEND }}"
           } >> $GITHUB_STEP_SUMMARY

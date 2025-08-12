@@ -22,8 +22,8 @@ Record outputs: `RESOURCE_GROUP`, `ACR_NAME`, `ACR_LOGIN_SERVER`, `WEBAPP_API`, 
 
 ## 2) Configure GitHub secrets (OIDC)
 - `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_CLIENT_ID`
-- `AZ_RESOURCE_GROUP`, `AZ_ACR_NAME`, `AZ_ACR_LOGIN_SERVER`
-- `AZ_WEBAPP_API`, `AZ_WEBAPP_AUTH`, `AZ_WEBAPP_FRONTEND`
+- Preferred (non-prefixed) names: `RESOURCE_GROUP`, `ACR_NAME`, `ACR_LOGIN_SERVER`, `WEBAPP_API`, `WEBAPP_AUTH`, `WEBAPP_FRONTEND`
+- Also accepted (legacy) names: `AZ_RESOURCE_GROUP`, `AZ_ACR_NAME`, `AZ_ACR_LOGIN_SERVER`, `AZ_WEBAPP_API`, `AZ_WEBAPP_AUTH`, `AZ_WEBAPP_FRONTEND`
 - App settings: `PG_CONN_STR`, `APP_CORS_ORIGINS`, `AUTH_SELF_URL`, `AUTH_CLIENT_URL`, `AUTH_CORS_ORIGINS`
 
 The deploy workflow logs into ACR using Azure OIDC (`az acr login -n $ACR_NAME`). No ACR username/password needed if the OIDC app has AcrPush on the ACR.
