@@ -121,6 +121,29 @@ jobs:
           echo "ACR_NAME=$norm_name" >> $GITHUB_ENV
           echo "ACR_LOGIN_SERVER=$norm_name.azurecr.io" >> $GITHUB_ENV
 
+      - name: Debug ACR variables (obfuscated)
+        run: |
+          set -euo pipefail
+          name_len=${#ACR_NAME}
+          # Build obfuscated ACR_NAME: first 3 and last 3 characters with mask
+          if (( name_len > 6 )); then
+            head=${ACR_NAME:0:3}
+            tail=${ACR_NAME:$((${#ACR_NAME}-3)):3}
+            obf_name="${head}***${tail}"
+          else
+            obf_name="***"
+          fi
+          obf_login_server="${ACR_LOGIN_SERVER%%.*}.***"
+          echo "ACR_NAME length: ${name_len}"
+          echo "ACR_NAME (obfuscated): ${obf_name}"
+          echo "ACR_LOGIN_SERVER (obfuscated): ${obf_login_server}"
+          {
+            echo "### ACR resolution"
+            echo "- ACR_NAME length: ${name_len}"
+            echo "- ACR_NAME (obfuscated): ${obf_name}"
+            echo "- ACR_LOGIN_SERVER (obfuscated): ${obf_login_server}"
+          } >> $GITHUB_STEP_SUMMARY
+
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
