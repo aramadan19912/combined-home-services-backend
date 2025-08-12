@@ -5,27 +5,27 @@ on:
     inputs:
       resource_group:
         description: Azure Resource Group
-        required: false
+        required: true
         default: ""
       acr_name:
         description: Azure Container Registry NAME (e.g., hsappacr123)
-        required: false
+        required: true
         default: ""
       acr_login_server:
         description: ACR login server (e.g., hsappacr123.azurecr.io)
-        required: false
+        required: true
         default: ""
       webapp_api:
         description: API Web App name
-        required: false
+        required: true
         default: ""
       webapp_auth:
         description: Auth Web App name
-        required: false
+        required: true
         default: ""
       webapp_frontend:
         description: Frontend Web App name
-        required: false
+        required: true
         default: ""
   push:
     branches: [ main ]
