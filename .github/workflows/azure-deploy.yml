@@ -23,6 +23,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate required Azure resource secrets
+        run: |
+          missing=()
+          for v in RESOURCE_GROUP ACR_NAME ACR_LOGIN_SERVER WEBAPP_API WEBAPP_AUTH WEBAPP_FRONTEND; do
+            if [ -z "${!v}" ]; then missing+=("$v"); fi
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Missing required secrets/env: ${missing[*]}"
+            echo "Set them in GitHub → Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
