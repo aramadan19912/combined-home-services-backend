@@ -4,6 +4,59 @@ on:
   workflow_dispatch:
     inputs:
       location:
+        description: Azure region (e.g. eastus, westeurope)
+        required: false
+        default: eastus
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Show Azure CLI version
+        run: az --version | head -n 1
+
+      - name: Run provision script
+        id: provision
+        env:
+          LOCATION: ${{ inputs.location }}
+          RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP || secrets.RESOURCE_GROUP }}
+          ACR_NAME: ${{ vars.ACR_NAME || secrets.ACR_NAME }}
+          APP_PLAN: ${{ vars.APP_PLAN }}
+          WEBAPP_API: ${{ vars.WEBAPP_API || secrets.WEBAPP_API }}
+          WEBAPP_AUTH: ${{ vars.WEBAPP_AUTH || secrets.WEBAPP_AUTH }}
+          WEBAPP_FRONTEND: ${{ vars.WEBAPP_FRONTEND || secrets.WEBAPP_FRONTEND }}
+        run: |
+          chmod +x infra/azure/provision.sh
+          ./infra/azure/provision.sh
+
+      - name: Print outputs
+        run: |
+          echo "RESOURCE_GROUP=${{ steps.provision.outputs.RESOURCE_GROUP }}" >> $GITHUB_STEP_SUMMARY
+          echo "ACR_NAME=${{ steps.provision.outputs.ACR_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "ACR_LOGIN_SERVER=${{ steps.provision.outputs.ACR_LOGIN_SERVER }}" >> $GITHUB_STEP_SUMMARY
+          echo "WEBAPP_API=${{ steps.provision.outputs.WEBAPP_API }}" >> $GITHUB_STEP_SUMMARY
+          echo "WEBAPP_AUTH=${{ steps.provision.outputs.WEBAPP_AUTH }}" >> $GITHUB_STEP_SUMMARY
+          echo "WEBAPP_FRONTEND=${{ steps.provision.outputs.WEBAPP_FRONTEND }}" >> $GITHUB_STEP_SUMMARY
+name: Azure Provision
+
+on:
+  workflow_dispatch:
+    inputs:
+      location:
         description: Azure region
         required: false
         default: eastus

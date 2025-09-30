@@ -1,6 +1,132 @@
 name: Azure Deploy (API, Auth, Frontend)
 
 on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/azure-deploy.yml'
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP || vars.RESOURCE_GROUP }}
+  ACR_NAME: ${{ secrets.ACR_NAME || vars.ACR_NAME }}
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER || vars.ACR_LOGIN_SERVER }}
+  WEBAPP_API: ${{ secrets.WEBAPP_API || vars.WEBAPP_API }}
+  WEBAPP_AUTH: ${{ secrets.WEBAPP_AUTH || vars.WEBAPP_AUTH }}
+  WEBAPP_FRONTEND: ${{ secrets.WEBAPP_FRONTEND || vars.WEBAPP_FRONTEND }}
+  PG_CONN_STR: ${{ secrets.PG_CONN_STR }}
+  APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
+  AUTH_SELF_URL: ${{ secrets.AUTH_SELF_URL }}
+  AUTH_CLIENT_URL: ${{ secrets.AUTH_CLIENT_URL }}
+  AUTH_CORS_ORIGINS: ${{ secrets.AUTH_CORS_ORIGINS }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: azure-deploy
+      cancel-in-progress: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve ACR login server and set image tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${ACR_LOGIN_SERVER:-}" ]]; then
+            ACR_LOGIN_SERVER=$(az acr show -n "$ACR_NAME" --query loginServer -o tsv)
+            echo "ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER" >> $GITHUB_ENV
+          fi
+          echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          API_URL="https://${WEBAPP_API}.azurewebsites.net"
+          AUTH_URL="https://${WEBAPP_AUTH}.azurewebsites.net"
+          FRONTEND_URL="https://${WEBAPP_FRONTEND}.azurewebsites.net"
+          {
+            echo "API_URL=$API_URL"
+            echo "AUTH_URL=$AUTH_URL"
+            echo "FRONTEND_URL=$FRONTEND_URL"
+          } >> $GITHUB_ENV
+
+      - name: ACR Login
+        run: az acr login -n "$ACR_NAME"
+
+      - name: Build and push API image
+        run: |
+          docker build -f backend/Dockerfile -t $ACR_LOGIN_SERVER/hsapp-api:$IMAGE_TAG backend
+          docker push $ACR_LOGIN_SERVER/hsapp-api:$IMAGE_TAG
+
+      - name: Build and push Auth image
+        run: |
+          docker build -f backend/AuthServer.Dockerfile -t $ACR_LOGIN_SERVER/hsapp-auth:$IMAGE_TAG backend
+          docker push $ACR_LOGIN_SERVER/hsapp-auth:$IMAGE_TAG
+
+      - name: Build and push Frontend image
+        env:
+          VITE_API_BASE_URL: ${{ env.API_URL }}
+          VITE_API_HOST_URL: ${{ env.API_URL }}
+        run: |
+          docker build \
+            -f frontend/Dockerfile \
+            --build-arg VITE_API_BASE_URL="$VITE_API_BASE_URL" \
+            --build-arg VITE_API_HOST_URL="$VITE_API_HOST_URL" \
+            --build-arg VITE_ENVIRONMENT=production \
+            -t $ACR_LOGIN_SERVER/hsapp-frontend:$IMAGE_TAG frontend
+          docker push $ACR_LOGIN_SERVER/hsapp-frontend:$IMAGE_TAG
+
+      - name: Configure API Web App container and settings (ACR via managed identity)
+        run: |
+          az webapp config container set -g "$RESOURCE_GROUP" -n "$WEBAPP_API" \
+            --docker-custom-image-name "$ACR_LOGIN_SERVER/hsapp-api:$IMAGE_TAG" \
+            --acr-identity [system]
+          az webapp config appsettings set -g "$RESOURCE_GROUP" -n "$WEBAPP_API" --settings \
+            WEBSITES_PORT=8080 \
+            Database__Provider=PostgreSql \
+            ConnectionStrings__Default="${PG_CONN_STR}" \
+            App__CorsOrigins="${APP_CORS_ORIGINS:-$FRONTEND_URL}" \
+            AuthServer__Authority="${AUTH_SELF_URL:-$AUTH_URL}"
+
+      - name: Configure Auth Web App container and settings (ACR via managed identity)
+        run: |
+          az webapp config container set -g "$RESOURCE_GROUP" -n "$WEBAPP_AUTH" \
+            --docker-custom-image-name "$ACR_LOGIN_SERVER/hsapp-auth:$IMAGE_TAG" \
+            --acr-identity [system]
+          az webapp config appsettings set -g "$RESOURCE_GROUP" -n "$WEBAPP_AUTH" --settings \
+            WEBSITES_PORT=8081 \
+            Database__Provider=PostgreSql \
+            ConnectionStrings__Default="${PG_CONN_STR}" \
+            App__SelfUrl="${AUTH_SELF_URL:-$AUTH_URL}" \
+            App__ClientUrl="${AUTH_CLIENT_URL:-$FRONTEND_URL}" \
+            App__CorsOrigins="${AUTH_CORS_ORIGINS:-$FRONTEND_URL}"
+
+      - name: Configure Frontend Web App container and settings (ACR via managed identity)
+        run: |
+          az webapp config container set -g "$RESOURCE_GROUP" -n "$WEBAPP_FRONTEND" \
+            --docker-custom-image-name "$ACR_LOGIN_SERVER/hsapp-frontend:$IMAGE_TAG" \
+            --acr-identity [system]
+          az webapp config appsettings set -g "$RESOURCE_GROUP" -n "$WEBAPP_FRONTEND" --settings WEBSITES_PORT=8080
+
+      - name: Restart Web Apps
+        run: |
+          az webapp restart -g "$RESOURCE_GROUP" -n "$WEBAPP_API"
+          az webapp restart -g "$RESOURCE_GROUP" -n "$WEBAPP_AUTH"
+          az webapp restart -g "$RESOURCE_GROUP" -n "$WEBAPP_FRONTEND"
+name: Azure Deploy (API, Auth, Frontend)
+
+on:
   workflow_dispatch:
     inputs:
       resource_group:
