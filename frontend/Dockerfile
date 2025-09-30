@@ -12,6 +12,14 @@ RUN npm ci --only=production
 # Copy source code
 COPY . .
 
+# Build-time configuration for Vite
+ARG VITE_API_BASE_URL
+ARG VITE_API_HOST_URL
+ARG VITE_ENVIRONMENT=production
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL \
+    VITE_API_HOST_URL=$VITE_API_HOST_URL \
+    VITE_ENVIRONMENT=$VITE_ENVIRONMENT
+
 # Build the application
 RUN npm run build
 
