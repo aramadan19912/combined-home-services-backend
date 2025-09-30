@@ -4,58 +4,50 @@ on:
   workflow_dispatch:
     inputs:
       location:
-        description: Azure region
+        description: 'Azure region (e.g., eastus, westus2)'
         required: false
-        default: eastus
+        default: 'eastus'
       resource_group:
-        description: Resource group name
+        description: 'Resource group name'
         required: false
-        default: hsapp-rg
+        default: 'hsapp-rg'
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   provision:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    env:
-      LOCATION: ${{ github.event.inputs.location }}
-      RESOURCE_GROUP: ${{ github.event.inputs.resource_group }}
+    
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-
+      
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Make provision script executable
-        run: chmod +x infra/azure/provision.sh
-
-      - name: Provision Azure resources
+      
+      - name: Run Provision Script
         id: provision
-        run: ./infra/azure/provision.sh
-
-      - name: Show outputs
+        env:
+          LOCATION: ${{ github.event.inputs.location || 'eastus' }}
+          RESOURCE_GROUP: ${{ github.event.inputs.resource_group || 'hsapp-rg' }}
         run: |
-          echo "RESOURCE_GROUP: ${{ steps.provision.outputs.RESOURCE_GROUP }}"
-          echo "ACR_NAME: ${{ steps.provision.outputs.ACR_NAME }}"
-          echo "ACR_LOGIN_SERVER: ${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
-          echo "WEBAPP_API: ${{ steps.provision.outputs.WEBAPP_API }}"
-          echo "WEBAPP_AUTH: ${{ steps.provision.outputs.WEBAPP_AUTH }}"
-          echo "WEBAPP_FRONTEND: ${{ steps.provision.outputs.WEBAPP_FRONTEND }}"
-
-      - name: Job summary
+          chmod +x ./infra/azure/provision.sh
+          ./infra/azure/provision.sh
+      
+      - name: Show Outputs
         run: |
-          {
-            echo "### Copy these into repo secrets"
-            echo "- RESOURCE_GROUP=${{ steps.provision.outputs.RESOURCE_GROUP }}"
-            echo "- ACR_NAME=${{ steps.provision.outputs.ACR_NAME }}"
-            echo "- ACR_LOGIN_SERVER=${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
-            echo "- WEBAPP_API=${{ steps.provision.outputs.WEBAPP_API }}"
-            echo "- WEBAPP_AUTH=${{ steps.provision.outputs.WEBAPP_AUTH }}"
-            echo "- WEBAPP_FRONTEND=${{ steps.provision.outputs.WEBAPP_FRONTEND }}"
-          } >> $GITHUB_STEP_SUMMARY
+          echo "✅ Provisioning complete!"
+          echo ""
+          echo "📝 Please save these values as GitHub secrets:"
+          echo "RESOURCE_GROUP=${{ steps.provision.outputs.RESOURCE_GROUP }}"
+          echo "ACR_NAME=${{ steps.provision.outputs.ACR_NAME }}"
+          echo "ACR_LOGIN_SERVER=${{ steps.provision.outputs.ACR_LOGIN_SERVER }}"
+          echo "WEBAPP_API=${{ steps.provision.outputs.WEBAPP_API }}"
+          echo "WEBAPP_AUTH=${{ steps.provision.outputs.WEBAPP_AUTH }}"
+          echo "WEBAPP_FRONTEND=${{ steps.provision.outputs.WEBAPP_FRONTEND }}"

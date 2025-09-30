@@ -1,250 +1,156 @@
 name: Azure Deploy (API, Auth, Frontend)
 
 on:
-  workflow_dispatch:
-    inputs:
-      resource_group:
-        description: Azure Resource Group
-        required: true
-        default: ""
-      acr_name:
-        description: Azure Container Registry NAME (e.g., hsappacr123)
-        required: true
-        default: ""
-      acr_login_server:
-        description: ACR login server (e.g., hsappacr123.azurecr.io)
-        required: true
-        default: ""
-      webapp_api:
-        description: API Web App name
-        required: true
-        default: ""
-      webapp_auth:
-        description: Auth Web App name
-        required: true
-        default: ""
-      webapp_frontend:
-        description: Frontend Web App name
-        required: true
-        default: ""
   push:
-    branches: [ main ]
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 env:
-  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP || secrets.AZ_RESOURCE_GROUP || vars.RESOURCE_GROUP || vars.AZ_RESOURCE_GROUP || github.event.inputs.resource_group }}
-  ACR_NAME: ${{ secrets.ACR_NAME || secrets.AZ_ACR_NAME || vars.ACR_NAME || vars.AZ_ACR_NAME || github.event.inputs.acr_name }}
-  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER || secrets.AZ_ACR_LOGIN_SERVER || vars.ACR_LOGIN_SERVER || vars.AZ_ACR_LOGIN_SERVER || github.event.inputs.acr_login_server }}
-  WEBAPP_API: ${{ secrets.WEBAPP_API || secrets.AZ_WEBAPP_API || vars.WEBAPP_API || vars.AZ_WEBAPP_API || github.event.inputs.webapp_api }}
-  WEBAPP_AUTH: ${{ secrets.WEBAPP_AUTH || secrets.AZ_WEBAPP_AUTH || vars.WEBAPP_AUTH || vars.AZ_WEBAPP_AUTH || github.event.inputs.webapp_auth }}
-  WEBAPP_FRONTEND: ${{ secrets.WEBAPP_FRONTEND || secrets.AZ_WEBAPP_FRONTEND || vars.WEBAPP_FRONTEND || vars.AZ_WEBAPP_FRONTEND || github.event.inputs.webapp_frontend }}
+  # Support both prefixed and non-prefixed secret names
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP || secrets.AZ_RESOURCE_GROUP }}
+  ACR_NAME: ${{ secrets.ACR_NAME || secrets.AZ_ACR_NAME }}
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER || secrets.AZ_ACR_LOGIN_SERVER }}
+  WEBAPP_API: ${{ secrets.WEBAPP_API || secrets.AZ_WEBAPP_API }}
+  WEBAPP_AUTH: ${{ secrets.WEBAPP_AUTH || secrets.AZ_WEBAPP_AUTH }}
+  WEBAPP_FRONTEND: ${{ secrets.WEBAPP_FRONTEND || secrets.AZ_WEBAPP_FRONTEND }}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
+    
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Debug variable resolution
-        env:
-          HAS_SECRET_RG: ${{ secrets.RESOURCE_GROUP != '' || secrets.AZ_RESOURCE_GROUP != '' }}
-          HAS_VAR_RG: ${{ vars.RESOURCE_GROUP != '' || vars.AZ_RESOURCE_GROUP != '' }}
-          HAS_INPUT_RG: ${{ github.event.inputs.resource_group != '' }}
-          HAS_SECRET_ACR_NAME: ${{ secrets.ACR_NAME != '' || secrets.AZ_ACR_NAME != '' }}
-          HAS_VAR_ACR_NAME: ${{ vars.ACR_NAME != '' || vars.AZ_ACR_NAME != '' }}
-          HAS_INPUT_ACR_NAME: ${{ github.event.inputs.acr_name != '' }}
-          HAS_SECRET_ACR_LOGIN: ${{ secrets.ACR_LOGIN_SERVER != '' || secrets.AZ_ACR_LOGIN_SERVER != '' }}
-          HAS_VAR_ACR_LOGIN: ${{ vars.ACR_LOGIN_SERVER != '' || vars.AZ_ACR_LOGIN_SERVER != '' }}
-          HAS_INPUT_ACR_LOGIN: ${{ github.event.inputs.acr_login_server != '' }}
-          HAS_SECRET_API: ${{ secrets.WEBAPP_API != '' || secrets.AZ_WEBAPP_API != '' }}
-          HAS_VAR_API: ${{ vars.WEBAPP_API != '' || vars.AZ_WEBAPP_API != '' }}
-          HAS_INPUT_API: ${{ github.event.inputs.webapp_api != '' }}
-          HAS_SECRET_AUTH: ${{ secrets.WEBAPP_AUTH != '' || secrets.AZ_WEBAPP_AUTH != '' }}
-          HAS_VAR_AUTH: ${{ vars.WEBAPP_AUTH != '' || vars.AZ_WEBAPP_AUTH != '' }}
-          HAS_INPUT_AUTH: ${{ github.event.inputs.webapp_auth != '' }}
-          HAS_SECRET_FRONTEND: ${{ secrets.WEBAPP_FRONTEND != '' || secrets.AZ_WEBAPP_FRONTEND != '' }}
-          HAS_VAR_FRONTEND: ${{ vars.WEBAPP_FRONTEND != '' || vars.AZ_WEBAPP_FRONTEND != '' }}
-          HAS_INPUT_FRONTEND: ${{ github.event.inputs.webapp_frontend != '' }}
-        run: |
-          echo "Resolution sources (true means provided):"
-          echo "RESOURCE_GROUP: secret=$HAS_SECRET_RG var=$HAS_VAR_RG input=$HAS_INPUT_RG"
-          echo "ACR_NAME: secret=$HAS_SECRET_ACR_NAME var=$HAS_VAR_ACR_NAME input=$HAS_INPUT_ACR_NAME"
-          echo "ACR_LOGIN_SERVER: secret=$HAS_SECRET_ACR_LOGIN var=$HAS_VAR_ACR_LOGIN input=$HAS_INPUT_ACR_LOGIN"
-          echo "WEBAPP_API: secret=$HAS_SECRET_API var=$HAS_VAR_API input=$HAS_INPUT_API"
-          echo "WEBAPP_AUTH: secret=$HAS_SECRET_AUTH var=$HAS_VAR_AUTH input=$HAS_INPUT_AUTH"
-          echo "WEBAPP_FRONTEND: secret=$HAS_SECRET_FRONTEND var=$HAS_VAR_FRONTEND input=$HAS_INPUT_FRONTEND"
-          for v in RESOURCE_GROUP ACR_NAME ACR_LOGIN_SERVER WEBAPP_API WEBAPP_AUTH WEBAPP_FRONTEND; do
-            if [ -n "${!v}" ]; then echo "$v: set"; else echo "$v: empty"; fi
-          done
-
-      - name: Validate required Azure resource secrets
-        run: |
-          missing=()
-          for v in RESOURCE_GROUP ACR_NAME ACR_LOGIN_SERVER WEBAPP_API WEBAPP_AUTH WEBAPP_FRONTEND; do
-            if [ -z "${!v}" ]; then missing+=("$v"); fi
-          done
-          if [ ${#missing[@]} -gt 0 ]; then
-            echo "Missing required settings: ${missing[*]}"
-            echo "Provide them as Secrets, Variables, or Workflow inputs when dispatching."
-            exit 1
-          fi
-
+      
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Normalize and validate ACR variables
+      
+      - name: Login to Azure Container Registry
         run: |
-          set -euo pipefail
-          derive_from_login_server() {
-            local login="$1"
-            if [[ "$login" =~ ^([a-z0-9]{5,50})\.azurecr\.io$ ]]; then
-              echo "${BASH_REMATCH[1]}"
-            else
-              echo ""
-            fi
-          }
-          # If ACR_NAME missing/invalid, try to derive from ACR_LOGIN_SERVER, or discover via Azure CLI
-          norm_name="${ACR_NAME,,}"
-          if [[ -z "$norm_name" || "$norm_name" =~ [^a-z0-9] || ${#norm_name} -lt 5 || ${#norm_name} -gt 50 || "$norm_name" == *.azurecr.io ]]; then
-            cand="$(derive_from_login_server "${ACR_LOGIN_SERVER:-}")"
-            if [[ -z "$cand" ]]; then
-              # Try discovery: list ACRs in RG; if exactly one found, use it
-              echo "Attempting to discover ACR in resource group $RESOURCE_GROUP ..."
-              discovered=$(az acr list -g "$RESOURCE_GROUP" --query "[0].name" -o tsv || true)
-              if [[ -n "$discovered" ]]; then
-                cand="$discovered"
-                echo "Discovered ACR: $cand"
-              fi
-            fi
-            if [[ -n "$cand" ]]; then
-              norm_name="$cand"
-            else
-              echo "ACR_NAME is invalid: '$ACR_NAME'. It must be 5-50 lowercase alphanumeric characters (no hyphens)."
-              echo "Hint: If you provided the login server as ACR_NAME, set ACR_NAME to just the registry name (e.g., 'myacr123') and ACR_LOGIN_SERVER to 'myacr123.azurecr.io'."
-              exit 1
-            fi
-          fi
-          echo "ACR_NAME=$norm_name" >> $GITHUB_ENV
-          echo "ACR_LOGIN_SERVER=$norm_name.azurecr.io" >> $GITHUB_ENV
-
-      - name: Debug ACR variables (obfuscated)
+          az acr login -n ${{ env.ACR_NAME }}
+      
+      # Build and push API image
+      - name: Build and Push API Image
         run: |
-          set -euo pipefail
-          name_len=${#ACR_NAME}
-          # Build obfuscated ACR_NAME: first 3 and last 3 characters with mask
-          if (( name_len > 6 )); then
-            head=${ACR_NAME:0:3}
-            tail=${ACR_NAME:$((${#ACR_NAME}-3)):3}
-            obf_name="${head}***${tail}"
-          else
-            obf_name="***"
-          fi
-          obf_login_server="${ACR_LOGIN_SERVER%%.*}.***"
-          echo "ACR_NAME length: ${name_len}"
-          echo "ACR_NAME (obfuscated): ${obf_name}"
-          echo "ACR_LOGIN_SERVER (obfuscated): ${obf_login_server}"
-          {
-            echo "### ACR resolution"
-            echo "- ACR_NAME length: ${name_len}"
-            echo "- ACR_NAME (obfuscated): ${obf_name}"
-            echo "- ACR_LOGIN_SERVER (obfuscated): ${obf_login_server}"
-          } >> $GITHUB_STEP_SUMMARY
-
-      - name: Azure Login (OIDC)
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Azure CLI - Get ACR info
-        id: acr
+          docker build \
+            -f backend/Dockerfile \
+            -t ${{ env.ACR_LOGIN_SERVER }}/hsapp-api:${{ github.sha }} \
+            -t ${{ env.ACR_LOGIN_SERVER }}/hsapp-api:latest \
+            backend
+          docker push ${{ env.ACR_LOGIN_SERVER }}/hsapp-api:${{ github.sha }}
+          docker push ${{ env.ACR_LOGIN_SERVER }}/hsapp-api:latest
+      
+      # Build and push Auth Server image
+      - name: Build and Push Auth Image
         run: |
-          echo "loginServer=$ACR_LOGIN_SERVER" >> $GITHUB_OUTPUT
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to ACR via Azure CLI (OIDC)
-        run: az acr login -n $ACR_NAME
-
-      - name: Build and push API image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.ACR_LOGIN_SERVER }}/homeservices/api:latest
-
-      - name: Build and push Auth image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backend
-          file: ./backend/AuthServer.Dockerfile
-          push: true
-          tags: |
-            ${{ env.ACR_LOGIN_SERVER }}/homeservices/auth:latest
-
-      - name: Build and push Frontend image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.ACR_LOGIN_SERVER }}/homeservices/frontend:latest
-
-      - name: Deploy API container to Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.WEBAPP_API }}
-          images: ${{ env.ACR_LOGIN_SERVER }}/homeservices/api:latest
-
-      - name: Deploy Auth container to Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.WEBAPP_AUTH }}
-          images: ${{ env.ACR_LOGIN_SERVER }}/homeservices/auth:latest
-
-      - name: Deploy Frontend container to Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.WEBAPP_FRONTEND }}
-          images: ${{ env.ACR_LOGIN_SERVER }}/homeservices/frontend:latest
-
-      - name: Configure App Settings (API)
+          docker build \
+            -f backend/AuthServer.Dockerfile \
+            -t ${{ env.ACR_LOGIN_SERVER }}/hsapp-auth:${{ github.sha }} \
+            -t ${{ env.ACR_LOGIN_SERVER }}/hsapp-auth:latest \
+            backend
+          docker push ${{ env.ACR_LOGIN_SERVER }}/hsapp-auth:${{ github.sha }}
+          docker push ${{ env.ACR_LOGIN_SERVER }}/hsapp-auth:latest
+      
+      # Build and push Frontend image
+      - name: Build and Push Frontend Image
         run: |
-          az webapp config appsettings set -g $RESOURCE_GROUP -n $WEBAPP_API --settings \
-            WEBSITES_PORT=8080 \
-            Database__Provider=PostgreSql \
-            ConnectionStrings__Default="${{ secrets.PG_CONN_STR }}" \
-            App__CorsOrigins="${{ secrets.APP_CORS_ORIGINS }}"
-
-      - name: Configure App Settings (Auth)
+          docker build \
+            -f frontend/Dockerfile \
+            -t ${{ env.ACR_LOGIN_SERVER }}/hsapp-frontend:${{ github.sha }} \
+            -t ${{ env.ACR_LOGIN_SERVER }}/hsapp-frontend:latest \
+            frontend
+          docker push ${{ env.ACR_LOGIN_SERVER }}/hsapp-frontend:${{ github.sha }}
+          docker push ${{ env.ACR_LOGIN_SERVER }}/hsapp-frontend:latest
+      
+      # Deploy API
+      - name: Deploy API to Web App
         run: |
-          az webapp config appsettings set -g $RESOURCE_GROUP -n $WEBAPP_AUTH --settings \
-            WEBSITES_PORT=8081 \
-            Database__Provider=PostgreSql \
-            ConnectionStrings__Default="${{ secrets.PG_CONN_STR }}" \
-            App__SelfUrl="${{ secrets.AUTH_SELF_URL }}" \
-            App__ClientUrl="${{ secrets.AUTH_CLIENT_URL }}" \
-            App__CorsOrigins="${{ secrets.AUTH_CORS_ORIGINS }}"
-
-      - name: Configure App Settings (Frontend)
+          az webapp config container set \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.WEBAPP_API }} \
+            --docker-custom-image-name ${{ env.ACR_LOGIN_SERVER }}/hsapp-api:${{ github.sha }} \
+            --docker-registry-server-url https://${{ env.ACR_LOGIN_SERVER }}
+          
+          # Set application settings
+          az webapp config appsettings set \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.WEBAPP_API }} \
+            --settings \
+              WEBSITES_PORT=8080 \
+              Database__Provider=${{ secrets.DATABASE_PROVIDER || 'Sqlite' }} \
+              ConnectionStrings__Default="${{ secrets.PG_CONN_STR || 'Data Source=/data/app.db' }}" \
+              App__CorsOrigins="${{ secrets.APP_CORS_ORIGINS || 'https://localhost:5173' }}" \
+              App__SelfUrl="https://${{ env.WEBAPP_API }}.azurewebsites.net" \
+              AuthServer__Authority="${{ secrets.AUTH_SELF_URL || format('https://{0}.azurewebsites.net', env.WEBAPP_AUTH) }}" \
+              AuthServer__RequireHttpsMetadata=true
+          
+          # Restart to apply changes
+          az webapp restart -g ${{ env.RESOURCE_GROUP }} -n ${{ env.WEBAPP_API }}
+      
+      # Deploy Auth Server
+      - name: Deploy Auth Server to Web App
         run: |
-          az webapp config appsettings set -g $RESOURCE_GROUP -n $WEBAPP_FRONTEND --settings \
-            WEBSITES_PORT=8080
-
-      - name: Bind Web Apps to ACR via Managed Identity
+          az webapp config container set \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.WEBAPP_AUTH }} \
+            --docker-custom-image-name ${{ env.ACR_LOGIN_SERVER }}/hsapp-auth:${{ github.sha }} \
+            --docker-registry-server-url https://${{ env.ACR_LOGIN_SERVER }}
+          
+          # Set application settings
+          az webapp config appsettings set \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.WEBAPP_AUTH }} \
+            --settings \
+              WEBSITES_PORT=8081 \
+              Database__Provider=${{ secrets.DATABASE_PROVIDER || 'Sqlite' }} \
+              ConnectionStrings__Default="${{ secrets.PG_CONN_STR || 'Data Source=/data/app.db' }}" \
+              App__CorsOrigins="${{ secrets.AUTH_CORS_ORIGINS || 'https://localhost:5173' }}" \
+              App__SelfUrl="${{ secrets.AUTH_SELF_URL || format('https://{0}.azurewebsites.net', env.WEBAPP_AUTH) }}" \
+              App__ClientUrl="${{ secrets.AUTH_CLIENT_URL || format('https://{0}.azurewebsites.net', env.WEBAPP_FRONTEND) }}" \
+              App__RedirectAllowedUrls="${{ secrets.AUTH_CLIENT_URL || format('https://{0}.azurewebsites.net', env.WEBAPP_FRONTEND) }}"
+          
+          # Restart to apply changes
+          az webapp restart -g ${{ env.RESOURCE_GROUP }} -n ${{ env.WEBAPP_AUTH }}
+      
+      # Deploy Frontend
+      - name: Deploy Frontend to Web App
         run: |
-          az webapp config container set -g $RESOURCE_GROUP -n $WEBAPP_API --docker-custom-image-name $ACR_LOGIN_SERVER/homeservices/api:latest --acr-identity system
-          az webapp config container set -g $RESOURCE_GROUP -n $WEBAPP_AUTH --docker-custom-image-name $ACR_LOGIN_SERVER/homeservices/auth:latest --acr-identity system
-          az webapp config container set -g $RESOURCE_GROUP -n $WEBAPP_FRONTEND --docker-custom-image-name $ACR_LOGIN_SERVER/homeservices/frontend:latest --acr-identity system
+          az webapp config container set \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.WEBAPP_FRONTEND }} \
+            --docker-custom-image-name ${{ env.ACR_LOGIN_SERVER }}/hsapp-frontend:${{ github.sha }} \
+            --docker-registry-server-url https://${{ env.ACR_LOGIN_SERVER }}
+          
+          # Set application settings
+          az webapp config appsettings set \
+            -g ${{ env.RESOURCE_GROUP }} \
+            -n ${{ env.WEBAPP_FRONTEND }} \
+            --settings \
+              WEBSITES_PORT=8080 \
+              VITE_API_BASE_URL="${{ secrets.AUTH_SELF_URL || format('https://{0}.azurewebsites.net', env.WEBAPP_AUTH) }}" \
+              VITE_API_HOST_URL="${{ secrets.APP_SELF_URL || format('https://{0}.azurewebsites.net/api/v1', env.WEBAPP_API) }}" \
+              VITE_ENVIRONMENT=production
+          
+          # Restart to apply changes
+          az webapp restart -g ${{ env.RESOURCE_GROUP }} -n ${{ env.WEBAPP_FRONTEND }}
+      
+      - name: Deployment Summary
+        run: |
+          echo "🚀 Deployment complete!"
+          echo ""
+          echo "📍 Application URLs:"
+          echo "Frontend: https://${{ env.WEBAPP_FRONTEND }}.azurewebsites.net"
+          echo "API: https://${{ env.WEBAPP_API }}.azurewebsites.net"
+          echo "Auth Server: https://${{ env.WEBAPP_AUTH }}.azurewebsites.net"
+          echo ""
+          echo "🔍 Check deployment status:"
+          echo "az webapp browse -g ${{ env.RESOURCE_GROUP }} -n ${{ env.WEBAPP_FRONTEND }}"

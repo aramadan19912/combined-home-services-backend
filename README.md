@@ -143,9 +143,18 @@ apiCache.getStats()              # Check cache efficiency
 
 ## 📚 Documentation
 
+### Application Documentation
 - **[API Integration Complete](frontend/API_INTEGRATION_COMPLETE.md)** - Detailed integration documentation
-- **[Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** - Production deployment instructions
 - **[Integration Testing](frontend/src/utils/integration-test.ts)** - Testing utilities and examples
+
+### Deployment Documentation
+- 🚀 **[Getting Started](GETTING_STARTED.md)** - Quick start guide
+- 📋 **[Deployment Summary](DEPLOYMENT_SUMMARY.md)** - Complete deployment overview
+- 📘 **[Azure Setup Instructions](AZURE_SETUP_INSTRUCTIONS.md)** - Comprehensive Azure guide
+- ⚡ **[Quick Reference](QUICK_REFERENCE.md)** - Command reference
+- ✅ **[Deployment Checklist](DEPLOYMENT_CHECKLIST.md)** - Step-by-step checklist
+- 🏗️ **[Architecture](ARCHITECTURE.md)** - System architecture diagrams
+- 📘 **[Frontend Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** - Additional options
 
 ## 🌐 API Endpoints
 
@@ -177,17 +186,47 @@ apiCache.getStats()              # Check cache efficiency
 
 ## 🚀 Production Deployment
 
-The application is production-ready with:
+The application is production-ready with full Azure deployment support:
 
-- **Docker support** with multi-stage builds
-- **Cloud deployment** templates for Azure/AWS
-- **Environment configuration** for different stages
-- **Performance optimization** with caching and CDN support
-- **Monitoring and logging** integration
-- **SSL/HTTPS** configuration
-- **Database backup** strategies
+### Quick Azure Deployment
 
-See **[Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** for detailed instructions.
+**One-command deployment:**
+```bash
+chmod +x quick-deploy-azure.sh
+./quick-deploy-azure.sh
+```
+
+**Automated CI/CD with GitHub Actions:**
+1. Set up Azure credentials (see [AZURE_SETUP_INSTRUCTIONS.md](AZURE_SETUP_INSTRUCTIONS.md))
+2. Push to `main` branch - automatic deployment!
+
+### Deployment Features
+
+- ✅ **Docker support** with multi-stage builds
+- ✅ **Azure App Service** for containerized deployment
+- ✅ **Azure Container Registry** for private image storage
+- ✅ **GitHub Actions** CI/CD workflows included
+- ✅ **Infrastructure as Code** (Bicep templates)
+- ✅ **Automated SSL/HTTPS** via Azure
+- ✅ **Environment configuration** for dev/staging/prod
+- ✅ **Database options** (SQLite/PostgreSQL)
+- ✅ **Auto-scaling** and monitoring ready
+
+### Deployment Guides
+
+- 📘 **[Azure Setup Instructions](AZURE_SETUP_INSTRUCTIONS.md)** - Complete Azure deployment guide
+- 📘 **[Azure Deployment Guide](AZURE_DEPLOYMENT_GUIDE.md)** - Quick reference
+- 📘 **[Frontend Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** - Additional deployment options
+
+### Local Testing
+
+Test the full stack locally before deploying:
+```bash
+docker-compose up --build
+# Frontend: http://localhost:3000
+# API: http://localhost:8080
+# Auth: http://localhost:8081
+```
 
 ## 🤝 Contributing
 
