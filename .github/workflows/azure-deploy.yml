@@ -1,10 +1,13 @@
 name: Azure Deploy (API, Auth, Frontend)
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 permissions:
   id-token: write
@@ -24,6 +27,25 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Validate Required Secrets
+        run: |
+          if [ -z "${{ secrets.RESOURCE_GROUP || secrets.AZ_RESOURCE_GROUP }}" ]; then
+            echo "❌ ERROR: RESOURCE_GROUP secret is not set"
+            echo "Please run the 'Azure Provision' workflow first or set secrets manually"
+            exit 1
+          fi
+          if [ -z "${{ secrets.ACR_NAME || secrets.AZ_ACR_NAME }}" ]; then
+            echo "❌ ERROR: ACR_NAME secret is not set"
+            echo "Please run the 'Azure Provision' workflow first or set secrets manually"
+            exit 1
+          fi
+          if [ -z "${{ secrets.ACR_LOGIN_SERVER || secrets.AZ_ACR_LOGIN_SERVER }}" ]; then
+            echo "❌ ERROR: ACR_LOGIN_SERVER secret is not set"
+            echo "Please run the 'Azure Provision' workflow first or set secrets manually"
+            exit 1
+          fi
+          echo "✅ All required secrets are configured"
+      
       - name: Checkout code
         uses: actions/checkout@v4
       

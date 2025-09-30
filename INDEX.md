@@ -2,6 +2,8 @@
 
 ## 🎯 Quick Navigation
 
+**GitHub Actions Error?** → Fix it: **[FIX_GITHUB_ACTIONS_ERROR.md](FIX_GITHUB_ACTIONS_ERROR.md)** 🔴
+
 **Just want to deploy?** → Start here: **[GETTING_STARTED.md](GETTING_STARTED.md)**
 
 **First time with Azure?** → Read: **[DEPLOYMENT_SUMMARY.md](DEPLOYMENT_SUMMARY.md)**
