@@ -1,0 +1,77 @@
+name: Azure Provision (Bicep)
+
+on:
+  workflow_dispatch:
+    inputs:
+      location:
+        description: 'Azure region'
+        required: false
+        default: 'eastus'
+      resource_group:
+        description: 'Resource group name'
+        required: false
+        default: 'hsapp-rg'
+      environment:
+        description: 'Environment (dev/staging/prod)'
+        required: false
+        default: 'dev'
+      app_service_sku:
+        description: 'App Service SKU (B1/B2/P1v3/P2v3)'
+        required: false
+        default: 'B1'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Create Resource Group
+        run: |
+          az group create \
+            --name ${{ github.event.inputs.resource_group || 'hsapp-rg' }} \
+            --location ${{ github.event.inputs.location || 'eastus' }}
+      
+      - name: Deploy Bicep Template
+        id: deploy
+        run: |
+          OUTPUTS=$(az deployment group create \
+            -g ${{ github.event.inputs.resource_group || 'hsapp-rg' }} \
+            -f infra/azure/main.bicep \
+            -p environment=${{ github.event.inputs.environment || 'dev' }} \
+            -p appServiceSku=${{ github.event.inputs.app_service_sku || 'B1' }} \
+            --query properties.outputs \
+            -o json)
+          
+          echo "outputs=$OUTPUTS" >> $GITHUB_OUTPUT
+      
+      - name: Show Deployment Outputs
+        run: |
+          echo "✅ Infrastructure deployed successfully!"
+          echo ""
+          echo "📝 Save these GitHub secrets:"
+          echo ""
+          echo "RESOURCE_GROUP=${{ github.event.inputs.resource_group || 'hsapp-rg' }}"
+          echo "ACR_NAME=$(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.acrName.value')"
+          echo "ACR_LOGIN_SERVER=$(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.acrLoginServer.value')"
+          echo "WEBAPP_API=$(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.apiAppName.value')"
+          echo "WEBAPP_AUTH=$(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.authAppName.value')"
+          echo "WEBAPP_FRONTEND=$(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.frontendAppName.value')"
+          echo ""
+          echo "🌐 Application URLs:"
+          echo "Frontend: $(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.frontendAppUrl.value')"
+          echo "API: $(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.apiAppUrl.value')"
+          echo "Auth: $(echo '${{ steps.deploy.outputs.outputs }}' | jq -r '.authAppUrl.value')"
