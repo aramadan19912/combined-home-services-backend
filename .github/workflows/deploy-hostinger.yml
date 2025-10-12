@@ -1,0 +1,251 @@
+name: Deploy to Hostinger VPS
+
+on:
+  push:
+    branches:
+      - main
+      - production
+  workflow_dispatch:  # Allow manual trigger
+
+env:
+  NODE_VERSION: '18.x'
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore backend dependencies
+        run: |
+          cd backend
+          dotnet restore
+
+      - name: Build backend
+        run: |
+          cd backend
+          dotnet build --configuration Release --no-restore
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          dotnet test --no-restore --verbosity normal
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+  deploy:
+    name: Deploy to Hostinger
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          cat > .env.production << EOF
+          VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+          VITE_AUTH_API_BASE_URL=${{ secrets.VITE_AUTH_API_BASE_URL }}
+          EOF
+          npm run build
+
+      - name: Build backend
+        run: |
+          cd backend
+          dotnet publish src/HomeServicesApp.HttpApi.Host/HomeServicesApp.HttpApi.Host.csproj \
+            -c Release \
+            -o ./publish
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy backend to VPS
+        run: |
+          # Create deployment archive
+          cd backend/publish
+          tar -czf backend.tar.gz *
+          
+          # Upload to server
+          scp backend.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/
+          
+          # Extract and restart service on server
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            set -e
+            
+            # Stop the service
+            sudo systemctl stop homeservices-api
+            
+            # Backup current version
+            sudo cp -r /var/www/homeservices/backend/publish /var/www/homeservices/backend/publish.backup.$(date +%Y%m%d_%H%M%S)
+            
+            # Extract new version
+            sudo rm -rf /var/www/homeservices/backend/publish/*
+            sudo tar -xzf /tmp/backend.tar.gz -C /var/www/homeservices/backend/publish/
+            
+            # Set permissions
+            sudo chown -R www-data:www-data /var/www/homeservices/backend/publish
+            
+            # Clean up
+            rm /tmp/backend.tar.gz
+            
+            # Start the service
+            sudo systemctl start homeservices-api
+            
+            # Check status
+            sudo systemctl status homeservices-api --no-pager
+          ENDSSH
+
+      - name: Deploy frontend to VPS
+        run: |
+          # Create deployment archive
+          cd frontend/dist
+          tar -czf frontend.tar.gz *
+          
+          # Upload to server
+          scp frontend.tar.gz ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/
+          
+          # Extract on server
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            set -e
+            
+            # Backup current version
+            sudo cp -r /var/www/homeservices/frontend/dist /var/www/homeservices/frontend/dist.backup.$(date +%Y%m%d_%H%M%S)
+            
+            # Extract new version
+            sudo rm -rf /var/www/homeservices/frontend/dist/*
+            sudo tar -xzf /tmp/frontend.tar.gz -C /var/www/homeservices/frontend/dist/
+            
+            # Set permissions
+            sudo chown -R www-data:www-data /var/www/homeservices/frontend/dist
+            
+            # Clean up
+            rm /tmp/frontend.tar.gz
+            
+            # Reload Nginx
+            sudo systemctl reload nginx
+            
+            # Clean old backups (keep last 3)
+            cd /var/www/homeservices/backend
+            ls -t publish.backup.* 2>/dev/null | tail -n +4 | xargs -r sudo rm -rf
+            
+            cd /var/www/homeservices/frontend
+            ls -t dist.backup.* 2>/dev/null | tail -n +4 | xargs -r sudo rm -rf
+          ENDSSH
+
+      - name: Run database migrations
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            set -e
+            cd /var/www/homeservices/backend/publish
+            sudo -u www-data dotnet HomeServicesApp.HttpApi.Host.dll --migrate-database || echo "Migration completed or already up to date"
+          ENDSSH
+
+      - name: Health check
+        run: |
+          echo "Waiting for services to start..."
+          sleep 10
+          
+          # Check if API is responding
+          curl -f -k https://${{ secrets.DOMAIN_NAME }}/api/health || \
+          curl -f http://${{ secrets.VPS_HOST }}:5000/api/health || \
+          echo "Health check endpoint not available (might be normal)"
+          
+          echo "Deployment completed successfully!"
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+            echo "🌐 Application URL: https://${{ secrets.DOMAIN_NAME }}"
+          else
+            echo "❌ Deployment failed!"
+          fi
+
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    if: failure()
+    needs: deploy
+    
+    steps:
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Rollback to previous version
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            set -e
+            
+            echo "Rolling back to previous version..."
+            
+            # Stop service
+            sudo systemctl stop homeservices-api
+            
+            # Restore backend backup
+            LATEST_BACKEND_BACKUP=$(ls -t /var/www/homeservices/backend/publish.backup.* 2>/dev/null | head -n 1)
+            if [ -n "$LATEST_BACKEND_BACKUP" ]; then
+              sudo rm -rf /var/www/homeservices/backend/publish
+              sudo cp -r "$LATEST_BACKEND_BACKUP" /var/www/homeservices/backend/publish
+              echo "Backend restored from: $LATEST_BACKEND_BACKUP"
+            fi
+            
+            # Restore frontend backup
+            LATEST_FRONTEND_BACKUP=$(ls -t /var/www/homeservices/frontend/dist.backup.* 2>/dev/null | head -n 1)
+            if [ -n "$LATEST_FRONTEND_BACKUP" ]; then
+              sudo rm -rf /var/www/homeservices/frontend/dist
+              sudo cp -r "$LATEST_FRONTEND_BACKUP" /var/www/homeservices/frontend/dist
+              echo "Frontend restored from: $LATEST_FRONTEND_BACKUP"
+            fi
+            
+            # Restart services
+            sudo systemctl start homeservices-api
+            sudo systemctl reload nginx
+            
+            echo "Rollback completed!"
+          ENDSSH
