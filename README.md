@@ -148,11 +148,9 @@ apiCache.getStats()              # Check cache efficiency
 - **[Integration Testing](frontend/src/utils/integration-test.ts)** - Testing utilities and examples
 
 ### Deployment Documentation
-- 🚀 **[Getting Started](GETTING_STARTED.md)** - Quick start guide
-- 📋 **[Deployment Summary](DEPLOYMENT_SUMMARY.md)** - Complete deployment overview
-- 📘 **[Azure Setup Instructions](AZURE_SETUP_INSTRUCTIONS.md)** - Comprehensive Azure guide
-- ⚡ **[Quick Reference](QUICK_REFERENCE.md)** - Command reference
-- ✅ **[Deployment Checklist](DEPLOYMENT_CHECKLIST.md)** - Step-by-step checklist
+- 🚀 **[CI/CD Quick Start](CICD_QUICK_START.md)** - 30-minute setup guide
+- 📋 **[CI/CD Setup Guide](CICD_SETUP_GUIDE.md)** - Complete CI/CD configuration
+- 📘 **[Hostinger Deployment Guide](HOSTINGER_DEPLOYMENT_GUIDE.md)** - Comprehensive Hostinger guide
 - 🏗️ **[Architecture](ARCHITECTURE.md)** - System architecture diagrams
 - 📘 **[Frontend Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** - Additional options
 
@@ -186,36 +184,42 @@ apiCache.getStats()              # Check cache efficiency
 
 ## 🚀 Production Deployment
 
-The application is production-ready with full Azure deployment support:
+The application is production-ready with automated CI/CD deployment to Hostinger VPS:
 
-### Quick Azure Deployment
+### Quick Hostinger Deployment
 
-**One-command deployment:**
+**Setup VPS (one-time):**
 ```bash
-chmod +x quick-deploy-azure.sh
-./quick-deploy-azure.sh
+scp scripts/setup-vps.sh root@your-vps-ip:/root/
+ssh root@your-vps-ip "bash /root/setup-vps.sh"
 ```
 
 **Automated CI/CD with GitHub Actions:**
-1. Set up Azure credentials (see [AZURE_SETUP_INSTRUCTIONS.md](AZURE_SETUP_INSTRUCTIONS.md))
+1. Configure GitHub Secrets (see [CICD_QUICK_START.md](CICD_QUICK_START.md))
 2. Push to `main` branch - automatic deployment!
+
+**Manual deployment:**
+```bash
+./scripts/deploy-to-hostinger.sh
+```
 
 ### Deployment Features
 
-- ✅ **Docker support** with multi-stage builds
-- ✅ **Azure App Service** for containerized deployment
-- ✅ **Azure Container Registry** for private image storage
-- ✅ **GitHub Actions** CI/CD workflows included
-- ✅ **Infrastructure as Code** (Bicep templates)
-- ✅ **Automated SSL/HTTPS** via Azure
-- ✅ **Environment configuration** for dev/staging/prod
-- ✅ **Database options** (SQLite/PostgreSQL)
-- ✅ **Auto-scaling** and monitoring ready
+- ✅ **Automated CI/CD** with GitHub Actions
+- ✅ **Zero-downtime deployment** with automatic backups
+- ✅ **Automatic rollback** on deployment failure
+- ✅ **SSL/HTTPS** via Let's Encrypt (free)
+- ✅ **Docker support** with alternative deployment option
+- ✅ **Database migrations** automated
+- ✅ **Health checks** after each deployment
+- ✅ **Cost-effective** hosting ($10-20/month)
+- ✅ **Production monitoring** and logging
 
 ### Deployment Guides
 
-- 📘 **[Azure Setup Instructions](AZURE_SETUP_INSTRUCTIONS.md)** - Complete Azure deployment guide
-- 📘 **[Azure Deployment Guide](AZURE_DEPLOYMENT_GUIDE.md)** - Quick reference
+- 🚀 **[CI/CD Quick Start](CICD_QUICK_START.md)** - Get started in 30 minutes
+- 📘 **[CI/CD Setup Guide](CICD_SETUP_GUIDE.md)** - Complete configuration guide
+- 📘 **[Hostinger Deployment Guide](HOSTINGER_DEPLOYMENT_GUIDE.md)** - Full deployment documentation
 - 📘 **[Frontend Deployment Guide](frontend/DEPLOYMENT_GUIDE.md)** - Additional deployment options
 
 ### Local Testing
