@@ -59,21 +59,9 @@ echo "📦 Installing Node.js..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 apt install -y nodejs
 
-# Install PostgreSQL
-echo "🗄️ Installing PostgreSQL..."
-apt install -y postgresql postgresql-contrib
-systemctl start postgresql
-systemctl enable postgresql
-
-# Create database
-echo "📊 Creating database..."
-sudo -u postgres psql << EOF
-CREATE DATABASE homeservices;
-CREATE USER homeservices_user WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON DATABASE homeservices TO homeservices_user;
-ALTER DATABASE homeservices OWNER TO homeservices_user;
-\q
-EOF
+# Using SQLite instead of PostgreSQL (simpler and more reliable)
+echo "🗄️ Using SQLite database (no separate database server needed)..."
+# SQLite is included with .NET, no installation needed
 
 # Install Nginx
 echo "🌐 Installing Nginx..."
@@ -248,6 +236,14 @@ echo "DOMAIN_NAME: ${VPS_IP}"
 echo "DB_NAME: homeservices"
 echo "DB_USER: homeservices_user"
 echo "DB_PASSWORD: ${DB_PASSWORD}"
+echo "VITE_API_BASE_URL: http://${VPS_IP}/api"
+echo "VITE_AUTH_API_BASE_URL: http://${VPS_IP}/api"
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+echo "Your VPS is ready! Configure GitHub Secrets and deploy! 🚀"
+echo ""
+_PASSWORD}"
 echo "VITE_API_BASE_URL: http://${VPS_IP}/api"
 echo "VITE_AUTH_API_BASE_URL: http://${VPS_IP}/api"
 echo ""

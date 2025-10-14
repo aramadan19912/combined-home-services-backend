@@ -138,28 +138,12 @@ fi
 
 echo ""
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${YELLOW}Step 5: Install and Configure PostgreSQL${NC}"
+echo -e "${YELLOW}Step 5: Using SQLite Database${NC}"
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-if command -v psql &> /dev/null; then
-    echo "✓ PostgreSQL already installed"
-else
-    apt install -y postgresql postgresql-contrib
-    systemctl start postgresql
-    systemctl enable postgresql
-    echo -e "${GREEN}✓ PostgreSQL installed${NC}"
-fi
-
-# Create database
-sudo -u postgres psql << EOF || echo "Database might already exist"
-CREATE DATABASE ${DB_NAME};
-CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
-ALTER DATABASE ${DB_NAME} OWNER TO ${DB_USER};
-\q
-EOF
-
-echo -e "${GREEN}✓ Database configured${NC}"
+echo "Using SQLite database (included with .NET, no separate server needed)"
+echo "Database will be created automatically at: /var/www/homeservices/app.db"
+echo -e "${GREEN}✓ SQLite configured${NC}"
 
 echo ""
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
