@@ -139,6 +139,13 @@ jobs:
             sudo systemctl status homeservices-api --no-pager
           ENDSSH
 
+      - name: Build DbMigrator
+        run: |
+          cd backend
+          dotnet publish src/HomeServicesApp.DbMigrator/HomeServicesApp.DbMigrator.csproj \
+            -c Release \
+            -o ./migrator
+
       - name: Deploy frontend to VPS
         run: |
           # Create deployment archive
