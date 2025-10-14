@@ -43,8 +43,14 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
 
         Configure<AbpDbContextOptions>(options =>
         {
-            // Using SQL Server only
-            options.UseSqlServer();
+            // Using SQL Server only with retry on failure
+            options.UseSqlServer(sqlServerOptions =>
+            {
+                sqlServerOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: System.TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null);
+            });
         });
     }
 }

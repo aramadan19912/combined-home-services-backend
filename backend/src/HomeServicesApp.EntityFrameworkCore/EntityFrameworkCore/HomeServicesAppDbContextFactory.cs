@@ -18,7 +18,13 @@ public class HomeServicesAppDbContextFactory : IDesignTimeDbContextFactory<HomeS
 
         // Using SQL Server only
         var builder = new DbContextOptionsBuilder<HomeServicesAppDbContext>();
-        builder.UseSqlServer(configuration.GetConnectionString("Default"));
+        builder.UseSqlServer(configuration.GetConnectionString("Default"), sqlServerOptionsAction: sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        });
 
         return new HomeServicesAppDbContext(builder.Options);
     }
