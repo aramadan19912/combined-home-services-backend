@@ -35,10 +35,6 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        // Configure AppContext for PostgreSQL boolean compatibility
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-        
         HomeServicesAppEfCoreEntityExtensionMappings.Configure();
     }
 
@@ -51,25 +47,10 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
             options.AddDefaultRepositories(includeAllEntities: true);
         });
 
-        var configuration = context.Services.GetConfiguration();
-        var provider = configuration["Database:Provider"] ?? "Sqlite";
-
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also HomeServicesAppMigrationsDbContextFactory for EF Core tooling. */
-            if (string.Equals(provider, "SqlServer", StringComparison.OrdinalIgnoreCase))
-            {
-                options.UseSqlServer();
-            }
-            else if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
-            {
-                options.UseNpgsql();
-            }
-            else
-            {
-                options.UseSqlite();
-            }
+            // Using SQL Server only
+            options.UseSqlServer();
         });
     }
 }

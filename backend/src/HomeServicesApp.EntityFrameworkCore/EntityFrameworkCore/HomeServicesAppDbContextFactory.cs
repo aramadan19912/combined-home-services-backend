@@ -16,21 +16,9 @@ public class HomeServicesAppDbContextFactory : IDesignTimeDbContextFactory<HomeS
 
         var configuration = BuildConfiguration();
 
-        var provider = configuration["Database:Provider"] ?? "Sqlite";
-
+        // Using SQL Server only
         var builder = new DbContextOptionsBuilder<HomeServicesAppDbContext>();
-        if (string.Equals(provider, "SqlServer", StringComparison.OrdinalIgnoreCase))
-        {
-            builder.UseSqlServer(configuration.GetConnectionString("Default"));
-        }
-        else if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
-        {
-            builder.UseNpgsql(configuration.GetConnectionString("Default"));
-        }
-        else
-        {
-            builder.UseSqlite(configuration.GetConnectionString("Default"));
-        }
+        builder.UseSqlServer(configuration.GetConnectionString("Default"));
 
         return new HomeServicesAppDbContext(builder.Options);
     }
