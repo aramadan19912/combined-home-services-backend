@@ -59,9 +59,30 @@ echo "📦 Installing Node.js..."
 curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 apt install -y nodejs
 
-# Using SQLite instead of PostgreSQL (simpler and more reliable)
-echo "🗄️ Using SQLite database (no separate database server needed)..."
-# SQLite is included with .NET, no installation needed
+# Install SQL Server 2022 Express (FREE)
+echo "🗄️ Installing SQL Server 2022 Express..."
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-2022.list)"
+apt update
+apt install -y mssql-server
+
+# Configure SQL Server (Express Edition)
+MSSQL_SA_PASSWORD=${DB_PASSWORD} MSSQL_PID=Express /opt/mssql/bin/mssql-conf -n setup accept-eula
+
+systemctl enable mssql-server
+systemctl start mssql-server
+
+# Install SQL tools
+curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/msprod.list
+apt update
+ACCEPT_EULA=Y apt install -y mssql-tools18 unixodbc-dev
+
+# Create database
+sleep 5
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "${DB_PASSWORD}" -C -Q "CREATE DATABASE HomeServices" || echo "Database might already exist"
+
+echo "✓ SQL Server installed and configured"
 
 # Install Nginx
 echo "🌐 Installing Nginx..."

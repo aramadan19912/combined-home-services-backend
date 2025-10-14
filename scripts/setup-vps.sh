@@ -138,12 +138,38 @@ fi
 
 echo ""
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${YELLOW}Step 5: Using SQLite Database${NC}"
+echo -e "${YELLOW}Step 5: Installing SQL Server 2022 Express${NC}"
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-echo "Using SQLite database (included with .NET, no separate server needed)"
-echo "Database will be created automatically at: /var/www/homeservices/app.db"
-echo -e "${GREEN}✓ SQLite configured${NC}"
+if command -v /opt/mssql/bin/sqlservr &> /dev/null; then
+    echo "✓ SQL Server already installed"
+else
+    # Install SQL Server
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+    add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-2022.list)"
+    apt update
+    apt install -y mssql-server
+    
+    # Configure SQL Server (Express Edition - FREE)
+    MSSQL_SA_PASSWORD=${DB_PASSWORD} MSSQL_PID=Express /opt/mssql/bin/mssql-conf -n setup accept-eula
+    
+    systemctl enable mssql-server
+    systemctl start mssql-server
+    
+    # Install SQL tools
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+    curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/msprod.list
+    apt update
+    ACCEPT_EULA=Y apt install -y mssql-tools18 unixodbc-dev
+    
+    # Wait for SQL Server to start
+    sleep 5
+    
+    # Create database
+    /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "${DB_PASSWORD}" -C -Q "CREATE DATABASE HomeServices" || echo "Database might already exist"
+    
+    echo -e "${GREEN}✓ SQL Server installed and configured${NC}"
+fi
 
 echo ""
 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
@@ -274,10 +300,10 @@ mkdir -p ${APP_DIR}/backend/publish
 cat > ${APP_DIR}/backend/publish/appsettings.Production.json << APPSETTINGS
 {
   "ConnectionStrings": {
-    "Default": "Data Source=/var/www/homeservices/app.db"
+    "Default": "Server=localhost;Database=HomeServices;User Id=SA;Password=${DB_PASSWORD};TrustServerCertificate=True"
   },
   "Database": {
-    "Provider": "Sqlite"
+    "Provider": "SqlServer"
   },
   "App": {
     "CorsOrigins": "http://${DOMAIN},https://${DOMAIN},http://www.${DOMAIN},https://www.${DOMAIN}",

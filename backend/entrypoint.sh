@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Default to SQLite for easier boot in ephemeral environments; allow override via env vars
-: "${ConnectionStrings__Default:=Data Source=/data/app.db}"
+# Default to SQL Server; allow override via env vars
+: "${ConnectionStrings__Default:=Server=localhost;Database=HomeServices;User Id=SA;Password=YourStrong@Password123;TrustServerCertificate=True}"
 export ConnectionStrings__Default
 
-: "${Database__Provider:=Sqlite}"
+: "${Database__Provider:=SqlServer}"
 export Database__Provider
 
 # Optionally allow overriding CORS origins via env var
