@@ -274,10 +274,18 @@ mkdir -p ${APP_DIR}/backend/publish
 cat > ${APP_DIR}/backend/publish/appsettings.Production.json << APPSETTINGS
 {
   "ConnectionStrings": {
-    "Default": "Host=localhost;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
+    "Default": "Data Source=/var/www/homeservices/app.db"
+  },
+  "Database": {
+    "Provider": "Sqlite"
   },
   "App": {
-    "CorsOrigins": "https://${DOMAIN},https://www.${DOMAIN}"
+    "CorsOrigins": "http://${DOMAIN},https://${DOMAIN},http://www.${DOMAIN},https://www.${DOMAIN}",
+    "SelfUrl": "http://${DOMAIN}"
+  },
+  "AuthServer": {
+    "Authority": "http://${DOMAIN}",
+    "RequireHttpsMetadata": false
   },
   "Kestrel": {
     "Endpoints": {
