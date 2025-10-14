@@ -19,7 +19,11 @@ public class HomeServicesAppDbContextFactory : IDesignTimeDbContextFactory<HomeS
         var provider = configuration["Database:Provider"] ?? "Sqlite";
 
         var builder = new DbContextOptionsBuilder<HomeServicesAppDbContext>();
-        if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(provider, "SqlServer", StringComparison.OrdinalIgnoreCase))
+        {
+            builder.UseSqlServer(configuration.GetConnectionString("Default"));
+        }
+        else if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
         {
             builder.UseNpgsql(configuration.GetConnectionString("Default"));
         }
