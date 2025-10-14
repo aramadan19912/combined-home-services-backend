@@ -102,12 +102,32 @@ jobs:
           version: '3.8'
 
           services:
+            sqlserver:
+              image: mcr.microsoft.com/mssql/server:2022-latest
+              environment:
+                - ACCEPT_EULA=Y
+                - SA_PASSWORD=YourStrong@Password123
+                - MSSQL_PID=Express
+              ports:
+                - "1433:1433"
+              volumes:
+                - sqlserver-data:/var/opt/mssql
+              networks:
+                - app-network
+              restart: unless-stopped
+              healthcheck:
+                test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "SA", "-P", "YourStrong@Password123", "-Q", "SELECT 1"]
+                interval: 10s
+                timeout: 5s
+                retries: 5
+                start_period: 30s
+
             backend:
               image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:latest
               environment:
                 - ASPNETCORE_ENVIRONMENT=Production
-                - Database__Provider=Sqlite
-                - ConnectionStrings__Default=Data Source=/data/app.db
+                - Database__Provider=SqlServer
+                - ConnectionStrings__Default=Server=sqlserver;Database=HomeServices;User Id=SA;Password=YourStrong@Password123;TrustServerCertificate=True
                 - App__CorsOrigins=http://${{ secrets.DOMAIN_NAME }}
                 - App__SelfUrl=http://${{ secrets.DOMAIN_NAME }}
               restart: unless-stopped
@@ -115,8 +135,9 @@ jobs:
                 - app-network
               ports:
                 - "5000:8080"
-              volumes:
-                - backend-data:/data
+              depends_on:
+                sqlserver:
+                  condition: service_healthy
 
             frontend:
               image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:latest
@@ -129,7 +150,7 @@ jobs:
                 - backend
 
           volumes:
-            backend-data:
+            sqlserver-data:
 
           networks:
             app-network:

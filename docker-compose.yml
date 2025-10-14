@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: homeservices-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Password123
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - hsapp-network
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "SA", "-P", "YourStrong@Password123", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   # API Service
   api:
     build:
@@ -9,14 +30,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - Database__Provider=Sqlite
-      - ConnectionStrings__Default=Data Source=/data/app.db
+      - Database__Provider=SqlServer
+      - ConnectionStrings__Default=Server=sqlserver;Database=HomeServices;User Id=SA;Password=YourStrong@Password123;TrustServerCertificate=True
       - App__CorsOrigins=http://localhost:3000,http://localhost:5173
       - App__SelfUrl=http://localhost:8080
-      - AuthServer__Authority=http://authserver:8081
+      - AuthServer__Authority=http://localhost:8080
       - AuthServer__RequireHttpsMetadata=false
-    volumes:
-      - api-data:/data
+    depends_on:
+      sqlserver:
+        condition: service_healthy
     networks:
       - hsapp-network
     healthcheck:
@@ -24,32 +46,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-
-  # Auth Server
-  authserver:
-    build:
-      context: ./backend
-      dockerfile: AuthServer.Dockerfile
-    ports:
-      - "8081:8081"
-    environment:
-      - Database__Provider=Sqlite
-      - ConnectionStrings__Default=Data Source=/data/auth.db
-      - App__CorsOrigins=http://localhost:3000,http://localhost:5173
-      - App__SelfUrl=http://localhost:8081
-      - App__ClientUrl=http://localhost:3000
-      - App__RedirectAllowedUrls=http://localhost:3000,http://localhost:5173
-    volumes:
-      - auth-data:/data
-    networks:
-      - hsapp-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      start_period: 60s
 
   # Frontend
   frontend:
@@ -77,5 +74,4 @@ networks:
     driver: bridge
 
 volumes:
-  api-data:
-  auth-data:
+  sqlserver-data:
