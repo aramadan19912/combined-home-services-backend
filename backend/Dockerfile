@@ -56,7 +56,7 @@ COPY --from=build /app/migrator ./migrator
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# create data dir for sqlite
+# create data dir for SQL Server database files if needed
 RUN mkdir -p /data
 VOLUME ["/data"]
 
