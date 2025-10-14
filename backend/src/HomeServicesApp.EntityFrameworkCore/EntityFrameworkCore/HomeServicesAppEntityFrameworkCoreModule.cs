@@ -7,6 +7,7 @@ using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Sqlite;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
+using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.Modularity;
@@ -57,7 +58,11 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
         {
                 /* The main point to change your DBMS.
                  * See also HomeServicesAppMigrationsDbContextFactory for EF Core tooling. */
-            if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(provider, "SqlServer", StringComparison.OrdinalIgnoreCase))
+            {
+                options.UseSqlServer();
+            }
+            else if (string.Equals(provider, "PostgreSql", StringComparison.OrdinalIgnoreCase) || string.Equals(provider, "Postgres", StringComparison.OrdinalIgnoreCase))
             {
                 options.UseNpgsql();
             }
