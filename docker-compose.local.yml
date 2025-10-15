@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: homeservices-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Password123
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "SA", "-P", "YourStrong@Password123", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # API Service (using local build)
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: homeservices_api_1
+    ports:
+      - "8080:8080"
+    environment:
+      - Database__Provider=SqlServer
+      - ConnectionStrings__Default=Server=sqlserver;Database=HomeServices;User Id=SA;Password=YourStrong@Password123;TrustServerCertificate=True
+      - App__CorsOrigins=http://localhost:3000,http://72.60.234.126,http://72.60.234.126:3000
+      - App__SelfUrl=http://72.60.234.126:8080
+      - AuthServer__Authority=http://72.60.234.126:8080
+      - AuthServer__RequireHttpsMetadata=false
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  # Frontend (using local build)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://72.60.234.126:8080/api
+        - VITE_API_HOST_URL=http://72.60.234.126:8080/api
+        - VITE_AUTH_API_BASE_URL=http://72.60.234.126:8080/api
+    container_name: homeservices_frontend_1
+    ports:
+      - "3000:8080"
+    networks:
+      - app-network
+    depends_on:
+      - api
+
+volumes:
+  sqlserver-data:
+
+networks:
+  app-network:
+    driver: bridge
