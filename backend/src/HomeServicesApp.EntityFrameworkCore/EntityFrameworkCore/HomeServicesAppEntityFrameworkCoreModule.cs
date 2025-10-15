@@ -43,14 +43,9 @@ public class HomeServicesAppEntityFrameworkCoreModule : AbpModule
 
         Configure<AbpDbContextOptions>(options =>
         {
-            // Using SQL Server only with retry on failure
-            options.UseSqlServer(sqlServerOptions =>
-            {
-                sqlServerOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: System.TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
+            // Using SQL Server without retry strategy to avoid transaction conflicts
+            // Retry strategy doesn't work with user-initiated transactions in ABP
+            options.UseSqlServer();
         });
     }
 }
