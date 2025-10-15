@@ -6,6 +6,7 @@ using Medallion.Threading;
 using Medallion.Threading.FileSystem;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -198,6 +199,18 @@ public class HomeServicesAppHttpApiHostModule : AbpModule
         app.UseCorrelationId();
         app.MapAbpStaticAssets();
         app.UseRouting();
+        // Lightweight health endpoint for container health checks
+        app.Use(async (httpContext, next) =>
+        {
+            if (string.Equals(httpContext.Request.Path.Value, "/health", StringComparison.OrdinalIgnoreCase))
+            {
+                httpContext.Response.StatusCode = StatusCodes.Status200OK;
+                await httpContext.Response.WriteAsync("Healthy");
+                return;
+            }
+
+            await next();
+        });
         app.UseCors();
         app.UseAuthentication();
 
