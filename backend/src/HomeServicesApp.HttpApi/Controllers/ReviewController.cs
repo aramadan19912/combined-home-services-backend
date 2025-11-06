@@ -44,5 +44,85 @@ namespace HomeServicesApp.Controllers
             var filtered = reviews.Items.Where(r => r.ProviderId == providerId);
             return Ok(filtered);
         }
+
+        // GET: api/reviews/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var review = await _reviewAppService.GetAsync(id);
+            return Ok(review);
+        }
+
+        // PUT: api/reviews/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateUpdateReviewDto input)
+        {
+            var review = await _reviewAppService.UpdateAsync(id, input);
+            return Ok(review);
+        }
+
+        // DELETE: api/reviews/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _reviewAppService.DeleteAsync(id);
+            return NoContent();
+        }
+
+        // POST: api/reviews/{id}/helpful
+        [HttpPost("{id}/helpful")]
+        public async Task<IActionResult> MarkHelpful(Guid id)
+        {
+            var review = await _reviewAppService.MarkHelpfulAsync(id);
+            return Ok(review);
+        }
+
+        // POST: api/reviews/{id}/not-helpful
+        [HttpPost("{id}/not-helpful")]
+        public async Task<IActionResult> MarkNotHelpful(Guid id)
+        {
+            var review = await _reviewAppService.MarkNotHelpfulAsync(id);
+            return Ok(review);
+        }
+
+        // POST: api/reviews/{id}/provider-response
+        [HttpPost("{id}/provider-response")]
+        public async Task<IActionResult> AddProviderResponse(Guid id, [FromBody] ProviderResponseDto input)
+        {
+            var review = await _reviewAppService.AddProviderResponseAsync(id, input.Response);
+            return Ok(review);
+        }
+
+        // POST: api/reviews/{id}/moderate
+        [HttpPost("{id}/moderate")]
+        public async Task<IActionResult> Moderate(Guid id, [FromBody] ModerateReviewDto input)
+        {
+            var review = await _reviewAppService.ModerateAsync(id, input.Status, input.Notes);
+            return Ok(review);
+        }
+
+        // POST: api/reviews/{id}/report
+        [HttpPost("{id}/report")]
+        public async Task<IActionResult> Report(Guid id, [FromBody] ReportReviewDto input)
+        {
+            await _reviewAppService.ReportAsync(id, input.Reason);
+            return NoContent();
+        }
+    }
+
+    public class ProviderResponseDto
+    {
+        public string Response { get; set; }
+    }
+
+    public class ModerateReviewDto
+    {
+        public ReviewStatus Status { get; set; }
+        public string Notes { get; set; }
+    }
+
+    public class ReportReviewDto
+    {
+        public string Reason { get; set; }
     }
 } 
