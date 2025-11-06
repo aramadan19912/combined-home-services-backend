@@ -1,0 +1,314 @@
+{
+  "brand": "ServiceHub",
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "how": "Comment ça marche",
+    "about": "À propos",
+    "browse": "Parcourir les services",
+    "bookings": "Mes réservations",
+    "complaints": "Réclamations",
+    "reviews": "Avis",
+    "dashboard": "Tableau de bord",
+    "orders": "Commandes",
+    "earnings": "Revenus",
+    "myServices": "Mes services",
+    "users": "Utilisateurs",
+    "providers": "Prestataires",
+    "analytics": "Analytique",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "S'inscrire"
+  },
+  "actions": {
+    "search": "Rechercher",
+    "book": "Réserver maintenant",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "signIn": "Se connecter",
+    "becomeProvider": "Devenir prestataire",
+    "clearAll": "Tout effacer",
+    "retry": "Réessayer",
+    "browseFiles": "Parcourir les fichiers",
+    "trackProvider": "Suivre le prestataire",
+    "viewInvoice": "Voir la facture",
+    "downloadPDF": "Télécharger PDF",
+    "sendMessage": "Envoyer le message",
+    "shareLocation": "Partager la localisation",
+    "applyDiscount": "Appliquer la réduction"
+  },
+  "status": {
+    "pending": "En attente",
+    "confirmed": "Confirmé",
+    "accepted": "Accepté",
+    "enRoute": "En route",
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "cancelled": "Annulé",
+    "disputed": "Contesté",
+    "uploaded": "Téléchargé",
+    "failed": "Échoué"
+  },
+  "forms": {
+    "name": "Nom",
+    "email": "Email",
+    "password": "Mot de passe",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "description": "Description",
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "Adresse email invalide",
+    "specialInstructions": "Instructions spéciales",
+    "selectCountry": "Sélectionner le pays",
+    "selectCurrency": "Sélectionner la devise"
+  },
+  "currency": {
+    "SAR": "Riyal saoudien",
+    "EGP": "Livre égyptienne",
+    "USD": "Dollar américain",
+    "symbol": {
+      "SAR": "ر.س",
+      "EGP": "ج.م",
+      "USD": "$"
+    }
+  },
+  "country": {
+    "saudiArabia": "Arabie Saoudite",
+    "egypt": "Égypte",
+    "uae": "Émirats arabes unis",
+    "kuwait": "Koweït"
+  },
+  "pricing": {
+    "basePrice": "Prix de base",
+    "tax": "Taxe",
+    "taxRate": "Taux de taxe",
+    "platformFee": "Frais de plateforme",
+    "discount": "Réduction",
+    "subtotal": "Sous-total",
+    "total": "Total",
+    "paidAmount": "Montant payé",
+    "remainingAmount": "Montant restant",
+    "vat": "TVA"
+  },
+  "customer": {
+    "categories": {
+      "cleaning": "Nettoyage",
+      "plumbing": "Plomberie",
+      "electrical": "Électricité",
+      "gardening": "Jardinage",
+      "painting": "Peinture",
+      "maintenance": "Entretien général",
+      "hvac": "Climatisation",
+      "pestControl": "Lutte antiparasitaire",
+      "appliance": "Réparation d'appareils"
+    },
+    "booking": {
+      "selectDateTime": "Sélectionner la date et l'heure",
+      "serviceDetails": "Détails du service",
+      "paymentInfo": "Informations de paiement",
+      "confirmBooking": "Confirmer la réservation",
+      "specialInstructions": "Instructions spéciales",
+      "location": "Emplacement",
+      "estimatedDuration": "Durée estimée"
+    },
+    "order": {
+      "tracking": "Suivi de commande",
+      "status": "Statut de la commande",
+      "estimatedArrival": "Arrivée estimée",
+      "providerEnRoute": "Le prestataire est en route",
+      "priceBreakdown": "Détail des prix",
+      "orderNumber": "Numéro de commande",
+      "scheduledDate": "Date programmée"
+    },
+    "reviews": {
+      "leaveReview": "Laisser un avis",
+      "rating": "Évaluation",
+      "serviceQuality": "Qualité du service",
+      "professionalism": "Professionnalisme",
+      "punctuality": "Ponctualité",
+      "valueForMoney": "Rapport qualité-prix",
+      "writeComment": "Écrire un commentaire",
+      "uploadPhotos": "Télécharger des photos",
+      "anonymous": "Anonyme",
+      "verified": "Vérifié",
+      "helpful": "Utile",
+      "notHelpful": "Pas utile",
+      "providerResponse": "Réponse du prestataire"
+    },
+    "profile": {
+      "title": "Profil"
+    },
+    "chat": {
+      "messages": "Messages",
+      "typeMessage": "Tapez un message...",
+      "sendImage": "Envoyer une image",
+      "sendVoice": "Message vocal",
+      "shareLocation": "Partager la localisation"
+    },
+    "invoice": {
+      "title": "Facture",
+      "invoiceNumber": "Numéro de facture",
+      "invoiceDate": "Date de facture",
+      "dueDate": "Date d'échéance",
+      "download": "Télécharger la facture",
+      "viewDetails": "Voir les détails"
+    }
+  },
+  "provider": {
+    "dashboard": {
+      "pendingOrders": "Commandes en attente",
+      "activeJobs": "Travaux actifs",
+      "earnings": "Revenus",
+      "todayEarnings": "Revenus d'aujourd'hui",
+      "rating": "Évaluation",
+      "completedJobs": "Travaux terminés"
+    },
+    "jobs": {
+      "accept": "Accepter",
+      "reject": "Rejeter",
+      "start": "Commencer",
+      "complete": "Terminer",
+      "markEnRoute": "Marquer en route",
+      "arrived": "Arrivé"
+    },
+    "services": {
+      "manage": "Gérer les services",
+      "addService": "Ajouter un service",
+      "editService": "Modifier le service",
+      "uploadImages": "Télécharger des images",
+      "setPrice": "Définir le prix",
+      "estimatedDuration": "Durée estimée"
+    },
+    "calendar": {
+      "schedule": "Calendrier",
+      "availability": "Disponibilité"
+    },
+    "chat": {
+      "withCustomer": "Discuter avec le client"
+    },
+    "location": {
+      "updateLocation": "Mettre à jour l'emplacement",
+      "sharingLocation": "Partage de localisation actif",
+      "stopSharing": "Arrêter le partage"
+    },
+    "wallet": {
+      "balance": "Solde",
+      "withdraw": "Retirer",
+      "transactions": "Transactions",
+      "pendingAmount": "Montant en attente"
+    }
+  },
+  "admin": {
+    "analytics": {
+      "reports": "Rapports",
+      "revenue": "Revenus",
+      "userGrowth": "Croissance des utilisateurs",
+      "orderStats": "Statistiques des commandes"
+    },
+    "users": {
+      "manage": "Gestion des utilisateurs",
+      "customers": "Clients",
+      "providers": "Prestataires",
+      "verify": "Vérifier",
+      "suspend": "Suspendre"
+    },
+    "monitoring": {
+      "system": "Surveillance du système"
+    },
+    "content": {
+      "management": "Gestion de contenu",
+      "categories": "Catégories",
+      "services": "Services",
+      "localization": "Localisation"
+    },
+    "disputes": {
+      "resolution": "Résolution des litiges",
+      "pending": "En attente",
+      "resolved": "Résolu"
+    },
+    "reviews": {
+      "moderation": "Modération des avis",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "flagged": "Signalé"
+    },
+    "invoices": {
+      "management": "Gestion des factures",
+      "generate": "Générer",
+      "view": "Voir",
+      "download": "Télécharger"
+    }
+  },
+  "upload": {
+    "title": "Télécharger des fichiers",
+    "desc": "Glissez-déposez ou sélectionnez des fichiers à télécharger.",
+    "dragOr": "Glissez-déposez les fichiers ici ou",
+    "uploaded": "Téléchargé",
+    "failed": "Échec du téléchargement",
+    "successTitle": "Téléchargement réussi",
+    "successMsg": "{{count}} fichier(s) téléchargé(s) avec succès",
+    "errorTitle": "Erreur de téléchargement",
+    "failedTitle": "Échec du téléchargement"
+  },
+  "lang": {
+    "ar": "العربية",
+    "en": "English",
+    "fr": "Français"
+  },
+  "auth": {
+    "welcomeBack": "Bienvenue",
+    "signInMessage": "Connectez-vous à votre compte pour continuer",
+    "signingIn": "Connexion en cours...",
+    "forgotPassword": "Mot de passe oublié?",
+    "noAccount": "Vous n'avez pas de compte?",
+    "signUp": "S'inscrire",
+    "loginSuccess": "Connexion réussie!",
+    "invalidCredentials": "Identifiants invalides",
+    "fillAllFields": "Veuillez remplir tous les champs"
+  },
+  "common": {
+    "error": "Erreur",
+    "success": "Succès",
+    "loginFailed": "Échec de la connexion",
+    "loading": "Chargement...",
+    "noData": "Aucune donnée disponible",
+    "tryAgain": "Réessayer"
+  },
+  "dashboard": {
+    "welcomeBack": "Bienvenue",
+    "manageBookings": "Gérez vos réservations et découvrez de nouveaux services.",
+    "totalBookings": "Total des réservations",
+    "favorites": "Favoris",
+    "pendingReviews": "Avis en attente",
+    "upcoming": "À venir",
+    "bookService": "Réserver un service",
+    "viewHistory": "Voir l'historique",
+    "recentBookings": "Réservations récentes",
+    "viewAll": "Voir tout",
+    "upcomingAppointments": "Rendez-vous à venir",
+    "recommendedForYou": "Recommandé pour vous",
+    "with": "avec"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "noNotifications": "Aucune notification",
+    "orderConfirmed": "Commande confirmée",
+    "providerAssigned": "Prestataire assigné",
+    "providerEnRoute": "Le prestataire est en route",
+    "serviceCompleted": "Service terminé",
+    "paymentReceived": "Paiement reçu",
+    "reviewReminder": "N'oubliez pas de laisser un avis"
+  },
+  "errors": {
+    "networkError": "Erreur réseau. Veuillez vérifier votre connexion.",
+    "serverError": "Erreur du serveur. Veuillez réessayer plus tard.",
+    "notFound": "Ressource non trouvée",
+    "unauthorized": "Non autorisé. Veuillez vous connecter.",
+    "validationError": "Veuillez vérifier vos entrées",
+    "generalError": "Une erreur s'est produite. Veuillez réessayer."
+  }
+}
