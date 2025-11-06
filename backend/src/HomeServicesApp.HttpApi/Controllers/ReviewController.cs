@@ -117,7 +117,7 @@ namespace HomeServicesApp.Controllers
 
     public class ModerateReviewDto
     {
-        public ReviewStatus Status { get; set; }
+        public HomeServicesApp.Reviews.ReviewStatus Status { get; set; }
         public string Notes { get; set; }
     }
 
