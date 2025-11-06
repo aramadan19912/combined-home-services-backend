@@ -8,38 +8,50 @@ namespace HomeServicesApp.Invoices
     {
         public string InvoiceNumber { get; set; }
         public Guid OrderId { get; set; }
-        public Guid ProviderId { get; set; }
-        public Guid CustomerId { get; set; }
+        public Guid? ProviderId { get; set; }
+        public Guid UserId { get; set; }
 
         public Country Country { get; set; }
         public Currency Currency { get; set; }
 
-        public decimal Subtotal { get; set; }
+        public decimal SubTotal { get; set; }
         public decimal TaxRate { get; set; }
         public decimal TaxAmount { get; set; }
+        public decimal PlatformFee { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }
+        public decimal Balance { get; set; }
 
         public InvoiceStatus Status { get; set; }
 
-        public DateTime IssueDate { get; set; }
+        public DateTime InvoiceDate { get; set; }
         public DateTime? DueDate { get; set; }
-        public DateTime? PaidDate { get; set; }
 
-        public string Notes { get; set; }
-
-        // Navigation properties (for display)
-        public string ProviderName { get; set; }
         public string CustomerName { get; set; }
-        public string OrderNumber { get; set; }
+        public string CustomerEmail { get; set; }
+        public string CustomerPhone { get; set; }
+        public string CustomerAddress { get; set; }
+        public string CustomerTaxId { get; set; }
+
+        public string ProviderName { get; set; }
+        public string ProviderTaxId { get; set; }
+        public string ProviderAddress { get; set; }
+
+        public string ItemDescription { get; set; }
+        public string Notes { get; set; }
+        public string PdfPath { get; set; }
+        public string DigitalSignature { get; set; }
     }
 
+    // Use the domain enum - no need to redefine
     public enum InvoiceStatus
     {
-        Pending = 1,
-        Paid = 2,
-        Overdue = 3,
-        Cancelled = 4
+        Draft = 1,
+        Sent = 2,
+        PartiallyPaid = 3,
+        Paid = 4,
+        Overdue = 5,
+        Void = 6
     }
 }

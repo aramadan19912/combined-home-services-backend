@@ -49,7 +49,7 @@ namespace HomeServicesApp.Reviews
         public async Task<ReviewDto> ModerateAsync(Guid id, ReviewStatus status, string notes)
         {
             var review = await Repository.GetAsync(id);
-            review.Status = status;
+            review.Status = (HomeServicesApp.ReviewStatus)status;
             review.ModerationNotes = notes;
             await Repository.UpdateAsync(review, autoSave: true);
             return ObjectMapper.Map<Review, ReviewDto>(review);
@@ -58,7 +58,7 @@ namespace HomeServicesApp.Reviews
         public async Task ReportAsync(Guid id, string reason)
         {
             var review = await Repository.GetAsync(id);
-            review.Status = ReviewStatus.Flagged;
+            review.Status = HomeServicesApp.ReviewStatus.Flagged;
             review.ModerationNotes = $"Reported: {reason}";
             await Repository.UpdateAsync(review, autoSave: true);
         }

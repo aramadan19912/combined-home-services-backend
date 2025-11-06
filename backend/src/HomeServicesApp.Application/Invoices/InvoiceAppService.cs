@@ -27,29 +27,28 @@ namespace HomeServicesApp.Invoices
 
         public override async Task<InvoiceDto> CreateAsync(CreateUpdateInvoiceDto input)
         {
-            var invoice = new Invoice
-            {
-                OrderId = input.OrderId,
-                ProviderId = input.ProviderId,
-                CustomerId = input.CustomerId,
-                Country = input.Country,
-                Currency = input.Currency,
-                Subtotal = input.Subtotal,
-                DiscountAmount = input.DiscountAmount,
-                DueDate = input.DueDate,
-                Notes = input.Notes,
-                IssueDate = DateTime.UtcNow,
-                Status = InvoiceStatus.Pending,
-                PaidAmount = 0
-            };
-
             // Get regional config for tax calculation
             var config = RegionalConfig.GetConfig(input.Country);
-            invoice.TaxRate = config.TaxRate;
-            invoice.TaxAmount = input.Subtotal * config.TaxRate;
-            invoice.TotalAmount = input.Subtotal + invoice.TaxAmount - input.DiscountAmount;
 
-            // Generate invoice number
+            var invoice = new Invoice(
+                input.OrderId,
+                input.UserId,
+                input.Country,
+                input.Currency,
+                input.SubTotal,
+                config.TaxRate
+            )
+            {
+                ProviderId = input.ProviderId,
+                DueDate = input.DueDate,
+                PlatformFee = input.PlatformFee,
+                DiscountAmount = input.DiscountAmount,
+                ItemDescription = input.ItemDescription,
+                Notes = input.Notes
+            };
+
+            // Calculate amounts and generate invoice number
+            invoice.CalculateAmounts();
             invoice.GenerateInvoiceNumber();
 
             var created = await _invoiceRepository.InsertAsync(invoice, autoSave: true);
@@ -72,7 +71,7 @@ namespace HomeServicesApp.Invoices
             var totalCount = await AsyncExecuter.CountAsync(query);
 
             var items = await AsyncExecuter.ToListAsync(
-                query.OrderByDescending(x => x.IssueDate)
+                query.OrderByDescending(x => x.InvoiceDate)
                     .Skip(input.SkipCount)
                     .Take(input.MaxResultCount)
             );
@@ -88,12 +87,12 @@ namespace HomeServicesApp.Invoices
             PagedAndSortedResultRequestDto input)
         {
             var query = await _invoiceRepository.GetQueryableAsync();
-            query = query.Where(x => x.CustomerId == customerId);
+            query = query.Where(x => x.UserId == customerId);
 
             var totalCount = await AsyncExecuter.CountAsync(query);
 
             var items = await AsyncExecuter.ToListAsync(
-                query.OrderByDescending(x => x.IssueDate)
+                query.OrderByDescending(x => x.InvoiceDate)
                     .Skip(input.SkipCount)
                     .Take(input.MaxResultCount)
             );
@@ -108,13 +107,8 @@ namespace HomeServicesApp.Invoices
         {
             var invoice = await _invoiceRepository.GetAsync(id);
 
-            invoice.PaidAmount += paidAmount;
-
-            if (invoice.PaidAmount >= invoice.TotalAmount)
-            {
-                invoice.Status = InvoiceStatus.Paid;
-                invoice.PaidDate = DateTime.UtcNow;
-            }
+            // Use domain method to mark as paid
+            invoice.MarkAsPaid(paidAmount);
 
             await _invoiceRepository.UpdateAsync(invoice, autoSave: true);
             return ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
@@ -123,7 +117,10 @@ namespace HomeServicesApp.Invoices
         public async Task<InvoiceDto> CancelAsync(Guid id)
         {
             var invoice = await _invoiceRepository.GetAsync(id);
-            invoice.Status = InvoiceStatus.Cancelled;
+
+            // Use domain method to mark as void
+            invoice.MarkAsVoid();
+
             await _invoiceRepository.UpdateAsync(invoice, autoSave: true);
             return ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
         }

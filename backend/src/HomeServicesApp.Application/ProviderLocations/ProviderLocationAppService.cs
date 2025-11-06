@@ -28,26 +28,29 @@ namespace HomeServicesApp.ProviderLocations
 
             if (location == null)
             {
-                location = new ProviderLocation
+                // Use domain constructor
+                location = new ProviderLocation(
+                    input.ProviderId,
+                    input.Latitude,
+                    input.Longitude
+                )
                 {
-                    ProviderId = input.ProviderId,
-                    IsOnline = true
+                    Accuracy = input.Accuracy,
+                    Speed = input.Speed,
+                    Heading = input.Heading
                 };
-            }
 
-            location.Latitude = input.Latitude;
-            location.Longitude = input.Longitude;
-            location.Accuracy = input.Accuracy;
-            location.Speed = input.Speed;
-            location.Heading = input.Heading;
-            location.LastUpdated = DateTime.UtcNow;
-
-            if (location.Id == Guid.Empty)
-            {
                 await _providerLocationRepository.InsertAsync(location, autoSave: true);
             }
             else
             {
+                location.Latitude = input.Latitude;
+                location.Longitude = input.Longitude;
+                location.Accuracy = input.Accuracy;
+                location.Speed = input.Speed;
+                location.Heading = input.Heading;
+                location.Timestamp = DateTime.UtcNow;
+
                 await _providerLocationRepository.UpdateAsync(location, autoSave: true);
             }
 
@@ -64,16 +67,16 @@ namespace HomeServicesApp.ProviderLocations
 
             if (startDate.HasValue)
             {
-                query = query.Where(x => x.LastUpdated >= startDate.Value);
+                query = query.Where(x => x.Timestamp >= startDate.Value);
             }
 
             if (endDate.HasValue)
             {
-                query = query.Where(x => x.LastUpdated <= endDate.Value);
+                query = query.Where(x => x.Timestamp <= endDate.Value);
             }
 
             var locations = await AsyncExecuter.ToListAsync(
-                query.OrderBy(x => x.LastUpdated)
+                query.OrderBy(x => x.Timestamp)
             );
 
             return ObjectMapper.Map<List<ProviderLocation>, List<ProviderLocationDto>>(locations);
@@ -86,7 +89,7 @@ namespace HomeServicesApp.ProviderLocations
             if (location != null)
             {
                 location.IsOnline = isOnline;
-                location.LastUpdated = DateTime.UtcNow;
+                location.Timestamp = DateTime.UtcNow;
                 await _providerLocationRepository.UpdateAsync(location, autoSave: true);
             }
         }

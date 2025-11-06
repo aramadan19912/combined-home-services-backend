@@ -11,16 +11,16 @@ public class HomeServicesAppApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
 
         // Invoice mappings
-        CreateMap<Invoices.Invoice, Invoices.InvoiceDto>();
-        CreateMap<Invoices.CreateUpdateInvoiceDto, Invoices.Invoice>();
+        CreateMap<Invoice, Invoices.InvoiceDto>();
+        CreateMap<Invoices.CreateUpdateInvoiceDto, Invoice>();
 
         // ChatMessage mappings
-        CreateMap<ChatMessages.ChatMessage, ChatMessages.ChatMessageDto>();
-        CreateMap<ChatMessages.CreateChatMessageDto, ChatMessages.ChatMessage>();
+        CreateMap<ChatMessage, ChatMessages.ChatMessageDto>();
+        CreateMap<ChatMessages.CreateChatMessageDto, ChatMessage>();
 
         // ProviderLocation mappings
-        CreateMap<ProviderLocations.ProviderLocation, ProviderLocations.ProviderLocationDto>();
-        CreateMap<ProviderLocations.UpdateProviderLocationDto, ProviderLocations.ProviderLocation>();
+        CreateMap<ProviderLocation, ProviderLocations.ProviderLocationDto>();
+        CreateMap<ProviderLocations.UpdateProviderLocationDto, ProviderLocation>();
 
         // ServiceCategory mappings
         CreateMap<ServiceCategory, ServiceCategories.ServiceCategoryDto>();
