@@ -131,6 +131,174 @@ export const reviewsApi = {
 
   getReviewsByProvider: (providerId: string) =>
     apiRequest(() => apiClient.get<Review[]>(`/api/review/by-provider/${providerId}`)),
+
+  getReview: (id: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/review/${id}`)),
+
+  updateReview: (id: string, reviewData: any) =>
+    apiRequest(() => apiClient.put<any>(`/api/review/${id}`, reviewData)),
+
+  deleteReview: (id: string) =>
+    apiRequest(() => apiClient.delete(`/api/review/${id}`)),
+
+  markHelpful: (id: string) =>
+    apiRequest(() => apiClient.post(`/api/review/${id}/helpful`)),
+
+  markNotHelpful: (id: string) =>
+    apiRequest(() => apiClient.post(`/api/review/${id}/not-helpful`)),
+
+  addProviderResponse: (id: string, response: string) =>
+    apiRequest(() => apiClient.post(`/api/review/${id}/provider-response`, { response })),
+
+  moderate: (id: string, status: string, notes?: string) =>
+    apiRequest(() => apiClient.post(`/api/review/${id}/moderate`, { status, notes })),
+
+  reportReview: (id: string, reason: string) =>
+    apiRequest(() => apiClient.post(`/api/review/${id}/report`, { reason })),
+};
+
+// Invoices API
+export const invoicesApi = {
+  getInvoice: (id: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/invoice/${id}`)),
+
+  getInvoices: (maxResultCount?: number, skipCount?: number) =>
+    apiRequest(() => apiClient.get<PagedResultDto<any>>('/api/invoice', {
+      params: { maxResultCount, skipCount }
+    })),
+
+  getInvoiceByOrder: (orderId: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/invoice/by-order/${orderId}`)),
+
+  getInvoicesByProvider: (providerId: string, maxResultCount?: number, skipCount?: number) =>
+    apiRequest(() => apiClient.get<PagedResultDto<any>>(`/api/invoice/by-provider/${providerId}`, {
+      params: { maxResultCount, skipCount }
+    })),
+
+  getInvoicesByCustomer: (customerId: string, maxResultCount?: number, skipCount?: number) =>
+    apiRequest(() => apiClient.get<PagedResultDto<any>>(`/api/invoice/by-customer/${customerId}`, {
+      params: { maxResultCount, skipCount }
+    })),
+
+  createInvoice: (invoiceData: any) =>
+    apiRequest(() => apiClient.post<any>('/api/invoice', invoiceData)),
+
+  updateInvoice: (id: string, invoiceData: any) =>
+    apiRequest(() => apiClient.put<any>(`/api/invoice/${id}`, invoiceData)),
+
+  deleteInvoice: (id: string) =>
+    apiRequest(() => apiClient.delete(`/api/invoice/${id}`)),
+
+  markAsPaid: (id: string, paidAmount: number) =>
+    apiRequest(() => apiClient.post<any>(`/api/invoice/${id}/mark-paid`, paidAmount)),
+
+  cancelInvoice: (id: string) =>
+    apiRequest(() => apiClient.post<any>(`/api/invoice/${id}/cancel`)),
+
+  downloadPdf: (id: string) =>
+    apiRequest(() => apiClient.get(`/api/invoice/${id}/pdf`, {
+      responseType: 'blob'
+    })),
+};
+
+// Chat Messages API
+export const chatApi = {
+  getMessages: (orderId: string, maxResultCount?: number, skipCount?: number) =>
+    apiRequest(() => apiClient.get<PagedResultDto<any>>(`/api/chat/order/${orderId}`, {
+      params: { maxResultCount, skipCount }
+    })),
+
+  sendMessage: (messageData: any) =>
+    apiRequest(() => apiClient.post<any>('/api/chat', messageData)),
+
+  markAsRead: (id: string) =>
+    apiRequest(() => apiClient.post(`/api/chat/${id}/mark-read`)),
+
+  markAsDelivered: (id: string) =>
+    apiRequest(() => apiClient.post(`/api/chat/${id}/mark-delivered`)),
+
+  uploadImage: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiRequest(() => apiClient.post<FileUploadResponse>('/api/chat/upload-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }));
+  },
+
+  uploadVoice: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiRequest(() => apiClient.post<FileUploadResponse>('/api/chat/upload-voice', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }));
+  },
+
+  deleteMessage: (id: string) =>
+    apiRequest(() => apiClient.delete(`/api/chat/${id}`)),
+};
+
+// Provider Location/Tracking API
+export const trackingApi = {
+  getProviderLocation: (providerId: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/tracking/provider/${providerId}`)),
+
+  updateProviderLocation: (locationData: any) =>
+    apiRequest(() => apiClient.post<any>('/api/tracking/update', locationData)),
+
+  getLocationHistory: (providerId: string, startDate?: string, endDate?: string) =>
+    apiRequest(() => apiClient.get<any[]>(`/api/tracking/provider/${providerId}/history`, {
+      params: { startDate, endDate }
+    })),
+
+  setOnlineStatus: (isOnline: boolean) =>
+    apiRequest(() => apiClient.post('/api/tracking/status', { isOnline })),
+};
+
+// Service Categories API (Enhanced)
+export const serviceCategoriesApi = {
+  getCategories: (parentId?: string) =>
+    apiRequest(() => apiClient.get<any[]>('/api/service-category', {
+      params: { parentId }
+    })),
+
+  getCategory: (id: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/service-category/${id}`)),
+
+  getCategoryTree: () =>
+    apiRequest(() => apiClient.get<any[]>('/api/service-category/tree')),
+
+  createCategory: (categoryData: any) =>
+    apiRequest(() => apiClient.post<any>('/api/service-category', categoryData)),
+
+  updateCategory: (id: string, categoryData: any) =>
+    apiRequest(() => apiClient.put<any>(`/api/service-category/${id}`, categoryData)),
+
+  deleteCategory: (id: string) =>
+    apiRequest(() => apiClient.delete(`/api/service-category/${id}`)),
+};
+
+// Service Images API
+export const serviceImagesApi = {
+  getImages: (serviceId: string) =>
+    apiRequest(() => apiClient.get<any[]>(`/api/service-image/service/${serviceId}`)),
+
+  uploadImage: (serviceId: string, file: File, caption?: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('serviceId', serviceId);
+    if (caption) {
+      formData.append('caption', caption);
+    }
+    return apiRequest(() => apiClient.post<any>('/api/service-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }));
+  },
+
+  deleteImage: (id: string) =>
+    apiRequest(() => apiClient.delete(`/api/service-image/${id}`)),
+
+  setAsPrimary: (id: string) =>
+    apiRequest(() => apiClient.post(`/api/service-image/${id}/set-primary`)),
 };
 
 // Payments API
