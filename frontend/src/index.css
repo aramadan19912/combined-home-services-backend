@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import custom animations and UI enhancements */
+@import './styles/animations.css';
+
 /* Professional Home Services Marketplace Design System */
 
 @layer base {
