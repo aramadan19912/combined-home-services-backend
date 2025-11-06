@@ -21,5 +21,13 @@ public class HomeServicesAppApplicationAutoMapperProfile : Profile
         // ProviderLocation mappings
         CreateMap<ProviderLocations.ProviderLocation, ProviderLocations.ProviderLocationDto>();
         CreateMap<ProviderLocations.UpdateProviderLocationDto, ProviderLocations.ProviderLocation>();
+
+        // ServiceCategory mappings
+        CreateMap<ServiceCategory, ServiceCategories.ServiceCategoryDto>();
+        CreateMap<ServiceCategories.CreateUpdateServiceCategoryDto, ServiceCategory>();
+
+        // ServiceImage mappings
+        CreateMap<ServiceImage, ServiceImages.ServiceImageDto>();
+        CreateMap<ServiceImages.CreateUpdateServiceImageDto, ServiceImage>();
     }
 }

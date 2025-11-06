@@ -264,8 +264,28 @@ export const serviceCategoriesApi = {
   getCategory: (id: string) =>
     apiRequest(() => apiClient.get<any>(`/api/service-category/${id}`)),
 
-  getCategoryTree: () =>
-    apiRequest(() => apiClient.get<any[]>('/api/service-category/tree')),
+  getRootCategories: (country?: string) =>
+    apiRequest(() => apiClient.get<any[]>('/api/service-category/root', {
+      params: { country }
+    })),
+
+  getSubcategories: (parentId: string) =>
+    apiRequest(() => apiClient.get<any[]>(`/api/service-category/${parentId}/subcategories`)),
+
+  getFeaturedCategories: (country?: string) =>
+    apiRequest(() => apiClient.get<any[]>('/api/service-category/featured', {
+      params: { country }
+    })),
+
+  getCategoryTree: (country?: string) =>
+    apiRequest(() => apiClient.get<any[]>('/api/service-category/tree', {
+      params: { country }
+    })),
+
+  searchCategories: (searchTerm: string, country?: string) =>
+    apiRequest(() => apiClient.get<any[]>('/api/service-category/search', {
+      params: { searchTerm, country }
+    })),
 
   createCategory: (categoryData: any) =>
     apiRequest(() => apiClient.post<any>('/api/service-category', categoryData)),
@@ -275,12 +295,30 @@ export const serviceCategoriesApi = {
 
   deleteCategory: (id: string) =>
     apiRequest(() => apiClient.delete(`/api/service-category/${id}`)),
+
+  toggleFeatured: (id: string) =>
+    apiRequest(() => apiClient.post<any>(`/api/service-category/${id}/toggle-featured`)),
+
+  toggleActive: (id: string) =>
+    apiRequest(() => apiClient.post<any>(`/api/service-category/${id}/toggle-active`)),
 };
 
-// Service Images API
+// Service Images API (Enhanced)
 export const serviceImagesApi = {
   getImages: (serviceId: string) =>
     apiRequest(() => apiClient.get<any[]>(`/api/service-image/service/${serviceId}`)),
+
+  getImage: (id: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/service-image/${id}`)),
+
+  getPrimaryImage: (serviceId: string) =>
+    apiRequest(() => apiClient.get<any>(`/api/service-image/service/${serviceId}/primary`)),
+
+  createImage: (imageData: any) =>
+    apiRequest(() => apiClient.post<any>('/api/service-image', imageData)),
+
+  updateImage: (id: string, imageData: any) =>
+    apiRequest(() => apiClient.put<any>(`/api/service-image/${id}`, imageData)),
 
   uploadImage: (serviceId: string, file: File, caption?: string) => {
     const formData = new FormData();
@@ -297,8 +335,14 @@ export const serviceImagesApi = {
   deleteImage: (id: string) =>
     apiRequest(() => apiClient.delete(`/api/service-image/${id}`)),
 
+  deleteAllImages: (serviceId: string) =>
+    apiRequest(() => apiClient.delete(`/api/service-image/service/${serviceId}/all`)),
+
   setAsPrimary: (id: string) =>
     apiRequest(() => apiClient.post(`/api/service-image/${id}/set-primary`)),
+
+  reorderImages: (serviceId: string, imageIds: string[]) =>
+    apiRequest(() => apiClient.post(`/api/service-image/service/${serviceId}/reorder`, imageIds)),
 };
 
 // Payments API
