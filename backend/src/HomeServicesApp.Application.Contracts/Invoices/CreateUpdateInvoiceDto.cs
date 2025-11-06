@@ -9,11 +9,10 @@ namespace HomeServicesApp.Invoices
         [Required]
         public Guid OrderId { get; set; }
 
-        [Required]
-        public Guid ProviderId { get; set; }
+        public Guid? ProviderId { get; set; }
 
         [Required]
-        public Guid CustomerId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         public Country Country { get; set; }
@@ -23,12 +22,17 @@ namespace HomeServicesApp.Invoices
 
         [Required]
         [Range(0, double.MaxValue)]
-        public decimal Subtotal { get; set; }
+        public decimal SubTotal { get; set; }
+
+        [Range(0, double.MaxValue)]
+        public decimal PlatformFee { get; set; }
 
         [Range(0, double.MaxValue)]
         public decimal DiscountAmount { get; set; }
 
         public DateTime? DueDate { get; set; }
+
+        public string ItemDescription { get; set; }
 
         [MaxLength(1000)]
         public string Notes { get; set; }

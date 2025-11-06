@@ -32,7 +32,7 @@ namespace HomeServicesApp.ChatMessages
             var totalCount = await AsyncExecuter.CountAsync(query);
 
             var items = await AsyncExecuter.ToListAsync(
-                query.OrderBy(x => x.CreatedAt)
+                query.OrderBy(x => x.CreationTime)
                     .Skip(input.SkipCount)
                     .Take(input.MaxResultCount)
             );
@@ -45,18 +45,17 @@ namespace HomeServicesApp.ChatMessages
 
         public async Task<ChatMessageDto> CreateAsync(CreateChatMessageDto input)
         {
-            var message = new ChatMessage
+            var message = new ChatMessage(
+                input.OrderId,
+                input.SenderId,
+                input.ReceiverId,
+                input.Message,
+                (HomeServicesApp.ChatMessageType)input.MessageType
+            )
             {
-                OrderId = input.OrderId,
-                SenderId = input.SenderId,
-                ReceiverId = input.ReceiverId,
-                MessageType = input.MessageType,
-                Message = input.Message,
                 AttachmentUrl = input.AttachmentUrl,
                 Latitude = input.Latitude,
-                Longitude = input.Longitude,
-                IsRead = false,
-                CreatedAt = DateTime.UtcNow
+                Longitude = input.Longitude
             };
 
             var created = await _chatMessageRepository.InsertAsync(message, autoSave: true);
@@ -71,8 +70,10 @@ namespace HomeServicesApp.ChatMessages
         public async Task<ChatMessageDto> MarkAsReadAsync(Guid id)
         {
             var message = await _chatMessageRepository.GetAsync(id);
-            message.IsRead = true;
-            message.ReadAt = DateTime.UtcNow;
+
+            // Use domain method
+            message.MarkAsRead();
+
             await _chatMessageRepository.UpdateAsync(message, autoSave: true);
             return ObjectMapper.Map<ChatMessage, ChatMessageDto>(message);
         }
@@ -80,7 +81,10 @@ namespace HomeServicesApp.ChatMessages
         public async Task<ChatMessageDto> MarkAsDeliveredAsync(Guid id)
         {
             var message = await _chatMessageRepository.GetAsync(id);
-            message.DeliveredAt = DateTime.UtcNow;
+
+            // Use domain method
+            message.MarkAsDelivered();
+
             await _chatMessageRepository.UpdateAsync(message, autoSave: true);
             return ObjectMapper.Map<ChatMessage, ChatMessageDto>(message);
         }

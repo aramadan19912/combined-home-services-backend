@@ -12,6 +12,7 @@ namespace HomeServicesApp.ChatMessages
         public ChatMessageType MessageType { get; set; }
         public string Message { get; set; }
         public string AttachmentUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         // Location data
         public double? Latitude { get; set; }
@@ -22,13 +23,14 @@ namespace HomeServicesApp.ChatMessages
         public DateTime? ReadAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreationTime { get; set; }
 
         // Display properties
         public string SenderName { get; set; }
         public string ReceiverName { get; set; }
     }
 
+    // Use domain enum - matches HomeServicesApp.ChatMessageType
     public enum ChatMessageType
     {
         Text = 1,
