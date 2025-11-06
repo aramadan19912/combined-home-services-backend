@@ -37,9 +37,12 @@
   "status": {
     "pending": "Pending",
     "confirmed": "Confirmed",
+    "accepted": "Accepted",
+    "enRoute": "En Route",
     "inProgress": "In Progress",
     "completed": "Completed",
     "cancelled": "Cancelled",
+    "disputed": "Disputed",
     "uploaded": "Uploaded",
     "failed": "Failed"
   },
@@ -51,7 +54,52 @@
     "address": "Address",
     "description": "Description",
     "required": "This field is required",
-    "invalidEmail": "Invalid email address"
+    "invalidEmail": "Invalid email address",
+    "selectCountry": "Select Country",
+    "selectCurrency": "Select Currency",
+    "currency": "Currency"
+  },
+  "currency": {
+    "SAR": "Saudi Riyal",
+    "EGP": "Egyptian Pound",
+    "USD": "US Dollar"
+  },
+  "country": {
+    "saudiArabia": "Saudi Arabia",
+    "egypt": "Egypt",
+    "uae": "United Arab Emirates",
+    "kuwait": "Kuwait"
+  },
+  "pricing": {
+    "basePrice": "Base Price",
+    "tax": "Tax",
+    "taxRate": "Tax Rate",
+    "platformFee": "Platform Fee",
+    "discount": "Discount",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "paidAmount": "Paid Amount",
+    "remainingAmount": "Remaining Amount",
+    "priceBreakdown": "Price Breakdown",
+    "basePriceInfo": "Service base price before tax",
+    "saudiTaxInfo": "15% VAT as per Saudi Arabia tax law",
+    "egyptTaxInfo": "14% VAT as per Egypt tax law",
+    "platformFeeInfo": "Service platform commission",
+    "discountApplied": "Discount or coupon applied",
+    "allPricesIn": "All prices in"
+  },
+  "payment": {
+    "payment": "Payment",
+    "paymentMethod": "Payment Method",
+    "paymentStatus": "Payment Status",
+    "payNow": "Pay Now",
+    "paid": "Paid",
+    "partiallyPaid": "Partially Paid",
+    "unpaid": "Unpaid",
+    "refunded": "Refunded",
+    "paymentProgress": "Payment Progress",
+    "paymentSuccess": "Payment Successful",
+    "paymentFailed": "Payment Failed"
   },
   "customer": {
     "categories": {
@@ -132,7 +180,8 @@
   },
   "lang": {
     "ar": "العربية",
-    "en": "English"
+    "en": "English",
+    "fr": "Français"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
