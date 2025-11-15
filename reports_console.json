@@ -1,0 +1,91 @@
+[
+  {
+    "ts": "2025-10-30T11:35:45.900Z",
+    "type": "info",
+    "message": "Navigating to https://preview--egypt-pos-tax-sync.lovable.app/reports"
+  },
+  {
+    "ts": "2025-10-30T11:35:47.159Z",
+    "type": "info",
+    "message": "At https://lovable.dev/auth-bridge?project_id=e23324b1-638f-4f30-85f1-c83f7d3100f2&return_url=https%3A%2F%2Fpreview--egypt-pos-tax-sync.lovable.app%2Freports - attempting login"
+  },
+  {
+    "ts": "2025-10-30T11:35:47.561Z",
+    "type": "console",
+    "message": {
+      "type": "log",
+      "text": "Initializing RudderStack Analytics"
+    }
+  },
+  {
+    "ts": "2025-10-30T11:35:47.597Z",
+    "type": "console",
+    "message": {
+      "type": "log",
+      "text": "\n⠀⠀#######\n ##########\n#############\n##############\n##############\n###################\n#####################\n#######################\n#######################\n#######################\n######################\n###################\n\n%cWe're hiring!\n\n%chttps://lovable.dev/careers color: #FFFFFF; font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px black; color: blue; font-size: 16px;"
+    }
+  },
+  {
+    "ts": "2025-10-30T11:35:47.604Z",
+    "type": "console",
+    "message": {
+      "type": "debug",
+      "text": "RudderStack: Resetting user session"
+    }
+  },
+  {
+    "ts": "2025-10-30T11:36:04.770Z",
+    "type": "console",
+    "message": {
+      "type": "error",
+      "text": "Cross-Origin-Opener-Policy policy would block the window.closed call."
+    }
+  },
+  {
+    "ts": "2025-10-30T11:36:04.770Z",
+    "type": "console",
+    "message": {
+      "type": "error",
+      "text": "Cross-Origin-Opener-Policy policy would block the window.closed call."
+    }
+  },
+  {
+    "ts": "2025-10-30T11:36:32.615Z",
+    "type": "warn",
+    "message": "Password field not found after entering email"
+  },
+  {
+    "ts": "2025-10-30T11:36:32.615Z",
+    "type": "info",
+    "message": "Login success: false"
+  },
+  {
+    "ts": "2025-10-30T11:36:32.615Z",
+    "type": "info",
+    "message": "Navigating to /reports after login"
+  },
+  {
+    "ts": "2025-10-30T11:36:34.399Z",
+    "type": "console",
+    "message": {
+      "type": "log",
+      "text": "Initializing RudderStack Analytics"
+    }
+  },
+  {
+    "ts": "2025-10-30T11:36:34.443Z",
+    "type": "console",
+    "message": {
+      "type": "log",
+      "text": "\n⠀⠀#######\n ##########\n#############\n##############\n##############\n###################\n#####################\n#######################\n#######################\n#######################\n######################\n###################\n\n%cWe're hiring!\n\n%chttps://lovable.dev/careers color: #FFFFFF; font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px black; color: blue; font-size: 16px;"
+    }
+  },
+  {
+    "ts": "2025-10-30T11:36:34.451Z",
+    "type": "console",
+    "message": {
+      "type": "debug",
+      "text": "RudderStack: Resetting user session"
+    }
+  }
+]
