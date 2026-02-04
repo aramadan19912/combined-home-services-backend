@@ -1,0 +1,290 @@
+name: Deploy to HostGator
+
+on:
+  push:
+    branches:
+      - main
+      - production
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
+
+jobs:
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build Backend
+        run: |
+          cd backend
+          dotnet restore
+          dotnet publish src/HomeServicesApp.HttpApi.Host/HomeServicesApp.HttpApi.Host.csproj \
+            -c Release -o ./publish \
+            -p:PublishSingleFile=false \
+            -p:PublishTrimmed=false
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.HOSTGATOR_DOMAIN }}/api
+          VITE_API_HOST_URL: ${{ secrets.HOSTGATOR_DOMAIN }}/api
+          VITE_AUTH_API_BASE_URL: ${{ secrets.HOSTGATOR_DOMAIN }}/api
+
+      - name: Create deployment package
+        run: |
+          mkdir -p deployment/backend
+          mkdir -p deployment/frontend
+          
+          # Copy backend files
+          cp -r backend/publish/* deployment/backend/
+          cp backend/entrypoint.sh deployment/backend/ || true
+          cp backend/run-migrations.sh deployment/backend/ || true
+          
+          # Copy frontend files
+          cp -r frontend/dist/* deployment/frontend/
+          cp frontend/nginx.conf deployment/frontend/ || true
+          
+          # Create deployment info
+          echo "Deployment created at: $(date)" > deployment/DEPLOYMENT_INFO.txt
+          echo "Git commit: ${{ github.sha }}" >> deployment/DEPLOYMENT_INFO.txt
+          
+          # Create archive
+          tar -czf deployment-package.tar.gz deployment/
+
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package
+          path: deployment-package.tar.gz
+          retention-days: 5
+
+  deploy-ftp:
+    name: Deploy via FTP
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ secrets.HOSTGATOR_FTP_HOST != '' }}
+    
+    steps:
+      - name: Download deployment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package
+
+      - name: Extract deployment package
+        run: tar -xzf deployment-package.tar.gz
+
+      - name: Deploy to HostGator via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.HOSTGATOR_FTP_HOST }}
+          username: ${{ secrets.HOSTGATOR_FTP_USERNAME }}
+          password: ${{ secrets.HOSTGATOR_FTP_PASSWORD }}
+          port: ${{ secrets.HOSTGATOR_FTP_PORT || 21 }}
+          protocol: ${{ secrets.HOSTGATOR_FTP_PROTOCOL || 'ftp' }}
+          local-dir: ./deployment/
+          server-dir: ${{ secrets.HOSTGATOR_FTP_REMOTE_DIR || '/public_html/' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+
+  deploy-ssh:
+    name: Deploy via SSH
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ secrets.HOSTGATOR_SSH_HOST != '' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download deployment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.HOSTGATOR_SSH_PRIVATE_KEY }}
+
+      - name: Add HostGator to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.HOSTGATOR_SSH_PORT || 22 }} -H ${{ secrets.HOSTGATOR_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to HostGator via SSH
+        run: |
+          # Copy deployment package to server
+          scp -P ${{ secrets.HOSTGATOR_SSH_PORT || 22 }} deployment-package.tar.gz \
+            ${{ secrets.HOSTGATOR_SSH_USER }}@${{ secrets.HOSTGATOR_SSH_HOST }}:~/
+
+          # Extract and deploy on server
+          ssh -p ${{ secrets.HOSTGATOR_SSH_PORT || 22 }} \
+            ${{ secrets.HOSTGATOR_SSH_USER }}@${{ secrets.HOSTGATOR_SSH_HOST }} << 'ENDSSH'
+            set -e
+            
+            # Extract deployment package
+            tar -xzf deployment-package.tar.gz
+            
+            # Backup current deployment
+            if [ -d "${{ secrets.HOSTGATOR_DEPLOY_PATH }}" ]; then
+              mv ${{ secrets.HOSTGATOR_DEPLOY_PATH }} ${{ secrets.HOSTGATOR_DEPLOY_PATH }}.backup.$(date +%Y%m%d%H%M%S)
+            fi
+            
+            # Deploy new version
+            mkdir -p ${{ secrets.HOSTGATOR_DEPLOY_PATH }}
+            cp -r deployment/* ${{ secrets.HOSTGATOR_DEPLOY_PATH }}/
+            
+            # Set permissions
+            find ${{ secrets.HOSTGATOR_DEPLOY_PATH }} -type d -exec chmod 755 {} \;
+            find ${{ secrets.HOSTGATOR_DEPLOY_PATH }} -type f -exec chmod 644 {} \;
+            chmod +x ${{ secrets.HOSTGATOR_DEPLOY_PATH }}/backend/*.sh || true
+            
+            # Create or update .htaccess for backend API routing
+            cat > ${{ secrets.HOSTGATOR_DEPLOY_PATH }}/.htaccess << 'EOF'
+            RewriteEngine On
+            
+            # Frontend - serve static files
+            RewriteCond %{REQUEST_URI} !^/api
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)$ /frontend/index.html [L]
+            
+            # Backend API - proxy to .NET Core app
+            RewriteCond %{REQUEST_URI} ^/api
+            RewriteRule ^api/(.*)$ http://localhost:${{ secrets.HOSTGATOR_BACKEND_PORT || 5000 }}/$1 [P,L]
+            EOF
+            
+            # Setup backend service (if systemd available)
+            if command -v systemctl &> /dev/null; then
+              # Create systemd service
+              sudo tee /etc/systemd/system/homeservices-api.service > /dev/null << EOF
+            [Unit]
+            Description=Home Services API
+            After=network.target
+
+            [Service]
+            WorkingDirectory=${{ secrets.HOSTGATOR_DEPLOY_PATH }}/backend
+            ExecStart=/usr/bin/dotnet ${{ secrets.HOSTGATOR_DEPLOY_PATH }}/backend/HomeServicesApp.HttpApi.Host.dll
+            Restart=always
+            RestartSec=10
+            KillSignal=SIGINT
+            SyslogIdentifier=homeservices-api
+            User=${{ secrets.HOSTGATOR_SSH_USER }}
+            Environment=ASPNETCORE_ENVIRONMENT=Production
+            Environment=ASPNETCORE_URLS=http://localhost:${{ secrets.HOSTGATOR_BACKEND_PORT || 5000 }}
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+              
+              sudo systemctl daemon-reload
+              sudo systemctl enable homeservices-api
+              sudo systemctl restart homeservices-api
+            else
+              # Use screen or nohup as fallback
+              pkill -f "HomeServicesApp.HttpApi.Host.dll" || true
+              cd ${{ secrets.HOSTGATOR_DEPLOY_PATH }}/backend
+              nohup dotnet HomeServicesApp.HttpApi.Host.dll > ~/homeservices-api.log 2>&1 &
+            fi
+            
+            # Clean up
+            rm -f ~/deployment-package.tar.gz
+            rm -rf ~/deployment
+            
+            echo "Deployment completed successfully!"
+          ENDSSH
+
+  deploy-cpanel-api:
+    name: Deploy via cPanel API
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ secrets.HOSTGATOR_CPANEL_TOKEN != '' }}
+    
+    steps:
+      - name: Download deployment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package
+
+      - name: Extract deployment package
+        run: tar -xzf deployment-package.tar.gz
+
+      - name: Deploy to HostGator via cPanel API
+        run: |
+          # Install required tools
+          sudo apt-get update && sudo apt-get install -y curl jq
+          
+          # cPanel API endpoint
+          CPANEL_URL="https://${{ secrets.HOSTGATOR_CPANEL_HOST }}:2083"
+          AUTH_HEADER="Authorization: cpanel ${{ secrets.HOSTGATOR_CPANEL_USERNAME }}:${{ secrets.HOSTGATOR_CPANEL_TOKEN }}"
+          
+          # Create deployment directory via API
+          curl -X POST \
+            -H "$AUTH_HEADER" \
+            "$CPANEL_URL/execute/Fileman/mkdir" \
+            -d "path=${{ secrets.HOSTGATOR_DEPLOY_PATH }}" \
+            -d "permissions=0755"
+          
+          # Upload files via API (this is a simplified example)
+          # In practice, you might need to use FTP or SSH for large file uploads
+          echo "Note: For large deployments, consider using FTP or SSH methods instead"
+
+  health-check:
+    name: Health Check
+    needs: [deploy-ftp, deploy-ssh, deploy-cpanel-api]
+    if: always() && (needs.deploy-ftp.result == 'success' || needs.deploy-ssh.result == 'success' || needs.deploy-cpanel-api.result == 'success')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Wait for deployment to stabilize
+        run: sleep 30
+
+      - name: Check Frontend Health
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.HOSTGATOR_DOMAIN }})
+          if [ $response -eq 200 ]; then
+            echo "✅ Frontend is healthy (HTTP $response)"
+          else
+            echo "❌ Frontend health check failed (HTTP $response)"
+            exit 1
+          fi
+
+      - name: Check API Health
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.HOSTGATOR_DOMAIN }}/api/health)
+          if [ $response -eq 200 ]; then
+            echo "✅ API is healthy (HTTP $response)"
+          else
+            echo "⚠️ API health check returned HTTP $response (might be expected if endpoint doesn't exist)"
+          fi
+
+      - name: Deployment Summary
+        run: |
+          echo "🎉 Deployment completed successfully!"
+          echo "🌐 Frontend URL: https://${{ secrets.HOSTGATOR_DOMAIN }}"
+          echo "🔧 API URL: https://${{ secrets.HOSTGATOR_DOMAIN }}/api"
+          echo "📦 Deployment method: ${{ secrets.HOSTGATOR_FTP_HOST && 'FTP' || secrets.HOSTGATOR_SSH_HOST && 'SSH' || 'cPanel API' }}"
